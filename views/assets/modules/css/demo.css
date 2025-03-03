@@ -18,7 +18,12 @@
   letter-spacing: -0.5px;
   text-transform: lowercase;
 }
-
+.flag-icon {
+  width: 24px;
+  height: 18px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
 /* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
 /* Detached navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
@@ -34,6 +39,23 @@
   z-index: auto;
 }
 
+.app-brand-logo img {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 360px;
+  margin-left: 50px;
+}
+.app-title{
+  font-size: 20px;
+  font-weight: bold;
+  color: #676AFF;
+  margin-left: 20%;
+}
+#WarmWeather{
+  color: rgba(129, 129, 129, 0.032);
+  width: 30px;
+}
 /*
 * Content
 ******************************************************************************/
