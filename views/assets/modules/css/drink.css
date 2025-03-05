@@ -1,0 +1,23 @@
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin: auto;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .low-stock { background-color: #f8d7da; color: #721c24; }
+        .high-stock { background-color: #d4edda; color: green; }
+        .available {  color: #0c5460; 
+        border: 1px solid ; 
+        border-color: lightgreen;
+        }
+        .unavailable {  color: #721c24; 
+            border: 1px solid ; 
+            border-color: red;
+        }
+  

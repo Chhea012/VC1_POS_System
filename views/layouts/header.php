@@ -45,6 +45,9 @@
     <!-- Helpers -->
     <script src="views/assets/modules/vendor/js/helpers.js"></script>
     <script src="views/assets/modules/js/config.js"></script>
+
+    <!-- link style drink page -->
+    <link rel="stylesheet" href="views/assets/modules/css/drink.css" />
 </head>
 
 <body>
