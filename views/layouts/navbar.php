@@ -48,7 +48,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item lh-1 me-3 p4">
-                                <i class="bx bx-moon" id="darkModeToggle"></i>
+                                <!-- <i class="bx bx-moon" id="darkModeToggle"></i> -->
                             </li>
                             
 
