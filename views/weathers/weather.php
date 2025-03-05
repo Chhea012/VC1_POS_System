@@ -9,8 +9,7 @@
     <a href="https://www.weatherapi.com/weather/q/phnum-penh-1318546" alt="Hour by hour Phnum Penh weather">10 day hour by hour Phnum Penh weather</a>
   </noscript>
 </div>
-
- <div class="container-xxl flex-grow-1 container-p-y">
+<div class="container-xxl flex-grow-1 container-p-y">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <div class="container">
     <div class="container chart">
@@ -54,7 +53,7 @@
     </div>
   </div>
   <script>
-    let weatherData = [], weatherLabels = [], temperatures = [], weatherColors = [], salesData = [];
+    let weatherData = [], weatherLabels = [], temperatures = [], weatherColors = [], salesData = [], salesColors = [];
     
     async function fetchWeatherForecast() {
       const apiKey = 'fedd86317b25465cafa220110250403';
@@ -72,7 +71,8 @@
           salesData = weatherData.map(condition => getIceDessertSales(condition));
           
           weatherColors = weatherData.map(condition => getWeatherColor(condition));
-          
+          salesColors = salesData.map(sales => getSalesColor(sales));
+
           renderWeatherChart();
           renderSalesChart();
           renderWeatherTable(forecastDays);
@@ -117,7 +117,7 @@
           datasets: [{
             label: 'Ice Dessert Sales',
             data: salesData,
-            backgroundColor: weatherColors,
+            backgroundColor: salesColors,
             borderWidth: 1
           }]
         },
@@ -155,6 +155,12 @@
       };
       return salesMapping[condition] || 500;
     }
+
+    function getSalesColor(sales) {
+      if (sales >= 700) return "#28a745"; // Green for high sales
+      if (sales >= 500) return "#ff9800"; // Orange for medium sales
+      return "#dc3545"; // Red for low sales
+    }
     
     function getWeatherColor(condition) {
       const colorMapping = {
@@ -170,7 +176,6 @@
       const date = new Date(dateString);
       return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
     }
-    
     window.onload = fetchWeatherForecast;
   </script>
 </div>
