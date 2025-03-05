@@ -1,6 +1,6 @@
 <?php
 
-class ProfileController extends BaseController {
+class EditProfileController extends BaseController {
     public function index() {
         $this->view('profile/edit_profile');
     }
