@@ -119,7 +119,7 @@
                                 <div class="cardMaster p-6 bg-lighter rounded mb-6">
                                     <div class="d-flex justify-content-between flex-sm-row flex-column">
                                         <div class="card-information me-2">
-                                            <img class="mb-2" src="../../assets/img/icons/payments/mastercard.png" alt="Master Card" height="25">
+                                            <img class="mb-2" src="views/assets/modules/img/icons/payments/mastercard.png" alt="Master Card" height="25">
                                             <div class="d-flex align-items-center mb-2 flex-wrap gap-2">
                                                 <h6 class="mb-0 me-2">Tom McBride</h6>
                                                 <span class="badge bg-label-primary">Primary</span>
@@ -138,7 +138,7 @@
                                 <div class="cardMaster p-6 bg-lighter rounded">
                                     <div class="d-flex justify-content-between flex-sm-row flex-column">
                                         <div class="card-information me-2">
-                                            <img class="mb-2" src="../../assets/img/icons/payments/visa.png" alt="Visa Card" height="25">
+                                            <img class="mb-2" src="views/assets/modules/img/icons/payments/visa.png" alt="Visa Card" height="25">
                                             <h6 class="mb-2">Mildred Wagner</h6>
                                             <span class="card-number">∗∗∗∗ ∗∗∗∗ 5896</span>
                                         </div>
@@ -169,7 +169,7 @@
                                                     <div class="input-group input-group-merge has-validation">
                                                         <input id="modalEditCard" name="modalEditCard" class="form-control credit-card-mask-edit" type="text" placeholder="4356 3215 6548 7898" value="4356 3215 6548 7898" aria-describedby="modalEditCard2">
                                                         <span class="input-group-text cursor-pointer" id="modalEditCard2">
-                                                            <span class="card-type-edit"><img src="../../assets/img/icons/payments/visa-cc.png" height="20" alt="credit-card img"></span>
+                                                            <span class="card-type-edit"><img src="views/assets/modules/img/icons/payments/visa-cc.png" height="20" alt="credit-card img"></span>
                                                         </span>
                                                     </div>
                                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
@@ -397,7 +397,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/3.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/3.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -442,7 +442,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/4.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/4.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -487,7 +487,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/6.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -532,7 +532,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/7.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -577,7 +577,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/1.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -757,7 +757,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle">
+                                                            <img src="views/assets/modules/img/avatars/1.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -845,7 +845,7 @@
                                 <div class="card border rounded shadow-none">
                                     <div class="card-body pt-12">
                                         <div class="mt-3 mb-5 text-center">
-                                            <img src="../../assets/img/icons/unicons/bookmark.png" alt="Basic Image" width="120">
+                                            <img src="views/assets/modules/img/icons/unicons/bookmark.png" alt="Basic Image" width="120">
                                         </div>
                                         <h4 class="card-title text-center text-capitalize mb-1">Basic</h4>
                                         <p class="text-center mb-5">A simple start for everyone</p>
@@ -888,7 +888,7 @@
                                             <span class="badge bg-label-primary rounded-1">Popular</span>
                                         </div>
                                         <div class="my-5 pt-6 text-center">
-                                            <img src="../../assets/img/icons/unicons/wallet-round.png" alt="Pro Image" width="120">
+                                            <img src="views/assets/modules/img/icons/unicons/wallet-round.png" alt="Pro Image" width="120">
                                         </div>
                                         <h4 class="card-title text-center text-capitalize mb-1">Standard</h4>
                                         <p class="text-center mb-5">For small to medium businesses</p>
@@ -930,7 +930,7 @@
                                 <div class="card border rounded shadow-none">
                                     <div class="card-body pt-12">
                                         <div class="mt-3 mb-5 text-center">
-                                            <img src="../../assets/img/icons/unicons/briefcase-round.png" alt="Pro Image" width="120">
+                                            <img src="views/assets/modules/img/icons/unicons/briefcase-round.png" alt="Pro Image" width="120">
                                         </div>
                                         <h4 class="card-title text-center text-capitalize mb-1">Enterprise</h4>
                                         <p class="text-center mb-5">Solution for big organizations</p>
@@ -975,7 +975,7 @@
         </div>
     </div>
     <!--/ Pricing Modal -->
-    <script src="../../assets//js/pages-pricing.js"></script>
+    <script src="views/assets/modules//js/pages-pricing.js"></script>
     <!--/ Modal -->
 
 </div>
