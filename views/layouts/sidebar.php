@@ -51,13 +51,8 @@
                             </a>
                         </li>
                         <li class="menu-item">
-<<<<<<< HEAD
                             <a href="./addproduct" class="menu-link">
                                 <div data-i18n="Notifications">Add Product</div>
-=======
-                            <a href="./" class="menu-link">
-                                <div data-i18n="add product">Add Product</div>
->>>>>>> 15c5673cf84e3581ab177a2e7e50eedb881f4908
                             </a>
                         </li>
                         <li class="menu-item">
