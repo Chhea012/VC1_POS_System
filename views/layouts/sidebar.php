@@ -51,7 +51,7 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./addproduct" class="menu-link">
                                 <div data-i18n="Notifications">Add Product</div>
                             </a>
                         </li>
