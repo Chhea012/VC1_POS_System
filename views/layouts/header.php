@@ -45,6 +45,7 @@
     <!-- Helpers -->
     <script src="views/assets/modules/vendor/js/helpers.js"></script>
     <script src="views/assets/modules/js/config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
