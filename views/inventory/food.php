@@ -6,13 +6,13 @@
     <div class="row text-center">
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-               <img src="views/assets/modules/img/food/1.png" alt="Orange Juice">
+               <img src="views/assets/modules/img/food/1.png" class="w-75" alt="Orange Juice">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/food/2.png" class="w-75" alt="Juice">
+                <img src="views/assets/modules/img/food/2.png" class="w-100" alt="Juice">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
@@ -39,6 +39,7 @@
                     <th>#</th>
                     <th>Products</th>
                     <th>Prices</th>
+                    <th>Quantity</th>
                     <th>Stocks</th>
                     <th>Status</th>
                     <th>Barcode</th>
@@ -50,6 +51,7 @@
                     <td>1</td>
                     <td>Seafood Pizza</td>
                     <td>$5.00</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -59,6 +61,7 @@
                     <td>2</td>
                     <td>Hot Dog Pizza</td>
                     <td>$5.00</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -68,6 +71,7 @@
                     <td>3</td>
                     <td>Mixed Pizza</td>
                     <td>$3.50</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status unavailable">Unavailable</span></td>
                     <td></td>
@@ -77,6 +81,7 @@
                     <td>4</td>
                     <td>Pineapple flavored pizza</td>
                     <td>$5.00</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -86,6 +91,7 @@
                     <td>5</td>
                     <td>Mama Noodles</td>
                     <td>$1</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status unavailable">Unavailable</span></td>
                     <td></td>
@@ -95,6 +101,7 @@
                     <td>6</td>
                     <td>Mama Duck Noodles</td>
                     <td>$1</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status unavailable">Unavailable</span></td>
                     <td></td>

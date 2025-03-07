@@ -39,6 +39,7 @@
                     <th>#</th>
                     <th>Products</th>
                     <th>Prices</th>
+                    <th>Quantity</th>
                     <th>Stocks</th>
                     <th>Status</th>
                     <th>Barcode</th>
@@ -50,6 +51,7 @@
                     <td>1</td>
                     <td>Apple Juice</td>
                     <td>$6.00</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -59,6 +61,7 @@
                     <td>2</td>
                     <td>Bubble Tea</td>
                     <td>$7.00</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -68,6 +71,7 @@
                     <td>3</td>
                     <td>Cola</td>
                     <td>$3.50</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status unavailable">Unavailable</span></td>
                     <td></td>
@@ -77,6 +81,7 @@
                     <td>4</td>
                     <td>Orange Juice</td>
                     <td>$5.00</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
@@ -86,6 +91,7 @@
                     <td>5</td>
                     <td>Coffee</td>
                     <td>$4.50</td>
+                    <td></td>
                     <td><span class="status low-stock">LOW STOCK</span></td>
                     <td><span class="status unavailable">Unavailable</span></td>
                     <td></td>

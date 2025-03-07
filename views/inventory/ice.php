@@ -6,7 +6,7 @@
     <div class="row text-center">
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-               <img src="views/assets/modules/img/ice/1.png" class="w-75" alt="Orange Juice">
+               <img src="views/assets/modules/img/ice/1.png" class="w-50" alt="Orange Juice">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
@@ -18,13 +18,13 @@
         </div>
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/ice/3.png" alt="Passion">
+                <img src="views/assets/modules/img/ice/3.png" class="w-100 " alt="Passion">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/ice/4.png" alt="Coffee">
+                <img src="views/assets/modules/img/ice/4.png" class="w-75"  alt="Coffee">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
@@ -39,6 +39,7 @@
                     <th>#</th>
                     <th>Products</th>
                     <th>Prices</th>
+                    <th>Quantity</th>
                     <th>Stocks</th>
                     <th>Status</th>
                     <th>Barcode</th>
@@ -50,6 +51,7 @@
                     <td>1</td>
                     <td>Ice dessert young coconut</td>
                     <td>$5.00</td>
+                    <td></td>
                     <td><span class="status high-stock">HIGH STOCK</span></td>
                     <td><span class="status available">Available</span></td>
                     <td></td>
