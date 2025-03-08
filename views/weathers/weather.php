@@ -383,7 +383,6 @@
         "🛒 Normal day. Sell 3kg of ice dessert.\n";
       message += "\n";
     }
-
     message += "📋 7-Day Forecast:\n";
     message += forecastDays.map(day => {
       const weather = simplifyWeather(day.day.condition.text);
@@ -395,7 +394,6 @@
     console.log('Sending Telegram message:', message);
     await sendToTelegram(message);
   }
-
   // Send message to Telegram
   async function sendToTelegram(message) {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -417,7 +415,6 @@
       console.error('Error sending to Telegram:', error.message);
     }
   }
-
   // Map weather condition to sales amount
   function getIceDessertSales(condition) {
     return {
@@ -432,7 +429,6 @@
   function getSalesColor(sales) {
     return sales >= 5 ? "#28a745" : sales >= 3 ? "#ff9800" : "#dc3545";
   }
-
   // Get color for weather bars
   function getWeatherColor(condition) {
     return {
@@ -442,7 +438,6 @@
       "Stormy": "#708090"
     } [condition] || "#D3D3D3";
   }
-
   // Simplify weather condition text
   function simplifyWeather(condition) {
     condition = condition.toLowerCase();
@@ -452,13 +447,11 @@
     if (["storm", "thunder"].some(w => condition.includes(w))) return "Stormy";
     return condition.charAt(0).toUpperCase() + condition.slice(1);
   }
-
   // Get day of week from date string
   function getDayOfWeek(dateString) {
     const date = new Date(dateString);
     return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
   }
-
   // Initialize on page load
   window.onload = fetchWeatherForecast;
 </script>
