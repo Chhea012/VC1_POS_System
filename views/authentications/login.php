@@ -91,34 +91,38 @@
             <p class="mb-4">Please sign-in your account go to dashboard</p>
 
             <form id="formAuthentication" class="mb-3" action="/dashboard" method="POST">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email or Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="email"
-                  name="email-username"
-                  placeholder="Enter your email or username"
-                  autofocus />
-              </div>
-              <div class="mb-3 form-password-toggle">
-                <div class="d-flex justify-content-between">
-                  <label class="form-label" for="password">Password</label>
-                  <a href="/forgotpassword">
-                    <small>Forgot Password?</small>
-                  </a>
-                </div>
-                <div class="input-group input-group-merge">
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-control"
-                    name="password"
-                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                    aria-describedby="password" />
-                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                </div>
-              </div>
+            <div class="mb-3">
+            <label for="email" class="form-label">Email or Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+              name="email-username"
+              placeholder="Enter your email or username"
+              autofocus />
+            <div class="text-danger" id="email-error"></div> <!-- Error message -->
+          </div>
+
+          <div class="mb-3 form-password-toggle">
+            <div class="d-flex justify-content-between">
+              <label class="form-label" for="password">Password</label>
+              <a href="/forgotpassword">
+                <small>Forgot Password?</small>
+              </a>
+            </div>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="********"
+                aria-describedby="password" />
+              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            </div>
+            <div class="text-danger" id="password-error"></div> <!-- Error message -->
+          </div>
+
               <div class="mb-3">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="remember-me" />
@@ -166,5 +170,46 @@
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- error of message -->
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("formAuthentication");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    form.addEventListener("submit", function (event) {
+        let isValid = true;
+        emailError.textContent = "";
+        passwordError.textContent = "";
+
+        // Validate Email/Username
+        if (emailInput.value.length < 6) {
+            emailError.textContent = "Username must be more than 6 characters";
+            emailInput.classList.add("is-invalid"); // Bootstrap error style
+            isValid = false;
+        } else {
+            emailInput.classList.remove("is-invalid");
+        }
+
+        // Validate Password
+        if (passwordInput.value.length < 6) {
+            passwordError.textContent = "Password must be more than 6 characters";
+            passwordInput.classList.add("is-invalid");
+            isValid = false;
+        } else {
+            passwordInput.classList.remove("is-invalid");
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
+
 </body>
 </html>
+
