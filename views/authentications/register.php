@@ -93,11 +93,15 @@
                   name="username"
                   placeholder="Enter your username"
                   autofocus />
+                <div class="text-danger" id="username-error"></div> <!-- Error message -->
               </div>
+
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" />
+                <div class="text-danger" id="email-error"></div> <!-- Error message -->
               </div>
+
               <div class="mb-3 form-password-toggle">
                 <label class="form-label" for="password">Password</label>
                 <div class="input-group input-group-merge">
@@ -110,7 +114,9 @@
                     aria-describedby="password" />
                   <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                 </div>
+                <div class="text-danger" id="password-error"></div> <!-- Error message -->
               </div>
+
 
               <div class="mb-3">
                 <div class="form-check">
@@ -151,6 +157,60 @@
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Error message validation -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("formAuthentication");
+      const usernameInput = document.getElementById("username");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const usernameError = document.getElementById("username-error");
+      const emailError = document.getElementById("email-error");
+      const passwordError = document.getElementById("password-error");
+
+      form.addEventListener("submit", function (event) {
+          let isValid = true;
+          
+          // Clear previous error messages
+          emailError.textContent = "";
+          passwordError.textContent = "";
+          usernameError.textContent = "";
+
+          // Validate Username
+          if (usernameInput.value.length < 6) {
+              usernameError.textContent = "Username must be more than 6 characters";
+              usernameInput.classList.add("is-invalid");
+              isValid = false;
+          } else {
+              usernameInput.classList.remove("is-invalid");
+          }
+
+          // Validate Email
+          if (!emailInput.value.includes("@") || emailInput.value.length < 6) {
+              emailError.textContent = "Please enter a valid email address";
+              emailInput.classList.add("is-invalid");
+              isValid = false;
+          } else {
+              emailInput.classList.remove("is-invalid");
+          }
+
+          // Validate Password
+          if (passwordInput.value.length < 6) {
+              passwordError.textContent = "Password must be more than 6 characters";
+              passwordInput.classList.add("is-invalid");
+              isValid = false;
+          } else {
+              passwordInput.classList.remove("is-invalid");
+          }
+
+          // Prevent form submission if validation fails
+          if (!isValid) {
+              event.preventDefault();
+          }
+      });
+  });
+  </script>
+
 </body>
 
 </html>
