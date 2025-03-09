@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="./" class="app-brand-link">
+        <a href="./dashboard" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <img src="../../views/assets/modules/img/logo/logo.png" alt="">
             </span><br>
@@ -17,7 +17,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item ">
-            <a href="./" class="menu-link">
+            <a href="./dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -36,7 +36,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="dashboard">Dashboard</div>
                     </a>
                 </li>
@@ -46,7 +46,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./dashboard" class="menu-link">
                                 <div data-i18n="Product list">Product List</div>
                             </a>
                         </li>
@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./dashboard" class="menu-link">
                                 <div data-i18n="Category">Category List</div>
                             </a>
                         </li>
@@ -68,12 +68,12 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./dashboard" class="menu-link">
                                 <div data-i18n="Order list">Order List</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./dashboard" class="menu-link">
                                 <div data-i18n="Order detail">Order details</div>
                             </a>
                         </li>
@@ -86,7 +86,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="./" class="menu-link">
+                            <a href="./dashboard" class="menu-link">
                                 <div data-i18n="All customer">All Customers</div>
                             </a>
                         </li>
@@ -96,7 +96,7 @@
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
-                                    <a href="./" class="menu-link">
+                                    <a href="./dashboard" class="menu-link">
                                         <div data-i18n="Overview">Overview</div>
                                     </a>
                                 </li>
@@ -114,17 +114,17 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="Drink">Drink</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="FastFood">FastFood</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="FreshIce">FreshIce</div>
                     </a>
                 </li>
@@ -137,33 +137,18 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                    <a href="/" class="menu-link" target="_blank">
                         <div data-i18n="login">Login</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                    <a href="/register" class="menu-link" target="_blank">
                         <div data-i18n="Register">Register</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                    <a href="/forgotpassword" class="menu-link" target="_blank">
                         <div data-i18n="Verify email">Verify Email</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Reset password">Reset Password</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Forgot Password">Forgot Password</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                        <div data-i18n="Two step">Two Steps</div>
                     </a>
                 </li>
             </ul>
@@ -177,22 +162,22 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="list">List</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="Preview">Preview</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="Edit">Edit</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="Add">Add</div>
                     </a>
                 </li>
@@ -219,7 +204,7 @@
                 </li>
             </ul>
         <li class="menu-item">
-            <a href="./" class="menu-link">
+            <a href="./dashboard" class="menu-link">
                 <i class="menu-icon icon-base bx bx-calendar"></i>
                 <div data-i18n="Calendar">Calendar</div>
             </a>
@@ -236,7 +221,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="./" class="menu-link">
+                    <a href="./dashboard" class="menu-link">
                         <div data-i18n="User Score">User Score</div>
                     </a>
                 </li>
