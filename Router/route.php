@@ -13,6 +13,9 @@ require_once "Controllers/LoginController.php";
 require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
 require_once "Controllers/addController.php";
+require_once "Controllers/IceController.php";
+require_once "Controllers/DrinkController.php";
+require_once "Controllers/FoodController.php";
 
 $route = new Router();
 
@@ -28,5 +31,8 @@ $route->get("/billing_setting", [BillingSettingController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
 $route->get("/add", [addController::class, 'index']);
+$route->get("/drink", [InventoryController::class, 'index']);
+$route->get("/food", [FoodController::class, 'index']);
+$route->get("/ice", [IceController::class, 'index']);
 
 $route->route();
