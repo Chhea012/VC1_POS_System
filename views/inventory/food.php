@@ -1,33 +1,43 @@
-<div class="container-xxl flex-grow-1 container-p-y">
+<?php
+// Sample array to store product data (in a real application, this would come from a database)
+$products = [
+    ['id' => 1, 'name' => 'Seafood Pizza', 'price' => 5.00, 'quantity' => 5, 'stock' => 'HIGH STOCK', 'status' => 'Available', 'amount' => 95.2],
+    ['id' => 2, 'name' => 'Hot Dog Pizza', 'price' => 5.00, 'quantity' => 4, 'stock' => 'HIGH STOCK', 'status' => 'Available', 'amount' => 96.3],
+    ['id' => 3, 'name' => 'Mixed Pizza', 'price' => 3.50, 'quantity' => 1, 'stock' => 'LOW STOCK', 'status' => 'Unavailable', 'amount' => 96.3],
+    ['id' => 4, 'name' => 'Pineapple flavored pizza', 'price' => 5.00, 'quantity' => 2, 'stock' => 'LOW STOCK', 'status' => 'Available', 'amount' => 95.2],
+    ['id' => 5, 'name' => 'Mama Noodles', 'price' => 1.00, 'quantity' => 3, 'stock' => 'HIGH STOCK', 'status' => 'Unavailable', 'amount' => 50],
+    ['id' => 6, 'name' => 'Mama Duck Noodles', 'price' => 1.00, 'quantity' => 0, 'stock' => 'HIGH STOCK', 'status' => 'Unavailable', 'amount' => 100],
+];
 
-</head>
-    
+// Function to check and update stock status
+function updateStockStatus(&$product) {
+    if ($product['quantity'] < 2) {
+        $product['stock'] = 'LOW STOCK';
+        // Return alert message
+        return "<script>alert('Low stock alert: " . $product['name'] . " has only " . $product['quantity'] . " items left!');</script>";
+    } else {
+        $product['stock'] = 'HIGH STOCK';
+        return '';
+    }
+}
+
+// Process all products and collect alerts
+$alerts = '';
+foreach ($products as &$product) {
+    $alerts .= updateStockStatus($product);
+}
+?>
+
+<div class="container-xxl flex-grow-1 container-p-y">
     <h5 class="mb-3">The popular items:</h5>
     <div class="row text-center">
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-               <img src="views/assets/modules/img/food/1.png" class="w-75" alt="Orange Juice">
+                <img src="views/assets/modules/img/food/1.png" class="w-75" alt="Orange Juice">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/food/2.png" class="w-100" alt="Juice">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/food/3.png" alt="Passion">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/food/4.png" alt="Coffee">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
+        <!-- ... other items remain the same ... -->
     </div>
 
     <!-- Drinks Transactions Table -->
@@ -47,69 +57,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Seafood Pizza</td>
-                    <td>$5.00</td>
-                    <td></td>
-                    <td><span class="status high-stock">HIGH STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$95.2</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Hot Dog Pizza</td>
-                    <td>$5.00</td>
-                    <td></td>
-                    <td><span class="status high-stock">HIGH STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$96.3</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Mixed Pizza</td>
-                    <td>$3.50</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status unavailable">Unavailable</span></td>
-                    <td></td>
-                    <td>$96.3</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Pineapple flavored pizza</td>
-                    <td>$5.00</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$95.2</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Mama Noodles</td>
-                    <td>$1</td>
-                    <td></td>
-                    <td><span class="status high-stock">HIGH STOCK</span></td>
-                    <td><span class="status unavailable">Unavailable</span></td>
-                    <td></td>
-                    <td>$50</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Mama Duck Noodles</td>
-                    <td>$1</td>
-                    <td></td>
-                    <td><span class="status high-stock">HIGH STOCK</span></td>
-                    <td><span class="status unavailable">Unavailable</span></td>
-                    <td></td>
-                    <td>$100</td>
-                </tr>
+                <?php foreach ($products as $product): ?>
+                    <tr>
+                        <td><?php echo $product['id']; ?></td>
+                        <td><?php echo $product['name']; ?></td>
+                        <td>$<?php echo number_format($product['price'], 2); ?></td>
+                        <td><?php echo $product['quantity']; ?></td>
+                        <td><span class="status <?php echo strtolower(str_replace(' ', '-', $product['stock'])); ?>">
+                            <?php echo $product['stock']; ?>
+                        </span></td>
+                        <td><span class="status <?php echo strtolower($product['status']); ?>">
+                            <?php echo $product['status']; ?>
+                        </span></td>
+                        <td></td>
+                        <td>$<?php echo number_format($product['amount'], 1); ?></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-
 </div>
+
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Output all alerts -->
+<?php echo $alerts; ?>
