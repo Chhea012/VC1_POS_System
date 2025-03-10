@@ -89,7 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+            function searchProduct() {
+                let input = document.getElementById("productSearch").value.toLowerCase();
+                let rows = document.querySelectorAll("tbody tr");
 
+                rows.forEach(row => {
+                    let productName = row.querySelector("td:nth-child(2) span").textContent.toLowerCase();
+                    if (productName.includes(input)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            }
             document.getElementById('exportPDF').addEventListener('click', exportPDF);
             document.getElementById('exportExcel').addEventListener('click', exportExcel);
             document.getElementById('exportCSV').addEventListener('click', exportCSV);
