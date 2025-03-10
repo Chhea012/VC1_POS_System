@@ -48,6 +48,7 @@
 
     <!-- link style drink page -->
     <link rel="stylesheet" href="views/assets/modules/css/drink.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
