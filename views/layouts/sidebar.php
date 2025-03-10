@@ -113,18 +113,18 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="Drink">Drink</div>
+                    <a href="./inventory" class="menu-link">
+                        <div data-i18n="Account">Drink</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="FastFood">FastFood</div>
+                    <a href="./food" class="menu-link">
+                        <div data-i18n="Connections">FastFood</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="FreshIce">FreshIce</div>
+                    <a href="./ice" class="menu-link">
+                        <div data-i18n="Connections">FreshIce</div>
                     </a>
                 </li>
             </ul>

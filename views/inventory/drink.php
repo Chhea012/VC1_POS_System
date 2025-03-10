@@ -1,105 +1,41 @@
-<div class="container-xxl flex-grow-1 container-p-y">
 
-</head>
-    
+
+<div class="container-xxl flex-grow-1 container-p-y">
     <h5 class="mb-3">The popular items:</h5>
     <div class="row text-center">
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-               <img src="views/assets/modules/img/drinks/1.png" alt="Orange Juice">
+                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/drinks/orangejuice.png" alt="Juice">
+                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/drinks/passion.png" alt="Passion">
+                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
+
         <div class="col-md-3">
             <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/drinks/coffeeCoconut.png" alt="Coffee">
+                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
                 <div class="mt-2">⭐⭐⭐⭐⭐</div>
             </div>
         </div>
+        <!-- ... other items remain the same ... -->
     </div>
 
-    <!-- Drinks Transactions Table -->
-    <h5 class="mt-5">Drinks transactions</h5>
-    <div class="table-responsive">
-        <table class="table table-bordered text-center">
-            <thead class="table-white">
-                <tr>
-                    <th>#</th>
-                    <th>Products</th>
-                    <th>Prices</th>
-                    <th>Quantity</th>
-                    <th>Stocks</th>
-                    <th>Status</th>
-                    <th>Barcode</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Apple Juice</td>
-                    <td>$6.00</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$95.2</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Bubble Tea</td>
-                    <td>$7.00</td>
-                    <td></td>
-                    <td><span class="status high-stock">HIGH STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$96.3</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Cola</td>
-                    <td>$3.50</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status unavailable">Unavailable</span></td>
-                    <td></td>
-                    <td>$96.3</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Orange Juice</td>
-                    <td>$5.00</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status available">Available</span></td>
-                    <td></td>
-                    <td>$95.2</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Coffee</td>
-                    <td>$4.50</td>
-                    <td></td>
-                    <td><span class="status low-stock">LOW STOCK</span></td>
-                    <td><span class="status unavailable">Unavailable</span></td>
-                    <td></td>
-                    <td>$96.3</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h5 class="mt-3">Drinks Transactions:</h5>
 
 </div>
+
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
