@@ -25,3 +25,113 @@ let config = {
     borderColor: '#eceef1'
   }
 };
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get all menu items
+  const menuItems = document.querySelectorAll('.menu-item');
+  const currentPath = window.location.pathname;
+
+  // Set initial active state based on current URL
+  menuItems.forEach(item => {
+      const link = item.querySelector('a:not(.menu-toggle)');
+      if (link && link.getAttribute('href') === currentPath) {
+          item.classList.add('active');
+          // Activate parent menu items
+          let parent = item.closest('.menu-item');
+          while (parent) {
+              parent.classList.add('active');
+              parent = parent.parentElement.closest('.menu-item');
+          }
+      }
+  });
+
+  // Handle menu item clicks
+  menuItems.forEach(item => {
+      const link = item.querySelector('.menu-link');
+      if (link) {
+          link.addEventListener('click', function(e) {
+              // Check if it's a toggle link
+              if (this.classList.contains('menu-toggle')) {
+                  e.preventDefault();
+                  const submenu = this.nextElementSibling;
+                  if (submenu && submenu.classList.contains('menu-sub')) {
+                      $(submenu).slideToggle(200);
+                      this.parentElement.classList.toggle('open');
+                  }
+                  return;
+              }
+
+              // Remove active from all items
+              menuItems.forEach(menu => menu.classList.remove('active'));
+              
+              // Add active to clicked item and its parents
+              let currentItem = this.parentElement;
+              currentItem.classList.add('active');
+              
+              while (currentItem) {
+                  const parent = currentItem.parentElement.closest('.menu-item');
+                  if (parent) parent.classList.add('active');
+                  currentItem = parent;
+              }
+          });
+      }
+  });
+});
+//  code link list product //
+    function confirmDelete(productId) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            window.location.href = 'delete_product.php?id=' + productId;
+        }
+    }
+
+
+
+            document.getElementById('exportPDF').addEventListener('click', exportPDF);
+            document.getElementById('exportExcel').addEventListener('click', exportExcel);
+            document.getElementById('exportCSV').addEventListener('click', exportCSV);
+
+            // Export PDF using jsPDF
+            function exportPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.text("Hello, this is your exported PDF!", 10, 10);
+                doc.save('document.pdf');
+            }
+
+            // Export Excel using SheetJS (xlsx library)
+            function exportExcel() {
+                const data = [
+                    ["Header 1", "Header 2", "Header 3"],
+                    ["Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3"],
+                    ["Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3"]
+                ];
+
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+                // Generate the Excel file
+                XLSX.writeFile(wb, 'document.xlsx');
+            }
+
+            // Export CSV
+            function exportCSV() {
+                const data = [
+                    ["Header 1", "Header 2", "Header 3"],
+                    ["Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3"],
+                    ["Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3"]
+                ];
+
+                let csvContent = data.map(row => row.join(",")).join("\n");
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                saveAs(blob, 'document.csv');
+            }
+
+
+
+
+
