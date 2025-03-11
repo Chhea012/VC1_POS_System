@@ -13,13 +13,14 @@ require_once "Controllers/LoginController.php";
 require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
 require_once "Controllers/addController.php";
+require_once "Controllers/categoryController.php";
 
 $route = new Router();
 
+// GET routes
 $route->get("/", [LoginController::class, 'login']);
 $route->get("/register", [RegisterController::class, 'register']);
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
-
 $route->get("/dashboard", [AdminController::class, 'index']);
 $route->get("/products", [productController::class, 'index']);
 $route->get("/edit_profile", [EditProfileController::class, 'index']);
@@ -28,5 +29,9 @@ $route->get("/billing_setting", [BillingSettingController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
 $route->get("/add", [addController::class, 'index']);
+$route->get("/category", [categoryController::class, 'index']);
+
+$route->post('/category/store', [categoryController::class, 'store']);
+
 
 $route->route();
