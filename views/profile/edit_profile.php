@@ -9,10 +9,10 @@
                         <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="views/profile/setting_security.php"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
+                        <a class="nav-link" href="/setting_security"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="views/profile/billing_setting.php"><i class="icon-base bx bx-detail icon-sm me-1_5"></i> Billing Plans</a>
+                        <a class="nav-link" href="/billing_setting"><i class="icon-base bx bx-detail icon-sm me-1_5"></i> Billing Plans</a>
                     </li>
                 </ul>
                 <div class="card mb-4">

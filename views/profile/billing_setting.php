@@ -1,14 +1,14 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-
+<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span>Billing and Plans</h4>
     <div class="row">
         <div class="col-md-12">
             <div class="nav-align-top">
                 <ul class="nav nav-pills flex-column flex-md-row mb-6">
                     <li class="nav-item">
-                        <a class="nav-link" href="pages-account-settings-account.html"><i class="icon-base bx bx-user icon-sm me-1_5"></i> Account</a>
+                        <a class="nav-link" href="/edit_profile"><i class="icon-base bx bx-user icon-sm me-1_5"></i> Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages-account-settings-security.html"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
+                        <a class="nav-link" href="/setting_security"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="javascript:void(0);"><i class="icon-base bx bx-detail icon-sm me-1_5"></i> Billing &amp; Plans</a>
