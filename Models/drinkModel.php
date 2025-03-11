@@ -70,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $stmt = $conn->prepare($sql);
                         $stmt->execute([$title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $db_image_path]);
 
+
                         $success_message = "Product added successfully!";
                     } else {
                         $error_message = "Category not found. Please choose a valid category.";
@@ -84,48 +85,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// --- Added Debugging Code Below ---
+// --- New Code to Display Drink Category After Adding ---
 
-// Check database connection
-if (!$conn) {
-    $debug_message = "Database connection failed.";
+// Determine which category to display
+$display_category = isset($new_product_category) && $new_product_category === 'drink' ? 'drink' : 'all';
+
+// Fetch products based on category
+if ($display_category === 'all') {
+    $sql = "SELECT p.*, c.category_name 
+            FROM products p 
+            LEFT JOIN categories c ON p.category_id = c.category_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
 } else {
-    $debug_message = "Database connection successful.";
+    $sql = "SELECT p.*, c.category_name 
+            FROM products p 
+            LEFT JOIN categories c ON p.category_id = c.category_id 
+            WHERE c.category_name = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$display_category]);
 }
 
-// Log and check form data
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    error_log("POST data: " . print_r($_POST, true));
-    error_log("FILES data: " . print_r($_FILES, true));
-    
-    // Check if all required fields are present
-    $required_fields = ['title', 'category', 'barcode', 'quantity', 'description', 'base_price', 'discounted_price'];
-    foreach ($required_fields as $field) {
-        if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
-            $debug_message .= " Missing or empty field: $field.";
-        }
-    }
-    
-    // Check file upload specifics
-    if (empty($_FILES["product_image"]["name"])) {
-        $debug_message .= " No image file uploaded.";
-    } else {
-        $debug_message .= " Image upload attempted: " . $_FILES["product_image"]["name"];
-        if ($_FILES["product_image"]["error"] !== UPLOAD_ERR_OK) {
-            $debug_message .= " Upload error code: " . $_FILES["product_image"]["error"];
-        }
-    }
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Check directory permissions
-    if (!is_writable($target_dir)) {
-        $debug_message .= " Uploads directory is not writable.";
-    }
-
-    // Check category existence more thoroughly
-    $check_categories = $conn->query("SELECT category_name FROM categories")->fetchAll(PDO::FETCH_COLUMN);
-    $debug_message .= " Available categories: " . implode(", ", $check_categories);
-}
-
-// Display debug info
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Management</title>
+    <style>
+        .products { margin: 20px; }
+        .product { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        .message { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <!-- Display Success/Error Messages -->
+    <?php if (isset($success_message)): ?>
+        <p class="message" style="color: green;"><?php echo $success_message; ?></p>
+    <?php endif; ?>
+    <?php if (isset($error_message)): ?>
+        <p class="message" style="color: red;"><?php echo $error_message; ?></p>
+    <?php endif; ?>
+</body>
+</html>
+
+
 

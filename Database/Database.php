@@ -4,7 +4,7 @@ class Database {
     private $host = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "cv-1";
+    private $dbname = "vc1_database_pos";
 
     public function __construct() {
         $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4";
