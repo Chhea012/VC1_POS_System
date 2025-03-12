@@ -83,8 +83,8 @@
                             </td>
                             <td>
                             <span style="color: <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
-        <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
-    </span>
+                            <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
+                            </span>
                             </td>
                             <td>$<?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
                             <td <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'style="color: red;"' : '' ?>>
@@ -114,8 +114,17 @@
 
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- delete product function  -->
+<script>
+    function confirmDelete(id) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            window.location.href = 'delete_product.php?id=' + id;
+        }
+    }
+</script>
+
+
 
 <!-- Added Low Stock Alert Logic with Bootstrap Toast -->
 <?php
