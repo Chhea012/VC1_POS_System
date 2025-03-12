@@ -145,5 +145,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+        // filter category stock  ///
+        function filterStock(stock) {
+            let rows = document.querySelectorAll("#categoryTable tr");
+            let stockText = document.getElementById("selectedStock");
+        
+            // Update button text
+            stockText.textContent = stock === "" ? "Stock" : stock;
+        
+            // Loop through table rows
+            rows.forEach(row => {
+                let rowStock = row.getAttribute("data-stock");
+        
+                // Show all if 'All' is selected, otherwise filter by selected stock
+                if (stock === "" || rowStock === stock) {
+                    row.style.display = ""; // Show row
+                } else {
+                    row.style.display = "none"; // Hide row
+                }
+            });
+        }
+        
+
+
 
 

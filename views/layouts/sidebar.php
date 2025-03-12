@@ -51,12 +51,12 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./add" class="menu-link">
+                            <a href="./addproduct" class="menu-link">
                                 <div data-i18n="Notifications">Add Product</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./dashboard" class="menu-link">
+                            <a href="./category" class="menu-link">
                                 <div data-i18n="Category">Category List</div>
                             </a>
                         </li>
