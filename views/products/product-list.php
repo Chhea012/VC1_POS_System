@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <a href="./add" class="btn btn-primary w-100">
+                    <a href="./addproduct" class="btn btn-primary w-100">
                         <i class="bi bi-plus-lg me-1"></i> Add product
                     </a>
                 </div>

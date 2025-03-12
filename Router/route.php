@@ -12,7 +12,7 @@ require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
 require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
-require_once "Controllers/addController.php";
+require_once "Controllers/addproductController.php";
 require_once "Controllers/categoryController.php";
 require_once "Controllers/IceController.php";
 require_once "Controllers/DrinkController.php";
@@ -31,13 +31,16 @@ $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/billing_setting", [BillingSettingController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->get("/add", [addController::class, 'index']);
+$route->get("/food", [FoodController::class, 'index']);
+$route->get("/ice", [IceController::class, 'index']);
+$route->post('/category/store', [categoryController::class, 'store']);
+$route->get("/addproduct", [addproductController::class, 'index']);
 $route->get("/category", [categoryController::class, 'index']);
 $route->get("/drink", [InventoryController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
 
+$route->post('/addProduct/store', [addproductController::class, 'store']);
 $route->post('/category/store', [categoryController::class, 'store']);
-
 
 $route->route();

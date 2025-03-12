@@ -1,4 +1,8 @@
-<?php require_once 'Models/add-productModel.php'?> 
+<?php 
+
+require_once __DIR__ . "/../../Models/add_productModel.php";
+
+?> 
 
 <div class="m-4">
     <!-- Header -->
@@ -11,20 +15,23 @@
         </div>
     </div>
 
-    <?php if (isset($success_message)): ?>
-        <div class="alert alert-success" role="alert">
-            <?php echo $success_message; ?>
-        </div>
-    <?php endif; ?>
+    <?php if (isset($_SESSION['success_message'])) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= $_SESSION['success_message']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['success_message']); ?>
+<?php endif; ?>
 
-    <?php if (isset($error_message)): ?>
-        <div class="alert alert-danger" role="alert">
-            <?php echo $error_message; ?>
-        </div>
-    <?php endif; ?>
+<?php if (isset($_SESSION['error_message'])) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error_message']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error_message']); ?>
+<?php endif; ?>
 
-    <form id="productForm" method="POST" action="" enctype="multipart/form-data">
-
+    <form id="productForm" method="POST" action="/addProduct/store" enctype="multipart/form-data">
         <div class="row g-4">
             <!-- Product Information -->
             <div class="col-md-8">
