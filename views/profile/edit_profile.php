@@ -1,3 +1,16 @@
+<?php
+// Make sure $user is available from the controller
+if (!isset($user)) {
+    $user = [
+        'user_name' => '',
+        'phone_number' => '',
+        'address' => '',
+        'language' => '',
+        'province' => ''
+    ];
+}
+?>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Account</h4>
@@ -41,42 +54,38 @@
                         <form id="formAccountSettings" method="POST" onsubmit="return false">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="firstName" class="form-label">First Name</label>
-                                    <input class="form-control" type="text" id="firstName" name="firstName" autofocus="" placeholder="Enter your firstname">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="lastName" class="form-label">Last Name</label>
-                                    <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Enter your lastname">
+                                    <label for="userName" class="form-label">User Name</label>
+                                    <input class="form-control" type="text" id="userName" value="<?php echo htmlspecialchars($user['user_name']); ?>" name="userName" autofocus="" placeholder="Enter your username">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label" for="phoneNumber">Phone Number</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text">KHR (+885)</span>
-                                        <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Enter your phone unmber">
+                                        <input type="text" id="phoneNumber" name="phoneNumber" value="<?php echo htmlspecialchars($user['phone_number']); ?>" class="form-control" placeholder="Enter your phone number">
                                     </div>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                                    <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($user['address']); ?>" placeholder="Address">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="language" class="form-label">Language</label>
-                                    <select id="language" class="select2 form-select">
+                                    <select id="language" name="language" class="select2 form-select">
                                         <option value="">Select Language</option>
-                                        <option value="en">English</option>
-                                        <option value="fr">Khmer</option>
+                                        <option value="en" <?php echo $user['language'] == 'en' ? 'selected' : ''; ?>>English</option>
+                                        <option value="fr" <?php echo $user['language'] == 'fr' ? 'selected' : ''; ?>>Khmer</option>
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label" for="province">City/Province</label>
-                                    <select id="province" class="select2 form-select">
+                                    <select id="province" name="province" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Brazil">Phnom Penh</option>
-                                        <option value="Battambang">Battambang</option>
-                                        <option value="Bangladesh">Prey Veng</option>
-                                        <option value="Belarus">Kompot</option>
-                                        <option value="Brazil">Siem Reap</option>
-                                        <option value="Brazil">Kompong Thom</option>
+                                        <option value="Phnom Penh" <?php echo $user['province'] == 'Phnom Penh' ? 'selected' : ''; ?>>Phnom Penh</option>
+                                        <option value="Battambang" <?php echo $user['province'] == 'Battambang' ? 'selected' : ''; ?>>Battambang</option>
+                                        <option value="Prey Veng" <?php echo $user['province'] == 'Prey Veng' ? 'selected' : ''; ?>>Prey Veng</option>
+                                        <option value="Kompot" <?php echo $user['province'] == 'Kompot' ? 'selected' : ''; ?>>Kompot</option>
+                                        <option value="Siem Reap" <?php echo $user['province'] == 'Siem Reap' ? 'selected' : ''; ?>>Siem Reap</option>
+                                        <option value="Kompong Thom" <?php echo $user['province'] == 'Kompong Thom' ? 'selected' : ''; ?>>Kompong Thom</option>
                                     </select>
                                 </div>
                             </div>
