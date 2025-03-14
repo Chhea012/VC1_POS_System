@@ -1,5 +1,5 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span>Billing and Plans</h4>
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span>Billing and Plans</h4>
     <div class="row">
         <div class="col-md-12">
             <div class="nav-align-top">
@@ -228,14 +228,8 @@
                                 <input class="form-control" type="text" id="billingEmail" name="billingEmail" placeholder="john.doe@example.com">
                                 <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                             </div>
-                            <div class="col-sm-6">
-                                <label for="taxId" class="form-label">Tax ID</label>
-                                <input type="text" id="taxId" name="taxId" class="form-control" placeholder="Enter Tax ID">
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="vatNumber" class="form-label">VAT Number</label>
-                                <input class="form-control" type="text" id="vatNumber" name="vatNumber" placeholder="Enter VAT Number">
-                            </div>
+
+
                             <div class="col-sm-6">
                                 <label for="mobileNumber" class="form-label">Mobile</label>
                                 <div class="input-group input-group-merge">
@@ -258,10 +252,6 @@
                                 <input type="text" class="form-control" id="billingAddress" name="billingAddress" placeholder="Billing Address">
                             </div>
                             <div class="col-sm-6">
-                                <label for="state" class="form-label">State</label>
-                                <input class="form-control" type="text" id="state" name="state" placeholder="California">
-                            </div>
-                            <div class="col-sm-6">
                                 <label for="zipCode" class="form-label">Zip Code</label>
                                 <input type="text" class="form-control zip-code" id="zipCode" name="zipCode" placeholder="231465" maxlength="6">
                             </div>
@@ -281,24 +271,23 @@
                 <div class="card-datatable table-responsive border-top">
                     <div id="DataTables_Table_0_wrapper" class="dt-container dt-bootstrap5 dt-empty-footer">
                         <div class="row mx-3 justify-content-between">
-                            <div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto px-3 pe-md-0 mb-4">
-                                <div class="dt-length me-2 mb-6"><label for="dt-length-0">Show</label><select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select" id="dt-length-0">
+                            <div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto px-3 pe-md-0 mt-2">
+                                <div class="dt-length me-2 mb-4"><label for="dt-length-0">Show</label><select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select" id="dt-length-0">
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
-                                    </select></div>
+                                    </select>
+                                </div>
                                 <div class="dt-buttons btn-group flex-wrap mb-0"><button class="btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button"><span><i class="icon-base icon-16px bx bx-plus me-md-2"></i><span class="d-md-inline-block d-none">Create Invoice</span></span></button> </div>
                             </div>
                             <div class="d-md-flex align-items-center dt-layout-end col-md-auto ms-auto justify-content-md-between justify-content-center d-flex flex-wrap gap-sm-4 mb-sm-0 mb-6 mt-0 pe-md-3 ps-0">
-                                <div class="dt-search me-sm-0 me-4"><input type="search" class="form-control" id="dt-search-0" placeholder="Search Invoice" aria-controls="DataTables_Table_0"><label for="dt-search-0"></label></div>
+                                <div class="dt-search me-sm-0 me-4 mt-4"><input type="search" class="form-control" id="dt-search-0" placeholder="Search Invoice" aria-controls="DataTables_Table_0"><label for="dt-search-0"></i></label></div>
                                 <div class="invoice_status"><select id="UserRole" class="form-select">
                                         <option value=""> Invoice Status </option>
                                         <option value="Downloaded" class="text-capitalize">Downloaded</option>
                                         <option value="Draft" class="text-capitalize">Draft</option>
                                         <option value="Paid" class="text-capitalize">Paid</option>
-                                        <option value="Partial Payment" class="text-capitalize">Partial Payment</option>
-                                        <option value="Past Due" class="text-capitalize">Past Due</option>
                                         <option value="Sent" class="text-capitalize">Sent</option>
                                     </select></div>
                             </div>
@@ -352,7 +341,8 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar avatar-sm me-3">
-                                                            <span class="avatar-initial rounded-circle bg-label-success">JK</span>
+                                                            <!-- <span class="avatar-initial rounded-circle bg-label-success">JK</span> -->
+                                                            <img src="views/assets/modules/img/profile/1.png" alt="">
                                                         </div>
                                                     </div>
                                                     <div class="d-flex flex-column">
@@ -375,434 +365,9 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#5041</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Sent<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 11/19/2020
-            " data-bs-original-title="<span>
-              Sent<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 11/19/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-secondary"><i class="icon-base icon-16px bx bx-envelope"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/3.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Shamus Tuttle</span></a>
-                                                        <small class="text-truncate">Software Development</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">2230</span>$2230</td>
-                                            <td>
-                                                <span class="d-none">20201118</span>
-                                                19 Nov 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#5027</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 09/25/2020
-            " data-bs-original-title="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 09/25/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-success"><i class="icon-base icon-16px bx bx-check"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/4.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Devonne Wallbridge</span></a>
-                                                        <small class="text-truncate">Software Development</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">2787</span>$2787</td>
-                                            <td>
-                                                <span class="d-none">20200924</span>
-                                                25 Sept 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#5024</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> -$202<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 08/02/2020
-            " data-bs-original-title="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> -$202<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 08/02/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-success"><i class="icon-base icon-16px bx bx-check"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/6.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Ariella Filippyev</span></a>
-                                                        <small class="text-truncate">Unlimited Extended License</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">5285</span>$5285</td>
-                                            <td>
-                                                <span class="d-none">20200801</span>
-                                                02 Aug 2020
-                                            </td>
-                                            <td><span class="d-none">-$202</span><span class="text-heading">-$202</span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#5020</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Downloaded<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 12/15/2020
-            " data-bs-original-title="<span>
-              Downloaded<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 12/15/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-info"><i class="icon-base icon-16px bx bx-down-arrow-alt"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/7.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Roy Southerell</span></a>
-                                                        <small class="text-truncate">UI/UX Design &amp; Development</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">5219</span>$5219</td>
-                                            <td>
-                                                <span class="d-none">20201214</span>
-                                                15 Dec 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#4995</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 06/09/2020
-            " data-bs-original-title="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 06/09/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-success"><i class="icon-base icon-16px bx bx-check"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/1.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Raynell Clendennen</span></a>
-                                                        <small class="text-truncate">Template Customization</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">3313</span>$3313</td>
-                                            <td>
-                                                <span class="d-none">20200608</span>
-                                                09 Jun 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#4993</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 10/22/2020
-            " data-bs-original-title="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 10/22/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-success"><i class="icon-base icon-16px bx bx-check"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <span class="avatar-initial rounded-circle bg-label-info">LA</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Lutero Aloshechkin</span></a>
-                                                        <small class="text-truncate">Unlimited Extended License</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">4836</span>$4836</td>
-                                            <td>
-                                                <span class="d-none">20201021</span>
-                                                22 Oct 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#4989</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Downloaded<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 09/23/2020
-            " data-bs-original-title="<span>
-              Downloaded<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 09/23/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-info"><i class="icon-base icon-16px bx bx-down-arrow-alt"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <span class="avatar-initial rounded-circle bg-label-danger">LH</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Lorine Hischke</span></a>
-                                                        <small class="text-truncate">Unlimited Extended License</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">3623</span>$3623</td>
-                                            <td>
-                                                <span class="d-none">20200922</span>
-                                                23 Sept 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#4989</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Past Due<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 08/01/2020
-            " data-bs-original-title="<span>
-              Past Due<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> 0<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 08/01/2020
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-danger"><i class="icon-base icon-16px bx bx-error"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <span class="avatar-initial rounded-circle bg-label-success">OG</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Orson Grafton</span></a>
-                                                        <small class="text-truncate">Unlimited Extended License</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">5293</span>$5293</td>
-                                            <td>
-                                                <span class="d-none">20200731</span>
-                                                01 Aug 2020
-                                            </td>
-                                            <td><span class="badge bg-label-success text-capitalized"> Paid </span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="control dtr-hidden" tabindex="0" style="display: none;"></td>
-                                            <td class="dt-select"><input aria-label="Select row" class="form-check-input" type="checkbox"></td>
-                                            <td class="sorting_1"><a href="app-invoice-preview.html">#4965</a></td>
-                                            <td>
-                                                <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-html="true" aria-label="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> $666<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 03/18/2021
-            " data-bs-original-title="<span>
-              Partial Payment<br>
-              <span class=&quot;fw-medium&quot;>Balance:</span> $666<br>
-              <span class=&quot;fw-medium&quot;>Due Date:</span> 03/18/2021
-            ">
-                                                    <span class="badge p-1_5 rounded-pill bg-label-success"><i class="icon-base icon-16px bx bx-check"></i></span>
-                                                </span>
-
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar avatar-sm me-3">
-                                                            <img src="views/assets/modules/img/avatars/1.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-column">
-                                                        <a href="pages-profile-user.html" class="text-heading text-truncate"><span class="fw-medium">Yelena O'Hear</span></a>
-                                                        <small class="text-truncate">Unlimited Extended License</small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="dt-type-numeric"><span class="d-none">3789</span>$3789</td>
-                                            <td>
-                                                <span class="d-none">20210317</span>
-                                                18 Mar 2021
-                                            </td>
-                                            <td><span class="d-none">$666</span><span class="text-heading">$666</span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center"><a href="javascript:;" data-bs-toggle="tooltip" class="btn btn-icon delete-record" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete"><i class="icon-base bx bx-trash icon-md"></i></a><a href="app-invoice-preview.html" data-bs-toggle="tooltip" class="btn btn-icon" data-bs-placement="top" aria-label="Preview Invoice" data-bs-original-title="Preview Invoice"><i class="icon-base bx bx-show icon-md"></i></a>
-                                                    <div class="dropdown"><a href="javascript:;" class="btn dropdown-toggle hide-arrow btn-icon p-0" data-bs-toggle="dropdown"><i class="icon-base bx bx-dots-vertical-rounded icon-md"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a href="javascript:;" class="dropdown-item">Download</a><a href="app-invoice-edit.html" class="dropdown-item">Edit</a><a href="javascript:;" class="dropdown-item">Duplicate</a></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                     <tfoot></tfoot>
                                 </table>
-                            </div>
-                        </div>
-                        <div class="row mx-3 justify-content-between">
-                            <div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto px-3 pe-md-0 mt-0">
-                                <div class="dt-info" aria-live="polite" id="DataTables_Table_0_info" role="status">Showing 1 to 10 of 50 entries</div>
-                            </div>
-                            <div class="d-md-flex align-items-center dt-layout-end col-md-auto ms-auto justify-content-md-between justify-content-center d-flex flex-wrap gap-sm-4 mb-sm-0 mb-6 mt-0 pe-md-3 ps-0">
-                                <div class="dt-paging">
-                                    <nav aria-label="pagination">
-                                        <ul class="pagination">
-                                            <li class="dt-paging-button page-item disabled"><button class="page-link previous" role="link" type="button" aria-controls="DataTables_Table_0" aria-disabled="true" aria-label="Previous" data-dt-idx="previous" tabindex="-1"><i class="icon-base bx bx-chevron-left scaleX-n1-rtl icon-18px"></i></button></li>
-                                            <li class="dt-paging-button page-item active"><button class="page-link" role="link" type="button" aria-controls="DataTables_Table_0" aria-current="page" data-dt-idx="0">1</button></li>
-                                            <li class="dt-paging-button page-item"><button class="page-link" role="link" type="button" aria-controls="DataTables_Table_0" data-dt-idx="1">2</button></li>
-                                            <li class="dt-paging-button page-item"><button class="page-link" role="link" type="button" aria-controls="DataTables_Table_0" data-dt-idx="2">3</button></li>
-                                            <li class="dt-paging-button page-item"><button class="page-link" role="link" type="button" aria-controls="DataTables_Table_0" data-dt-idx="3">4</button></li>
-                                            <li class="dt-paging-button page-item"><button class="page-link" role="link" type="button" aria-controls="DataTables_Table_0" data-dt-idx="4">5</button></li>
-                                            <li class="dt-paging-button page-item"><button class="page-link next" role="link" type="button" aria-controls="DataTables_Table_0" aria-label="Next" data-dt-idx="next"><i class="icon-base bx bx-chevron-right scaleX-n1-rtl icon-18px"></i></button></li>
-                                        </ul>
-                                    </nav>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -963,7 +528,6 @@
                                             </li>
                                         </ul>
 
-                                        <button type="button" class="btn btn-label-primary d-grid w-100" data-bs-dismiss="modal">Upgrade</button>
                                     </div>
                                 </div>
                             </div>
