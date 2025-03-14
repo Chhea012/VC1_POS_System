@@ -8,7 +8,7 @@
                 <div class="col-md-4 border-end">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-muted small">IN-STORE SALES</div>
+                            <div class="text-muted small">IN-Stock</div>
                             <div class="text-primary fs-4 fw-bold">$<?= $salesData['in_store']['amount'] ?></div>
                             <div class="small">
                                 <?= $salesData['in_store']['orders'] ?> orders
