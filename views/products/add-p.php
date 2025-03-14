@@ -1,8 +1,8 @@
-<?php 
+<?php
 
-require_once __DIR__ . "/../../Models/add_productModel.php";
+    require_once __DIR__ . "/../../Models/add_productModel.php";
 
-?> 
+?>
 
 <div class="m-4">
     <!-- Header -->
@@ -15,17 +15,17 @@ require_once __DIR__ . "/../../Models/add_productModel.php";
         </div>
     </div>
 
-    <?php if (isset($_SESSION['success_message'])) : ?>
+    <?php if (isset($_SESSION['success_message'])): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?= $_SESSION['success_message']; ?>
+        <?php echo $_SESSION['success_message']; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <?php unset($_SESSION['success_message']); ?>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['error_message'])) : ?>
+<?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?= $_SESSION['error_message']; ?>
+        <?php echo $_SESSION['error_message']; ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <?php unset($_SESSION['error_message']); ?>
@@ -111,20 +111,65 @@ require_once __DIR__ . "/../../Models/add_productModel.php";
                         <h2 class="h5 mb-4">Product Image</h2>
 
                         <div class="border border-2 border-dashed rounded p-4 text-center">
-                            <div class="mb-3">
-                                <div class="rounded-circle bg-light p-3 d-inline-block">
+                            <!-- Image Preview Container -->
+                            <div class="mb-3" id="imagePreviewContainer">
+                                <div class="rounded-circle bg-light p-3 d-inline-block" id="defaultIcon">
                                     <i class="bi bi-image text-secondary fs-4"></i>
                                 </div>
+                                <img id="imagePreview" src="#" alt="Preview" class="img-fluid rounded d-none" style="max-width: 100px;">
                             </div>
+
                             <p class="text-secondary mb-1">Drop your image here</p>
                             <p class="text-muted small mb-3">or</p>
+
+                            <!-- File Input -->
                             <div class="input-group">
-                                <input type="file" name="product_image" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                <input type="file" name="product_image" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept="image/*">
                             </div>
+
+                            <!-- Error Message -->
+                            <small id="fileError" class="text-danger d-none">Invalid file type. Please upload a JPG, PNG, or GIF.</small>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </form>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("inputGroupFile04").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("imagePreview");
+        const defaultIcon = document.getElementById("defaultIcon");
+        const fileError = document.getElementById("fileError");
+
+        if (file) {
+            // Validate image type
+            const validTypes = ["image/jpeg", "image/png", "image/gif"];
+            if (!validTypes.includes(file.type)) {
+                fileError.classList.remove("d-none"); // Show error message
+                preview.classList.add("d-none"); // Hide preview
+                defaultIcon.classList.remove("d-none"); // Show default icon
+                return;
+            }
+
+            fileError.classList.add("d-none"); // Hide error if valid
+
+            // Read and show image preview
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove("d-none");
+                defaultIcon.classList.add("d-none");
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.classList.add("d-none");
+            defaultIcon.classList.remove("d-none");
+        }
+    });
+});
+
+</script>
