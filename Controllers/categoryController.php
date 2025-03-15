@@ -10,7 +10,6 @@ class categoryController extends BaseController
     {
         $this->categoryModel = new CategoryModel();
     }
-
     public function index()
     {
         // Fetch products from the model
