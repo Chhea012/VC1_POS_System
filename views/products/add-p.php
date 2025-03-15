@@ -50,6 +50,7 @@ require_once __DIR__ . "/../../Models/add_productModel.php";
                                     <option value="Drinks">Drinks</option>
                                     <option value="Noodle">Noodle</option>
                                     <option value="Pizza">Pizza</option>
+                                    <option value="IceDessert">IceDessert</option>
                                 </select>
                             </div>
                             <div class="col-md-6">

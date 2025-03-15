@@ -88,22 +88,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // --- New Code to Display Drink Category After Adding ---
 
 // Determine which category to display
-$display_category = isset($new_product_category) && $new_product_category === 'drink' ? 'drink' : 'all';
+$display_category = isset($_POST['category']) ? trim($_POST['category']) : 'Drinks';
 
 // Fetch products based on category
-if ($display_category === 'all') {
+if ($display_category === 'Drinks') {
     $sql = "SELECT p.*, c.category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.category_id";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
+        FROM products p 
+        LEFT JOIN categories c ON p.category_id = c.category_id 
+        WHERE c.category_name = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$display_category]);
+
 } else {
-    $sql = "SELECT p.*, c.category_name 
-            FROM products p 
-            LEFT JOIN categories c ON p.category_id = c.category_id 
-            WHERE c.category_name = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$display_category]);
+    $category_sql = "SELECT category_id FROM categories WHERE category_name = ?";
+$stmt = $conn->prepare($category_sql);
+$stmt->execute([$category_name]);
+$category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$category) {
+    die("Category not found: " . htmlspecialchars($category_name));
+}
 }
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -130,6 +134,3 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 </body>
 </html>
-
-
-
