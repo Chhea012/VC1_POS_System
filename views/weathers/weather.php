@@ -423,6 +423,11 @@
       return condition.charAt(0).toUpperCase() + condition.slice(1);
     }
 
+    // Get day of week from date string
+    function getDayOfWeek(dateString) {
+      const date = new Date(dateString);
+      return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
+    }
 
     // Initialize on page load
     window.onload = fetchWeatherForecast;
