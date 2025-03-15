@@ -181,7 +181,6 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="me-2 text-primary">
-                                        <i class="bi bi-info-circle-fill"></i>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="card-img-top w-px-50" alt="Product Image" >
@@ -197,9 +196,11 @@
                                 </span>
                             </td>
                             <td>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" <?= isset($product['stock']) && $product['stock'] ? 'checked' : '' ?>>
-                                </div>
+                                
+                                <span style="color: <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
+                                <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
+                                </span>
+                        
                             </td>
                             <td>$<?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
                             <td><?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>

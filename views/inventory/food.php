@@ -68,7 +68,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="me-2 text-primary">
-                                        <i class="bi bi-info-circle-fill"></i>
+                                       
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="card-img-top w-px-50" alt="Product Image" >
