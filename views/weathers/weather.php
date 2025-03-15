@@ -361,8 +361,6 @@
         showWeatherChangeModal('<p>No weather changes detected in the next 7 days.</p>');
       }
     }
-
-
     // Send message to Telegram
     async function sendToTelegram(message) {
       const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
@@ -402,7 +400,6 @@
     function getIceDessertSales(condition) {
       return salesAmounts[condition] || 3;
     }
-
     // Get color for sales bars
     function getSalesColor(sales) {
       return sales >= 5 ? "#28a745" : sales >= 3 ? "#ff9800" : "#dc3545";
@@ -428,7 +425,6 @@
       const date = new Date(dateString);
       return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
     }
-
     // Initialize on page load
     window.onload = fetchWeatherForecast;
   </script>
