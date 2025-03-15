@@ -428,4 +428,11 @@
     // Initialize on page load
     window.onload = fetchWeatherForecast;
   </script>
+  <style>
+    /* .chart-container-1 { margin: 20px; }
+    .chart-container.two { max-width: 600px; margin: 0 auto; } */
+    .editable-input { width: 60px; text-align: center; }
+    #notification-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+    .notification { background-color: #007bff; color: white; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  </style>
 
