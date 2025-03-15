@@ -20,7 +20,6 @@ class categoryController extends BaseController
         $this->view('categorys/category-list', ['products' => $products]);
 
     }
-
     public function store()
     {
         // Logic for storing the new category
