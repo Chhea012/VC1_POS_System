@@ -54,15 +54,15 @@
                                 <th>CATEGORY</th>
                                 <th>STOCK</th>
                                 <th>QTY</th>
-                                <th>PRICE</th>
+                                <th>TOTAL</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>
                         <tbody id="categoryTable">
                             <?php foreach ($products as $product): ?>
-<?php
-    $stock_product = isset($product['total_quantity']) && $product['total_quantity'] < 5 ? 'Low Stock' : 'High Stock';
-?>
+                            <?php
+                                $stock_product = isset($product['total_quantity']) && $product['total_quantity'] < 5 ? 'Low Stock' : 'High Stock';
+                            ?>
 
                                 <tr data-category="<?php echo htmlspecialchars($product['category_name'])?>" data-stock="<?php echo $stock_product?>">
                                     <td>
