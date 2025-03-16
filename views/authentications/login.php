@@ -69,7 +69,7 @@
 
             <form id="formAuthentication" class="mb-3" action="/users/authentication" method="POST">
               <div class="mb-3">
-                <label for="email" class="form-label">Email or Username</label>
+                <label for="email" class="form-label">Email</label>
                 <input
                   type="text"
                   class="form-control"
