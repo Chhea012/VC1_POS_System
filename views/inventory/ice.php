@@ -3,32 +3,31 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <h5 class="mb-3">The popular items:</h5>
     <div class="row text-center">
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular IceDessert">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-        <!-- Repeat for other items -->
+        <?php
+        $popular_items = [];
+        foreach ($products as $product) {
+            $amount = isset($product['price'], $product['quantity']) ? ($product['price'] * $product['quantity']) : 0;
+            if ($amount > 20) {
+                $popular_items[] = $product;
+            }
+        }
+
+        if (!empty($popular_items)) {
+            foreach ($popular_items as $product): ?>
+                <div class="col-md-3">
+                    <div class="card p-4 shadow-sm">
+                        <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-100" alt="Popular IceDessert">
+                        <div class="mt-2">⭐⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+            <?php endforeach;
+        } else {
+            echo "<p class='text-center text-muted'>No popular items yet.</p>";
+        }
+        ?>
     </div>
 
     <h5 class="mt-3">Drinks Transactions:</h5>
-    
-    <?php
-    // Array to store total amount per category
-    $category_totals = [];
-
-    foreach ($products as $product) {
-        $category = $product['category_name'];
-        $amount = isset($product['price'], $product['quantity']) ? ($product['price'] * $product['quantity']) : 0;
-
-        // Sum amounts per category
-        if (!isset($category_totals[$category])) {
-            $category_totals[$category] = 0;
-        }
-        $category_totals[$category] += $amount;
-    }
-    ?>
 
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-0">
@@ -94,14 +93,6 @@
     </div>
 </div>
 
-<?php
-$grand_total = 0; // Initialize grand total
-
-foreach ($category_totals as $category => $total) {
-    $grand_total += $total; // Sum up all category totals
-}
-
-?>
 <!-- Delete Product Function -->
 <script>
     function confirmDelete(id) {
@@ -110,4 +101,3 @@ foreach ($category_totals as $category => $total) {
         }
     }
 </script>
-
