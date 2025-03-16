@@ -39,7 +39,7 @@ $route->get("/category", [categoryController::class, 'index']);
 $route->get("/drink", [InventoryController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
-
+$route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/addProduct/store', [addproductController::class, 'store']);
 $route->post('/category/store', [categoryController::class, 'store']);
 

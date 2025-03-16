@@ -49,6 +49,14 @@ class AddProductModel
 
         return $result;
     }
+
+    public function isBarcodeExists($barcode)
+{
+    $stmt = $this->conn->prepare("SELECT COUNT(*) FROM products WHERE barcode = ?");
+    $stmt->execute([$barcode]);
+    return $stmt->fetchColumn() > 0;
+}
+
     
     
 }
