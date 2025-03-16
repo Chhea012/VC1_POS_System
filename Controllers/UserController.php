@@ -130,7 +130,6 @@ class UserController extends BaseController {
             $this->redirect('/users');
         }
     }
-
     // Added method to delete user
     public function delete($user_id) {
         $user = $this->user->getUserById($user_id);
@@ -146,7 +145,6 @@ class UserController extends BaseController {
         }
         $this->redirect('/users');
     }
-
     public function authentication()  {
         $email = $_POST['email'];
         $password = $_POST['password'];
