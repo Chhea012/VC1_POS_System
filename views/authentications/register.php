@@ -1,19 +1,3 @@
-<?php
-// require 'Database/Database.php';
-
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $name = $_POST['name'];
-//     $email = $_POST['email'];
-//     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-//     $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-//     if ($stmt->execute([$name, $email, $password])) {
-//         echo "<script>alert('Registration successful! You can now log in.'); window.location='login.php';</script>";
-//     } else {
-//         echo "<script>alert('Registration failed!');</script>";
-//     }
-// }
-?>
 
 
 <!DOCTYPE html>
@@ -66,76 +50,66 @@
 
 <body>
   <!-- Content -->
-
-  <div class="container-xxl">
-    <div class="authentication-wrapper authentication-basic container-p-y">
-      <div class="authentication-inner">
-        <!-- Register Card -->
-        <div class="card">
-          <div class="card-body">
-            <!-- Logo -->
-            <div class="app-brand justify-content-center flex-column">
-              <a href="#" class="app-brand-link gap-2">
-                <img src="views/assets/modules/img/logo/logo.png" alt="" width="100px" height="100px">
-              </a>
-              <h3>Mak Oun Sing</h3>
-              <p>Please sign-up your account before sign-in</p>
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container mt-4 mb-4">
+        <h2>Register</h2>
+        <form action="/users/store" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="user_name" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="user_name" name="user_name" required>
             </div>
-            <!-- /Logo -->
-             
-            <form id="formAuthentication" class="mb-3" action="/dashboard" method="POST">
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  name="username"
-                  placeholder="Enter your username"
-                  autofocus />
-                <div class="text-danger" id="username-error"></div> <!-- Error message -->
-              </div>
-
-              <div class="mb-3">
+            <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" />
-                <div class="text-danger" id="email-error"></div> <!-- Error message -->
-              </div>
-
-              <div class="mb-3 form-password-toggle">
-                <label class="form-label" for="password">Password</label>
-                <div class="input-group input-group-merge">
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-control"
-                    name="password"
-                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                    aria-describedby="password" />
-                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="role_id" class="form-label">Role</label>
+                <select class="form-control" id="role_id" name="role_id" required>
+                    <option value="">Select a role</option>
+                    <?php foreach ($roles as $role): ?>
+                        <option value="<?= $role['role_id'] ?>"><?= htmlspecialchars($role['role_name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="profile_image" class="form-label">Profile Image</label>
+                <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
+                <div class="mt-2">
+                    <img id="image_preview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;">
                 </div>
-                <div class="text-danger" id="password-error"></div> <!-- Error message -->
-              </div>
-
-
-              <div class="mb-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-                  <label class="form-check-label" for="terms-conditions">
-                    I agree to
-                    <a href="javascript:void(0);">privacy policy & terms</a>
-                  </label>
-                </div>
-              </div>
-              <button class="btn btn-primary d-grid w-100">Sign up</button>
-          </div>
-          </form>
-        </div>
-      </div>
-      <!-- Register Card -->
+            </div>
+            <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phone_number" name="phone_number">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="city_province" class="form-label">City/Province</label>
+                <textarea class="form-control" id="city_province" name="city_province" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create User</button>
+            <a href="/" class="btn btn-secondary">Cancel</a>
+        </form>
     </div>
-  </div>
-  </div>
+</div>
+
+<script>
+    document.getElementById('profile_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('image_preview');
+        const file = e.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        }
+    });
+</script>
 
   <!-- / Content -->
   <!-- Core JS -->

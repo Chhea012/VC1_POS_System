@@ -86,7 +86,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="./dashboard" class="menu-link">
+                            <a href="/users" class="menu-link">
                                 <div data-i18n="All customer">All Customers</div>
                             </a>
                         </li>
@@ -137,8 +137,8 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="/" class="menu-link" target="_blank">
-                        <div data-i18n="login">Login</div>
+                    <a href="/users/logout" class="menu-link" target="_blank">
+                        <div data-i18n="login">Logout</div>
                     </a>
                 </li>
                 <li class="menu-item">

@@ -1,6 +1,6 @@
 <?php
-require_once 'Database/Database.php';
-require_once 'BaseController.php';
+
+
 
 class RegisterController extends BaseController {
     function register() {

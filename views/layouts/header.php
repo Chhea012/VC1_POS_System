@@ -28,23 +28,23 @@
         rel="stylesheet" />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="views/assets/modules/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="/views/assets/modules/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="views/assets/modules/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="views/assets/modules/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="views/assets/modules/css/demo.css" />
+    <link rel="stylesheet" href="/views/assets/modules/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/views/assets/modules/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/views/assets/modules/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <link rel="stylesheet" href="views/assets/modules/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="/views/assets/modules/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="views/assets/modules/vendor/js/helpers.js"></script>
-    <script src="views/assets/modules/js/config.js"></script>
+    <script src="/views/assets/modules/vendor/js/helpers.js"></script>
+    <script src="/views/assets/modules/js/config.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 

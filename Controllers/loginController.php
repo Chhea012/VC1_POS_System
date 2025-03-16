@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once 'Database/Database.php';
-require_once 'BaseController.php';
+
 
 class LoginController extends BaseController {
     function login() {
