@@ -1,24 +1,3 @@
-<?php
-// session_start();
-// require_once 'Database/Database.php';
-
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $email = $_POST['email'];
-//     $password = $_POST['password'];
-
-//     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-//     $stmt->execute([$email]);
-//     $user = $stmt->fetch();
-
-//     if ($user && password_verify($password, $user['password'])) {
-//         $_SESSION['admin'] = $admin;
-//         header("Location: /dabashboard");
-//         exit;
-//     } else {
-//         echo "<script>alert('Invalid Email or Password!');</script>";
-//     }
-// }
-?>
 
 
 
@@ -52,22 +31,22 @@
     rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="views/assets/modules/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="/views/assets/modules/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="views/assets/modules/vendor/css/core.css" class="template-customizer-core-css" />
-  <link rel="stylesheet" href="views/assets/modules/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-  <link rel="stylesheet" href="views/assets/modules/css/demo.css" />
+  <link rel="stylesheet" href="/views/assets/modules/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/views/assets/modules/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/views/assets/modules/css/demo.css" />
 
   <!-- Vendors CSS -->
-  <link rel="stylesheet" href="views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="/views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <!-- Page CSS -->
   <!-- Page -->
-  <link rel="stylesheet" href="views/assets/modules/vendor/css/pages/page-auth.css" />
+  <link rel="stylesheet" href="/views/assets/modules/vendor/css/pages/page-auth.css" />
   <!-- Helpers -->
-  <script src="views/assets/modules/vendor/js/helpers.js"></script>
-  <script src="views/assets/modules/js/config.js"></script>
+  <script src="/views/assets/modules/vendor/js/helpers.js"></script>
+  <script src="/views/assets/modules/js/config.js"></script>
 </head>
 
 <body>
@@ -82,7 +61,7 @@
             <!-- Logo -->
             <div class="app-brand justify-content-center flex-column">
               <a href="#" class="app-brand-link gap-2">
-                <img src="views/assets/modules/img/logo/logo.png" alt="" width="100px" height="100px">
+                <img src="/views/assets/modules/img/logo/logo.png" alt="" width="100px" height="100px">
               </a>
               <h3>Mak Oun Sing</h3>
             </div>
@@ -90,44 +69,37 @@
             <h4 class="mb-2">Welcome to Mak Oun Sing 👋</h4>
             <p class="mb-4">Please sign-in your account go to dashboard</p>
 
-            <form id="formAuthentication" class="mb-3" action="/dashboard" method="POST">
-            <div class="mb-3">
-            <label for="email" class="form-label">Email or Username</label>
-            <input
-              type="text"
-              class="form-control"
-              id="email"
-              name="email-username"
-              placeholder="Enter your email or username"
-              autofocus />
-            <div class="text-danger" id="email-error"></div> <!-- Error message -->
-          </div>
-
-          <div class="mb-3 form-password-toggle">
-            <div class="d-flex justify-content-between">
-              <label class="form-label" for="password">Password</label>
-              <a href="/forgotpassword">
-                <small>Forgot Password?</small>
-              </a>
-            </div>
-            <div class="input-group input-group-merge">
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                name="password"
-                placeholder="********"
-                aria-describedby="password" />
-              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-            </div>
-            <div class="text-danger" id="password-error"></div> <!-- Error message -->
-          </div>
-
+            <form id="formAuthentication" class="mb-3" action="/users/authentication" method="POST">
               <div class="mb-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="remember-me" />
-                  <label class="form-check-label" for="remember-me"> Remember Me </label>
+                <label for="email" class="form-label">Email or Username</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email or username"
+                  autofocus />
+                <div class="text-danger" id="email-error"></div> <!-- Error message -->
+              </div>
+
+              <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label" for="password">Password</label>
+                  <a href="/forgotpassword">
+                    <small>Forgot Password?</small>
+                  </a>
                 </div>
+                <div class="input-group input-group-merge">
+                  <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    name="password"
+                    placeholder="********"
+                    aria-describedby="password" />
+                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                </div>
+                <div class="text-danger" id="password-error"></div> <!-- Error message -->
               </div>
               <div class="mb-3">
                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
@@ -153,18 +125,18 @@
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
-  <script src="views/assets/modules/vendor/libs/jquery/jquery.js"></script>
-  <script src="views/assets/modules/vendor/libs/popper/popper.js"></script>
-  <script src="views/assets/modules/vendor/js/bootstrap.js"></script>
-  <script src="views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="/views/assets/modules/vendor/libs/jquery/jquery.js"></script>
+  <script src="/views/assets/modules/vendor/libs/popper/popper.js"></script>
+  <script src="/views/assets/modules/vendor/js/bootstrap.js"></script>
+  <script src="/views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-  <script src="views/assets/modules/vendor/js/menu.js"></script>
+  <script src="/views/assets/modules/vendor/js/menu.js"></script>
   <!-- endbuild -->
 
   <!-- Vendors JS -->
 
   <!-- Main JS -->
-  <script src="views/assets/modules/js/main.js"></script>
+  <script src="/views/assets/modules/js/main.js"></script>
 
   <!-- Page JS -->
 
@@ -172,44 +144,44 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- error of message -->
   <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("formAuthentication");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const emailError = document.getElementById("email-error");
-    const passwordError = document.getElementById("password-error");
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("formAuthentication");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const emailError = document.getElementById("email-error");
+      const passwordError = document.getElementById("password-error");
 
-    form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", function(event) {
         let isValid = true;
         emailError.textContent = "";
         passwordError.textContent = "";
 
         // Validate Email/Username
         if (emailInput.value.length < 6) {
-            emailError.textContent = "Username must be more than 6 characters";
-            emailInput.classList.add("is-invalid"); // Bootstrap error style
-            isValid = false;
+          emailError.textContent = "Username must be more than 6 characters";
+          emailInput.classList.add("is-invalid"); // Bootstrap error style
+          isValid = false;
         } else {
-            emailInput.classList.remove("is-invalid");
+          emailInput.classList.remove("is-invalid");
         }
 
         // Validate Password
         if (passwordInput.value.length < 6) {
-            passwordError.textContent = "Password must be more than 6 characters";
-            passwordInput.classList.add("is-invalid");
-            isValid = false;
+          passwordError.textContent = "Password must be more than 6 characters";
+          passwordInput.classList.add("is-invalid");
+          isValid = false;
         } else {
-            passwordInput.classList.remove("is-invalid");
+          passwordInput.classList.remove("is-invalid");
         }
 
         // Prevent form submission if validation fails
         if (!isValid) {
-            event.preventDefault();
+          event.preventDefault();
         }
+      });
     });
-});
-</script>
+  </script>
 
 </body>
-</html>
 
+</html>

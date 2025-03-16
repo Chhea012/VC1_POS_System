@@ -17,11 +17,13 @@ require_once "Controllers/categoryController.php";
 require_once "Controllers/IceController.php";
 require_once "Controllers/DrinkController.php";
 require_once "Controllers/FoodController.php";
+require_once "Controllers/UserController.php";
 
 $route = new Router();
 
 // GET routes
 $route->get("/", [LoginController::class, 'login']);
+
 $route->get("/register", [RegisterController::class, 'register']);
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
@@ -42,5 +44,19 @@ $route->get("/ice", [IceController::class, 'index']);
 
 $route->post('/addProduct/store', [addproductController::class, 'store']);
 $route->post('/category/store', [categoryController::class, 'store']);
+
+
+
+
+//route user
+$route->get("/users", [UserController::class, 'index']);
+$route->get("/users/create", [UserController::class, 'create']);
+$route->post("/users/authentication", [UserController::class, 'authentication']);
+$route->get("/users/logout", [UserController::class, 'logout']);
+$route->post('/users/store', [UserController::class, 'store']);
+$route->get("/users/edit/{user_id}", [UserController::class, 'edit']); // Added
+$route->post("/users/update", [UserController::class, 'update']); // Added
+$route->get("/users/delete/{user_id}", [UserController::class, 'delete']); // Added
+
 
 $route->route();
