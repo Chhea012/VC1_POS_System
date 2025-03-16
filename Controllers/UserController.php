@@ -162,8 +162,6 @@ class UserController extends BaseController {
             $this->redirect('/'); // Show login with error
         }
     }
-   
-
     public function logout() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
