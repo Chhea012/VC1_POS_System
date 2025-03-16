@@ -48,9 +48,7 @@ class UserController extends BaseController {
                 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
                 'role_id' => (int)$_POST['role_id'],
                 'profile_image' => $profileImage,
-                'phone_number' => $_POST['phone_number'] ?? '',
-                'address' => $_POST['address'] ?? '',
-                'city_province' => $_POST['city_province'] ?? ''
+                'phone_number' => $_POST['phone_number'] ?? ''
             ];
 
             // Save to database

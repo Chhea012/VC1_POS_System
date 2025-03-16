@@ -1,6 +1,6 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container mt-4 mb-4">
-        <h2>Register</h2>
+        <h2>Create Users</h2>
         <form action="/users/store" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="user_name" class="form-label">User Name</label>
@@ -33,14 +33,6 @@
             <div class="mb-3">
                 <label for="phone_number" class="form-label">Phone Number</label>
                 <input type="text" class="form-control" id="phone_number" name="phone_number">
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="city_province" class="form-label">City/Province</label>
-                <textarea class="form-control" id="city_province" name="city_province" rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Create User</button>
             <a href="/users" class="btn btn-secondary">Cancel</a>

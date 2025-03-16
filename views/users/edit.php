@@ -29,27 +29,10 @@
             </div>
             <div class="mb-3">
                 <label for="profile_image" class="form-label">Profile Image</label>
-                <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
-                <?php if (!empty($user['profile_image'])): ?>
-                    <div class="mt-2">
-                        <img src="/images/<?= htmlspecialchars($user['profile_image']) ?>" alt="Current Image" style="max-width: 200px; height: auto;" onerror="this.src='/images/default.jpg';">
-                    </div>
-                <?php endif; ?>
-                <div class="mt-2">
-                    <img id="image_preview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;">
-                </div>
             </div>
             <div class="mb-3">
                 <label for="phone_number" class="form-label">Phone Number</label>
                 <input type="text" class="form-control" id="phone_number" name="phone_number" value="<?= htmlspecialchars($user['phone_number']) ?>">
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" name="address" rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="city_province" class="form-label">City/Province</label>
-                <textarea class="form-control" id="city_province" name="city_province" rows="3"><?= htmlspecialchars($user['city_province']) ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Update User</button>
             <a href="/users" class="btn btn-secondary">Cancel</a>

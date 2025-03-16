@@ -3,6 +3,7 @@ require_once "Models/ProfileModel.php";
 
 class ProfileController extends BaseController {
     private $profileModel;
+    private $user;
 
     public function __construct() {
         $this->profileModel = new ProfileModel();
@@ -29,143 +30,64 @@ class ProfileController extends BaseController {
     }
 
     // Update profile (including image)
+    public function edit($user_id) {
+        $user = $this->user->getUserById($user_id);
+        if (!$user) {
+            die("User not found.");
+        }
+        $roles = $this->user->getRoles();
+        $this->view('users/edit', ['user' => $user, 'roles' => $roles]);
+    }
+
+    // Added method to update user
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $this->profileModel->getAdminUser();
-            if (!$user) {
-                $this->view("error", ["message" => "No admin user found to update."]);
-                return;
+            $user_id = (int)$_POST['user_id'];
+            if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['role_id'])) {
+                die("All required fields must be filled.");
             }
 
-            $user_id = $user['user_id'];
-            $user_name = $_POST['userName'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $phone_number = $_POST['phoneNumber'] ?? '';
-            $address = $_POST['address'] ?? '';
-            $city_province = $_POST['province'] ?? '';
-            $profile_image = $user['profile_image'];
-
-            if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'uploads/';
-                if (!is_dir($uploadDir)) {
+            // Handle file upload (optional update)
+            $profileImage = $_POST['existing_image'] ?? '';
+            if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = '../images/';
+                if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-
-                $fileTmpPath = $_FILES['profileImage']['tmp_name'];
-                $fileName = basename($_FILES['profileImage']['name']);
-                $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                $allowedExts = ['jpg', 'jpeg', 'png', 'gif'];
-
-                if (in_array($fileExt, $allowedExts)) {
-                    $newFileName = uniqid() . '.' . $fileExt;
-                    $destPath = $uploadDir . $newFileName;
-                    if (move_uploaded_file($fileTmpPath, $destPath)) {
-                        $profile_image = '/' . $destPath;
-                    } else {
-                        $this->view("profile/profile", [
-                            "user" => $user,
-                            "error" => "Failed to move uploaded image."
-                        ]);
-                        return;
+                $fileName = uniqid() . '-' . basename($_FILES['profile_image']['name']);
+                $uploadFile = $uploadDir . $fileName;
+                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
+                    $profileImage = $fileName;
+                    // Delete old image if it exists
+                    if (!empty($_POST['existing_image']) && file_exists($uploadDir . $_POST['existing_image'])) {
+                        unlink($uploadDir . $_POST['existing_image']);
                     }
-                } else {
-                    $this->view("profile/profile", [
-                        "user" => $user,
-                        "error" => "Invalid file type."
-                    ]);
-                    return;
                 }
             }
 
-            if ($this->profileModel->updateUser($user_id, $user_name, $email, $phone_number, $address, $city_province, $profile_image)) {
-                header("Location: /profile?success=Profile updated successfully");
-                exit();
-            } else {
-                $this->view("profile/profile", [
-                    "user" => $this->profileModel->getAdminUser(),
-                    "error" => "Failed to update profile."
-                ]);
+            // Prepare data
+            $data = [
+                'user_name' => $_POST['user_name'],
+                'email' => $_POST['email'],
+                'role_id' => (int)$_POST['role_id'],
+                'profile_image' => $profileImage,
+                'phone_number' => $_POST['phone_number'] ?? ''
+            ];
+
+            // Update password only if provided
+            if (!empty($_POST['password'])) {
+                $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            }
+
+            // Update in database
+            try {
+                $this->user->updateUser($user_id, $data);
+                $this->redirect('/users');
+            } catch (Exception $e) {
+                die("Error updating user: " . $e->getMessage());
             }
         } else {
-            header("Location: /profile?error=Invalid request");
-            exit();
-        }
-    }
-
-    // Update password
-    public function updatePassword() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $this->profileModel->getAdminUser();
-            if (!$user) {
-                $this->view("error", ["message" => "No admin user found to update."]);
-                return;
-            }
-
-            $user_id = $user['user_id'];
-            $currentPassword = $_POST['currentPassword'] ?? '';
-            $newPassword = $_POST['newPassword'] ?? '';
-            $confirmPassword = $_POST['confirmPassword'] ?? '';
-
-            // Validate current password
-            if (!password_verify($currentPassword, $user['password'])) {
-                $this->view("profile/security", [
-                    "user" => $user,
-                    "error" => "Current password is incorrect."
-                ]);
-                return;
-            }
-
-            // Validate new password
-            if ($newPassword !== $confirmPassword) {
-                $this->view("profile/security", [
-                    "user" => $user,
-                    "error" => "New password and confirmation do not match."
-                ]);
-                return;
-            }
-
-            if (strlen($newPassword) < 8 || !preg_match("/[a-z]/", $newPassword) || !preg_match("/[0-9]|[!@#$%^&* ]/", $newPassword)) {
-                $this->view("profile/security", [
-                    "user" => $user,
-                    "error" => "New password must be at least 8 characters, with one lowercase letter and one number or symbol."
-                ]);
-                return;
-            }
-
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            if ($this->profileModel->updatePassword($user_id, $hashedPassword)) {
-                header("Location: /security?success=Password updated successfully");
-                exit();
-            } else {
-                $this->view("profile/security", [
-                    "user" => $user,
-                    "error" => "Failed to update password."
-                ]);
-            }
-        } else {
-            header("Location: /security?error=Invalid request");
-            exit();
-        }
-    }
-
-    public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accountActivation'])) {
-            $user = $this->profileModel->getAdminUser();
-            if (!$user) {
-                header("Location: /profile?error=No admin user found to delete");
-                exit();
-            }
-            $user_id = $user['user_id'];
-            if ($this->profileModel->deleteUser($user_id)) {
-                header("Location: /profile?success=Account deleted successfully");
-                exit();
-            } else {
-                header("Location: /profile?error=Failed to delete account");
-                exit();
-            }
-        } else {
-            header("Location: /profile?error=Confirmation required");
-            exit();
+            $this->redirect('/users');
         }
     }
 }
