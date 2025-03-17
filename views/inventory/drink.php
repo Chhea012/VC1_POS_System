@@ -1,36 +1,19 @@
 <?php require_once "Models/drinkModel.php"; ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h5 class="mb-3">The popular items:</h5>
+    <h5 class="mb-3">The Popular Items:</h5>
     <div class="row text-center">
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-4 shadow-sm">
-                <img src="views/assets/modules/img/inventory/drink/.png" class="w-75" alt="Popular Drink">
-                <div class="mt-2">⭐⭐⭐⭐⭐</div>
-            </div>
-        </div>
-        <!-- ... other items remain the same ... -->
+        <?php foreach ($products as $product): ?>
+            <?php if (isset($product['price'], $product['quantity']) && ($product['price'] * $product['quantity'] >= 20)): ?>
+                <div class="col-md-3">
+                    <div class="card p-4 shadow-sm">
+                        <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-100 " alt="Popular Drink">
+                        <div class="mt-2">⭐⭐⭐⭐⭐</div>
+                        <p class="mt-2"><?= htmlspecialchars($product['product_name']) ?></p>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </div>
 
     <h5 class="mt-3">Drinks Transactions:</h5>
@@ -72,11 +55,18 @@
                                         </div>
                                     </div>
                                 </td>
+<<<<<<< HEAD
 
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill">
                                         <i class="bi bi-cup-hot me-1"></i>
                                         <?= $product['category_name'] ?>
+=======
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill">
+                                        <i class="bi bi-cup-hot me-1"></i>
+                                        <?= htmlspecialchars($product['category_name']) ?>
+>>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5
                                     </span>
                                 </td>
                                 <td>
@@ -88,7 +78,13 @@
                                 <td <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'style="color: red;"' : '' ?>>
                                     <?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?>
                                 </td>
+<<<<<<< HEAD
                                 <td>$<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?></td>
+=======
+                                <td>
+                                    $<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
+                                </td>
+>>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
@@ -112,8 +108,6 @@
 
 </div>
 
-
-<!-- delete product function  -->
 <script>
     function confirmDelete(id) {
         if (confirm('Are you sure you want to delete this product?')) {
@@ -121,6 +115,7 @@
         }
     }
 </script>
+<<<<<<< HEAD
 
 
 
@@ -166,3 +161,5 @@ foreach ($products as $product) {
         });
     </script>
 <?php endif; ?>
+=======
+>>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5

@@ -1,0 +1,134 @@
+<?php
+require_once 'Database/Database.php';
+
+class ProductManager
+{
+    private $db;
+
+    public function __construct()
+    {
+        $database = new Database();
+        $this->db = $database->getConnection();
+        if (!$this->db) {
+            throw new Exception("Database connection failed.");
+        }
+    }
+
+    // Fetch all products with category names
+    public function getAllProducts()
+    {
+        $query = "SELECT p.*, c.category_name
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  ORDER BY p.product_id DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Get total number of products
+    public function getTotalProducts()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM products");
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$result['total'];
+    }
+
+    // Get product by ID
+    public function getProductById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE product_id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Store a new product
+    public function storeNewProduct($title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $image)
+    {
+        try {
+            $sql = "INSERT INTO products (
+                        product_name, category_id, barcode, quantity, description, 
+                        price, discounted_price, in_stock, image, created_at, updated_at, supplier_id
+                    ) VALUES (
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL
+                    )";
+            
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute([
+                $title, $category_id, $barcode, $quantity, $description,
+                $base_price, $discounted_price, $in_stock, $image
+            ]);
+    
+            if (!$result) {
+                error_log("SQL Error: " . implode(", ", $stmt->errorInfo()));
+                return false;
+            }
+            return true;
+        } catch (PDOException $e) {
+            error_log("Error storing product: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Update an existing product
+    public function updateProduct($id, $title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $image_path)
+    {
+        try {
+            $stmt = $this->db->prepare("
+                UPDATE products SET 
+                    product_name = :title, 
+                    category_id = :category_id, 
+                    barcode = :barcode, 
+                    quantity = :quantity, 
+                    description = :description, 
+                    price = :base_price, 
+                    discounted_price = :discounted_price, 
+                    in_stock = :in_stock, 
+                    image = :image_path,
+                    updated_at = NOW()
+                WHERE product_id = :id
+            ");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT); // Fixed to category_id
+            $stmt->bindParam(':barcode', $barcode);
+            $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+            $stmt->bindParam(':description', $description);
+            $stmt->bindParam(':base_price', $base_price);
+            $stmt->bindParam(':discounted_price', $discounted_price);
+            $stmt->bindParam(':in_stock', $in_stock, PDO::PARAM_INT);
+            $stmt->bindParam(':image_path', $image_path);
+
+            $result = $stmt->execute();
+            if (!$result) {
+                error_log("Update Error: " . implode(", ", $stmt->errorInfo()));
+            }
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Update Error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // View a product with category name
+    public function view($id)
+    {
+        $stmt = $this->db->prepare("SELECT p.*, c.category_name 
+                                   FROM products p
+                                   LEFT JOIN categories c ON p.category_id = c.category_id
+                                   WHERE p.product_id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
+
+        //  delete product
+        public function delete($product_id) {
+            $sql = "DELETE FROM products WHERE product_id = :product_id";
+            $stmt = $this->db->prepare($sql); // ✅ Correct: Use prepare() instead of query()
+            $stmt->execute(['product_id' => $product_id]); // ✅ Pass the parameter separately
+        }
+        
+    
+}
