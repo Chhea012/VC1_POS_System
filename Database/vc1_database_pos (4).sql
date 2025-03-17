@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2025 at 07:14 AM
+-- Generation Time: Mar 17, 2025 at 07:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -271,15 +271,15 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_id`, `supplier_id`, `price`, `created_at`, `updated_at`, `image`, `barcode`, `in_stock`, `quantity`, `discounted_price`) VALUES
-(25, 'Caffe ', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe-m.png', '', 1, 20, 0),
-(26, 'Fanta', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/funta.png', '', 1, 2, 0),
-(27, 'Lemon Tea', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/lemon_tea.png', '', 1, 10, 0),
-(28, 'Coca', 'I want to buy', 9, NULL, 0.50, NULL, NULL, 'uploads/coca.png', '', 1, 15, 0),
-(29, 'Caffe Black', 'I want to buy ', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe.png', '', 1, 3, 0),
-(33, 'ice-dessert', 'I want to buy now.', 14, NULL, 5.00, NULL, NULL, 'uploads/RaspberrySherbet.jpg', '2343243', 1, 5, 0),
-(34, 'ice-dessert-1', 'I want to buy something.', 14, NULL, 3.00, NULL, NULL, 'uploads/05120406-53934_cover_800x533.jpg', '', 1, 5, 0),
-(35, 'sweet', 'I want to buy it.', 14, NULL, 4.00, NULL, NULL, 'uploads/images__7_.jpg', '', 1, 3, 0),
-(37, 'Pizza', 'sdfsdfsfsfsdf', 11, NULL, 3.00, '2025-03-17 05:27:46', '2025-03-17 05:27:46', 'uploads/Chicken-Sausage-Pizza-with-Onions-and-Peppers-Thumbnail.jpg', '43567635', 1, 5, 0),
+(25, 'Caffe ', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe-m.png', NULL, 1, 20, 0),
+(26, 'Fanta', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/funta.png', NULL, 1, 2, 0),
+(27, 'Lemon Tea', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/lemon_tea.png', NULL, 1, 10, 0),
+(28, 'Coca', 'I want to buy', 9, NULL, 0.50, NULL, NULL, 'uploads/coca.png', NULL, 1, 15, 0),
+(29, 'Caffe Black', 'I want to buy ', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe.png', NULL, 1, 3, 0),
+(33, 'ice-dessert', 'I want to buy now.', 14, NULL, 5.00, NULL, NULL, 'uploads/RaspberrySherbet.jpg', NULL, 1, 5, 0),
+(34, 'ice-dessert-1', 'I want to buy something.', 14, NULL, 3.00, NULL, NULL, 'uploads/05120406-53934_cover_800x533.jpg', NULL, 1, 5, 0),
+(35, 'sweet', 'I want to buy it.', 14, NULL, 4.00, NULL, NULL, 'uploads/images__7_.jpg', NULL, 1, 3, 0),
+(37, 'Pizza', 'sdfsdfsfsfsdf', 11, NULL, 3.00, '2025-03-17 05:27:46', '2025-03-17 05:27:46', 'uploads/Chicken-Sausage-Pizza-with-Onions-and-Peppers-Thumbnail.jpg', NULL, 1, 5, 0),
 (38, 'pp', 'sdfdsfd', 10, NULL, 6.00, '2025-03-17 05:28:40', '2025-03-17 05:28:40', 'uploads/images__6_.jpg', NULL, 1, 44, 0);
 
 -- --------------------------------------------------------
@@ -513,6 +513,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
+  ADD UNIQUE KEY `barcode` (`barcode`),
   ADD KEY `category_id` (`category_id`),
   ADD KEY `supplier_id` (`supplier_id`);
 
