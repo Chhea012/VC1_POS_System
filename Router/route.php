@@ -17,6 +17,7 @@ require_once "Controllers/IceController.php";
 require_once "Controllers/DrinkController.php";
 require_once "Controllers/FoodController.php";
 require_once "Controllers/UserController.php";
+require_once "Controllers/GeneratePdfController.php";
 
 $route = new Router();
 
@@ -41,7 +42,6 @@ $route->get("/ice", [IceController::class, 'index']);
 $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
-
 // -product route -
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
@@ -61,5 +61,7 @@ $route->get("/users/edit/{user_id}", [UserController::class, 'edit']); // Added
 $route->post("/users/update", [UserController::class, 'update']); // Added
 $route->get("/users/delete/{user_id}", [UserController::class, 'delete']); // Added
 
-
+// generate ---
+$route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
+$route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
 $route->route();
