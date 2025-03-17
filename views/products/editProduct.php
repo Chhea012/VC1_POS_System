@@ -1,13 +1,31 @@
-
 <div class="m-4">
-<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h4 text-secondary">Update Product</h1>
         <div class="d-flex gap-2">
-        <button type="submit" form="productForm" class="btn btn-primary">Update Product</button>
-        <a href="/products" class="btn btn-secondary">Cancel</a>
+            <button type="submit" form="productForm" class="btn btn-primary">Update Product</button>
+            <a href="/products" class="btn btn-secondary">Cancel</a>
         </div>
     </div>
-    <form id="productForm" action="/products/update/<?= $product['product_id'] ?>" method="POST" enctype="multipart/form-data">
+
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <?php echo $_SESSION['success_message']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <?php echo $_SESSION['error_message']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['error_message']); ?>
+    <?php endif; ?>
+
+    <form id="productForm" action="/products/update/<?= htmlspecialchars($product['product_id']) ?>" method="POST" enctype="multipart/form-data">
         <div class="row g-4">
             <!-- Product Information -->
             <div class="col-md-8">
@@ -23,8 +41,9 @@
                             <div class="col-md-6">
                                 <label class="form-label small text-secondary">Category</label>
                                 <select name="category_id" class="form-select" required>
+                                    <option value="" disabled>Select a category</option>
                                     <?php foreach ($categories as $cat): ?>
-                                        <option value="<?= $cat['category_id'] ?>" <?= $product['category_id'] == $cat['category_id'] ? 'selected' : '' ?>>
+                                        <option value="<?= htmlspecialchars($cat['category_id']) ?>" <?= $cat['category_id'] == $product['category_id'] ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($cat['category_name']) ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -32,11 +51,9 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="barcode" class="form-label small text-secondary">Barcode</label>
-                                <input type="text" name="barcode" class="form-control" id="barcode" placeholder="0123-3434-2323" value="<?= htmlspecialchars($product['barcode']) ?>" required>
+                                <input type="text" name="barcode" class="form-control" id="barcode" placeholder="0123-3434-2323" value="<?= htmlspecialchars($product['barcode'] ?? '') ?>">
                                 <span id="barcode-error" style="color: red;"></span>
-                                <div id="barcodeError" class="invalid-feedback">
-                                    Barcode already exists!
-                                </div>
+                                <div id="barcodeError" class="invalid-feedback">Barcode already exists!</div>
                             </div>
                         </div>
 
@@ -102,7 +119,7 @@
                             <p class="text-muted small mb-3">or</p>
 
                             <!-- Hidden input to retain existing image -->
-                            <input type="hidden" name="existing_image" value="<?= htmlspecialchars($product['image']) ?>">
+                            <input type="hidden" name="existing_image" value="<?= htmlspecialchars($product['image'] ?? '') ?>">
 
                             <!-- File Input -->
                             <div class="input-group">
@@ -118,8 +135,8 @@
         </div>
     </form>
 </div>
-<script>
 
+<script>
     // Image preview script
     document.getElementById('inputGroupFile04').addEventListener('change', function(event) {
         const file = event.target.files[0];
