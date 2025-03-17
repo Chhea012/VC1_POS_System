@@ -12,7 +12,7 @@ class ProfileModel {
     public function getAdminUser() {
         try {
             $stmt = $this->db->query("
-                SELECT u.user_id, u.user_name, u.email, u.profile_image, u.phone_number, u.address, u.city_province 
+                SELECT u.user_id, u.user_name, u.email, u.profile_image, u.phone_number
                 FROM users u 
                 JOIN roles r ON u.role_id = r.role_id 
                 WHERE r.role_name = 'admin' 
@@ -31,15 +31,12 @@ class ProfileModel {
         try {
             $stmt = $this->db->query("
                 UPDATE users 
-                SET user_name = :user_name, email = :email, phone_number = :phone_number, 
-                    address = :address, city_province = :city_province 
+                SET user_name = :user_name, email = :email, phone_number = :phone_number 
                 WHERE user_id = :user_id
             ", [
                 ':user_name' => $user_name,
                 ':email' => $email,
                 ':phone_number' => $phone_number,
-                ':address' => $address,
-                ':city_province' => $city_province,
                 ':user_id' => $user_id
             ]);
             return true;

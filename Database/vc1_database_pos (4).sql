@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2025 at 10:47 PM
+-- Generation Time: Mar 17, 2025 at 07:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -271,17 +271,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_id`, `supplier_id`, `price`, `created_at`, `updated_at`, `image`, `barcode`, `in_stock`, `quantity`, `discounted_price`) VALUES
-(24, 'Milk Tea ', 'I want to buy ', 9, NULL, 1.00, NULL, NULL, 'uploads/milk_tea.png', '', 1, 10, 0),
-(25, 'Caffe ', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe-m.png', '', 1, 20, 0),
-(26, 'Fanta', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/funta.png', '', 1, 2, 0),
-(27, 'Lemon Tea', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/lemon_tea.png', '', 1, 10, 0),
-(28, 'Coca', 'I want to buy', 9, NULL, 0.50, NULL, NULL, 'uploads/coca.png', '', 1, 15, 0),
-(29, 'Caffe Black', 'I want to buy ', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe.png', '', 1, 3, 0),
-(30, 'pp', 'ertyu', 11, NULL, 2.00, NULL, NULL, 'uploads/Chicken-Sausage-Pizza-with-Onions-and-Peppers-Thumbnail.jpg', '43567635', 1, 4, 0),
-(31, 'fgfg', 'dfgfdg', 10, NULL, 5.00, NULL, NULL, 'uploads/images__6_.jpg', '345345345', 1, 6, 0),
-(32, 'ice', 'I want to buy it.', 14, NULL, 2.00, NULL, NULL, 'uploads/images__6_.jpg', '2435645654', 1, 4, 0),
-(33, 'ice-dessert', 'I want to buy now.', 14, NULL, 5.00, NULL, NULL, 'uploads/RaspberrySherbet.jpg', '2343243', 1, 5, 0),
-(34, 'ice-dessert-1', 'I want to buy something.', 14, NULL, 3.00, NULL, NULL, 'uploads/05120406-53934_cover_800x533.jpg', '', 1, 5, 0);
+(25, 'Caffe ', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe-m.png', NULL, 1, 20, 0),
+(26, 'Fanta', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/funta.png', NULL, 1, 2, 0),
+(27, 'Lemon Tea', 'I want to buy', 9, NULL, 1.00, NULL, NULL, 'uploads/lemon_tea.png', NULL, 1, 10, 0),
+(28, 'Coca', 'I want to buy', 9, NULL, 0.50, NULL, NULL, 'uploads/coca.png', NULL, 1, 15, 0),
+(29, 'Caffe Black', 'I want to buy ', 9, NULL, 1.00, NULL, NULL, 'uploads/caffe.png', NULL, 1, 3, 0),
+(33, 'ice-dessert', 'I want to buy now.', 14, NULL, 5.00, NULL, NULL, 'uploads/RaspberrySherbet.jpg', NULL, 1, 5, 0),
+(34, 'ice-dessert-1', 'I want to buy something.', 14, NULL, 3.00, NULL, NULL, 'uploads/05120406-53934_cover_800x533.jpg', NULL, 1, 5, 0),
+(35, 'sweet', 'I want to buy it.', 14, NULL, 4.00, NULL, NULL, 'uploads/images__7_.jpg', NULL, 1, 3, 0),
+(37, 'Pizza', 'sdfsdfsfsfsdf', 11, NULL, 3.00, '2025-03-17 05:27:46', '2025-03-17 05:27:46', 'uploads/Chicken-Sausage-Pizza-with-Onions-and-Peppers-Thumbnail.jpg', NULL, 1, 5, 0),
+(38, 'pp', 'sdfdsfd', 10, NULL, 6.00, '2025-03-17 05:28:40', '2025-03-17 05:28:40', 'uploads/images__6_.jpg', NULL, 1, 44, 0);
 
 -- --------------------------------------------------------
 
@@ -387,7 +386,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `user_name`, `email`, `password`, `role_id`, `phone_number`, `address`, `city_province`, `profile_image`) VALUES
 (10, 'Chhea Chhouy', 'chhea.chhouy@student.passerellesnumeriques.org', '$2y$10$plzZgCoPIyd.L49gYQ8fn.82sRpl8RLe5NnEoWtLVWaM0rjAzi6Wq', 1, '067408241', '271\r\nPhnom Penh', 'SR', '67d5694c04904-chhea.jpg'),
-(11, 'Kin', 'kin.doung@gmail.com', '$2y$10$I40QmDNA3.k0hfKaGQTiteMmwGoBrUjJVmC401H.1kdcHlGmZbReG', 2, '067408241', '271\r\nPhnom Penh', '2343', '67d56d879ec40-kin.jpg');
+(12, 'Ta', 'ta@gmial', '$2y$10$lLlZnbhna/4u00oiHd5gruYxt95PgMjaOZjHOSRhXnj.B5CYGvK8K', 3, '0976313871', '', '', '67d7a0f975b55-7080Pauls-Skimmed-Milk-Fat-Free-1Lt-300x300.jpg'),
+(13, 'ti', 'ti@gmail.com', '$2y$10$cGtBB94fJ2jtVcC/bk22LeQgb8n9a0idNE.4ar7bWVynF4d8yBTmS', 3, '0976313871', '', '', '67d7a24b107eb-download (1).jpg');
 
 -- --------------------------------------------------------
 
@@ -513,6 +513,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
+  ADD UNIQUE KEY `barcode` (`barcode`),
   ADD KEY `category_id` (`category_id`),
   ADD KEY `supplier_id` (`supplier_id`);
 
@@ -653,7 +654,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -683,7 +684,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `weather`

@@ -1,23 +1,7 @@
-<?php
-$user = $data['user'] ?? null;
-$error = $data['error'] ?? null;
-$success = $_GET['success'] ?? null;
 
-if (!$user) {
-    echo "No user data available.";
-    return;
-}
-?>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="container-xxl flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Admin Account</h4>
-
-            <?php if ($error): ?>
-                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-            <?php if ($success): ?>
-                <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
-            <?php endif; ?>
 
             <div class="row">
                 <div class="col-md-12">
@@ -54,7 +38,7 @@ if (!$user) {
                         </div>
                         <hr class="my-0">
                         <div class="card-body">
-                            <form id="formAccountSettings" method="POST" action="/profile/update" enctype="multipart/form-data">
+                            <form id="formAccountSettings" method="POST" action="/" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
                                         <label for="userName" class="form-label">User Name</label>
@@ -70,18 +54,6 @@ if (!$user) {
                                                    value="<?php echo htmlspecialchars($user['phone_number'] ?? ''); ?>" 
                                                    placeholder="Enter your phone number">
                                         </div>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address" name="address" 
-                                               value="<?php echo htmlspecialchars($user['address'] ?? ''); ?>" 
-                                               placeholder="Address">
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="province" class="form-label">City/Province</label>
-                                        <input type="text" class="form-control" id="province" name="province" 
-                                               value="<?php echo htmlspecialchars($user['city_province'] ?? ''); ?>" 
-                                               placeholder="Province">
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="email" class="form-label">Email</label>

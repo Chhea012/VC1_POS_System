@@ -37,12 +37,12 @@
                                 <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="changeLanguage('km')">
-                                            <img src="views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer
+                                            <img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                                            <img src="views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English
+                                            <img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English
                                         </a>
                                     </li>
                                 </ul>
@@ -57,7 +57,7 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img src="/views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -66,7 +66,7 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="/views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
