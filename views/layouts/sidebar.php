@@ -204,7 +204,7 @@
                 </li>
             </ul>
         <li class="menu-item">
-            <a href="./dashboard" class="menu-link">
+            <a href="calendar" class="menu-link">
                 <i class="menu-icon icon-base bx bx-calendar"></i>
                 <div data-i18n="Calendar">Calendar</div>
             </a>

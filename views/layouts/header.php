@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="/views/assets/modules/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
-
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <!-- Helpers -->
     <script src="/views/assets/modules/vendor/js/helpers.js"></script>
     <script src="/views/assets/modules/js/config.js"></script>
