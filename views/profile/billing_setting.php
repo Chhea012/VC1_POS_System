@@ -15,52 +15,6 @@
                     </li>
                 </ul>
             </div>
-            <div class="card mb-6 mt-2">
-                <!-- Current Plan -->
-                <h5 class="card-header">Current Plan</h5>
-                <div class="card-body">
-                    <div class="row row-gap-6">
-                        <div class="col-md-6 mb-1">
-                            <div class="mb-6">
-                                <h6 class="mb-1">Your Current Plan is Basic</h6>
-                                <p>A simple start for everyone</p>
-                            </div>
-                            <div class="mb-6">
-                                <h6 class="mb-1">Active until Dec 09, 2021</h6>
-                                <p>We will send you a notification upon Subscription expiration</p>
-                            </div>
-                            <div>
-                                <h6 class="mb-1"><span class="me-1">$199 Per Month</span> <span class="badge bg-label-primary">Popular</span></h6>
-                                <p class="mb-1">Standard plan for small to medium businesses</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="alert alert-warning mb-6" role="alert">
-                                <h5 class="alert-heading mb-1 d-flex align-items-center gap-2">
-                                    <span class="alert-icon rounded-circle"><i class="icon-base bx bx-error icon-md"></i></span>
-                                    <span>We need your attention!</span>
-                                </h5>
-                                <span class="ms-11 ps-1">Your plan requires update</span>
-                            </div>
-                            <div class="plan-statistics">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="mb-1">Days</h6>
-                                    <h6 class="mb-1">12 of 30 Days</h6>
-                                </div>
-                                <div class="progress rounded mb-1">
-                                    <div class="progress-bar w-25 rounded" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <small>18 days remaining until your plan requires update</small>
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex gap-2 flex-wrap">
-                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#pricingModal">Upgrade Plan</button>
-                            <button class="btn btn-label-danger cancel-subscription">Cancel Subscription</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- /Current Plan -->
-            </div>
             <div class="card mb-6 mt-4">
                 <h5 class="card-header">Payment Methods</h5>
                 <div class="card-body">
@@ -211,59 +165,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mb-6  mt-4">
-                <!-- Billing Address -->
-                <h5 class="card-header">Billing Address</h5>
-                <div class="card-body">
-                    <form id="formAccountSettings" onsubmit="return false" class="fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
-                        <div class="row g-6">
-                            <div class="col-sm-6 form-control-validation fv-plugins-icon-container">
-                                <label for="companyName" class="form-label">Company Name</label>
-                                <input type="text" id="companyName" name="companyName" class="form-control" placeholder="ThemeSelection">
-                                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                            </div>
-                            <div class="col-sm-6 form-control-validation fv-plugins-icon-container">
-                                <label for="billingEmail" class="form-label">Billing Email</label>
-                                <input class="form-control" type="text" id="billingEmail" name="billingEmail" placeholder="john.doe@example.com">
-                                <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                            </div>
-
-
-                            <div class="col-sm-6">
-                                <label for="mobileNumber" class="form-label">Mobile</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text">US (+1)</span>
-                                    <input class="form-control mobile-number" type="text" id="mobileNumber" name="mobileNumber" placeholder="202 555 0111">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="country" class="form-label">Country</label>
-                                <div class="position-relative"><select id="country" class="form-select select2 select2-hidden-accessible" name="country" data-select2-id="country" tabindex="-1" aria-hidden="true">
-                                        <option selected="" data-select2-id="2">USA</option>
-                                        <option>Canada</option>
-                                        <option>UK</option>
-                                        <option>Germany</option>
-                                        <option>France</option>
-                                    </select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="1" style="width: 567.6px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-country-container"><span class="select2-selection__rendered" id="select2-country-container" role="textbox" aria-readonly="true" title="USA">USA</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></div>
-                            </div>
-                            <div class="col-12">
-                                <label for="billingAddress" class="form-label">Billing Address</label>
-                                <input type="text" class="form-control" id="billingAddress" name="billingAddress" placeholder="Billing Address">
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="zipCode" class="form-label">Zip Code</label>
-                                <input type="text" class="form-control zip-code" id="zipCode" name="zipCode" placeholder="231465" maxlength="6">
-                            </div>
-                        </div>
-                        <div class="mt-6">
-                            <button type="submit" class="btn btn-primary me-4 mt-4">Save changes</button>
-                            <button type="reset" class="btn btn-secondary me-4 mt-4">Discard</button>
-                        </div>
-                        <input type="hidden">
-                    </form>
-                </div>
-                <!-- /Billing Address -->
             </div>
             <div class="card  mt-4">
                 <!-- Billing History -->
