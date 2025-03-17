@@ -12,7 +12,6 @@ require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
 require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
-require_once "Controllers/addproductController.php";
 require_once "Controllers/categoryController.php";
 require_once "Controllers/IceController.php";
 require_once "Controllers/DrinkController.php";
@@ -27,7 +26,6 @@ $route->get("/", [LoginController::class, 'login']);
 $route->get("/register", [RegisterController::class, 'register']);
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
-$route->get("/products", [productController::class, 'index']);
 $route->get("/edit_profile", [ProfileController::class, 'index']);
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/billing_setting", [BillingSettingController::class, 'index']);
@@ -36,17 +34,22 @@ $route->get("/chart", [ChartController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->post('/category/store', [categoryController::class, 'store']);
-$route->get("/addproduct", [addproductController::class, 'index']);
 $route->get("/category", [categoryController::class, 'index']);
 $route->get("/drink", [InventoryController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
-$route->post('/addProduct/store', [addproductController::class, 'store']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
-
+// -product route -
+$route->get("/products", [productController::class, 'index']);
+$route->get("/products/create", [productController::class, 'create']);
+$route->post("/products/store", [productController::class, 'store']);
+$route->get("/products/view/{product_id}", [productController::class, 'show']);
+$route->get("/products/edit/{product_id}", [productController::class, 'edit']);
+$route->post("/products/update/{product_id}", [productController::class, 'update']);
+$route->post("/products/delete/{product_id}", [productController::class, 'delete']);
 
 //route user
 $route->get("/users", [UserController::class, 'index']);

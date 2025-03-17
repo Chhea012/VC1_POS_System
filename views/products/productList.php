@@ -1,4 +1,4 @@
-<?php require_once 'Models/product-listModel.php' ?> 
+<?php require_once 'Models/productModel.php' ?> 
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Sales Cards -->
     <div class="card mb-4 shadow-sm">
@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <a href="./addproduct" class="btn btn-primary w-100">
+                    <a href="./products/create" class="btn btn-primary w-100">
                         <i class="bi bi-plus-lg me-1"></i> Add product
                     </a>
                 </div>
@@ -196,11 +196,9 @@
                                 </span>
                             </td>
                             <td>
-                                
                                 <span style="color: <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
                                 <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
                                 </span>
-                        
                             </td>
                             <td>$<?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
                             <td><?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
@@ -208,12 +206,20 @@
                                 <div class="dropdown">
                                     <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="view_product.php?id=<?= $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
+                                        <li><a class="dropdown-item" href="/products/view/<?= $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
                                         <li>
-                                            <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </a>
+                                        <a class="dropdown-item" href="/products/edit/<?= $product['product_id'] ?>">
+                                            <i class="bi bi-pencil me-2"></i>Edit
+                                        </a>
                                         </li>
+                                        <li>
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?= $product['product_id'] ?>)">
+                                            <i class="bi bi-trash me-2"></i>Delete
+                                        </a>
+                                        <form id="delete-form-<?= $product['product_id'] ?>" action="/products/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
+                                            <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
+                                        </form>
+                                    </li>
                                     </ul>
                                 </div>
                             </td>
@@ -246,5 +252,37 @@
         </ul>
     </nav>
 </div>
+
+<script>
+function confirmDelete(product_id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        document.getElementById('delete-form-' + product_id).submit();
+    }
+}
+
+document.getElementById('barcode').addEventListener('blur', function() {
+    const barcode = this.value;
+    const errorElement = document.getElementById('barcode-error');
+
+    if (barcode) {
+        fetch(`/products/check-barcode?barcode=${barcode}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorElement.textContent = 'This barcode already exists!';
+                    document.getElementById('barcode').classList.add('is-invalid');
+                } else {
+                    errorElement.textContent = '';
+                    document.getElementById('barcode').classList.remove('is-invalid');
+                }
+            })
+            .catch(() => {
+                errorElement.textContent = 'Error checking barcode.';
+            });
+    }
+});
+
+
+</script>
 
 

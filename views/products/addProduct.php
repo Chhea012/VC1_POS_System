@@ -1,7 +1,3 @@
-<?php
-    require_once __DIR__ . "/../../Models/add_productModel.php";
-?>
-
 <div class="m-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -14,24 +10,22 @@
     </div>
 
     <?php if (isset($_SESSION['success_message'])): ?>
-    <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
-        <i class="fas fa-check-circle"></i><?php echo $_SESSION['success_message']; ?>
-        <!-- Close button for success alert -->
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <?php unset($_SESSION['success_message']); ?>
+<div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
+    <i class="fas fa-check-circle"></i> <?php echo $_SESSION['success_message']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php unset($_SESSION['success_message']); ?>
 <?php endif; ?>
 
-<?php if (isset($_SESSION['error_message'])): ?>
+    <?php if (isset($_SESSION['error_message'])): ?>
     <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
         <i class="fas fa-exclamation-circle"></i><?php echo $_SESSION['error_message']; ?>
-        <!-- Close button for error alert -->
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <?php unset($_SESSION['error_message']); ?>
-<?php endif; ?>
+    <?php endif; ?>
 
-    <form id="productForm" method="POST" action="/addProduct/store" enctype="multipart/form-data">
+    <form id="productForm" method="POST" action="/products/store" enctype="multipart/form-data">
         <div class="row g-4">
             <!-- Product Information -->
             <div class="col-md-8">
@@ -55,11 +49,9 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="barcode" class="form-label small text-secondary">Barcode</label>
-                                <input type="text" name="barcode" class="form-control" id="barcode" placeholder="0123-3434-2323" required>
+                                <input type="text" name="barcode" class="form-control" id="barcode" placeholder="0123-3434-2323">
                                 <span id="barcode-error" style="color: red;"></span>
-                                <div id="barcodeError" class="invalid-feedback">
-                            Barcode already exists!
-                        </div>
+                                <div id="barcodeError" class="invalid-feedback">Barcode already exists!</div>
                             </div>
                         </div>
 
@@ -109,7 +101,6 @@
                         <h2 class="h5 mb-4">Product Image</h2>
 
                         <div class="border border-2 border-dashed rounded p-4 text-center">
-                            <!-- Image Preview Container -->
                             <div class="mb-3" id="imagePreviewContainer">
                                 <div class="rounded-circle bg-light p-3 d-inline-block" id="defaultIcon">
                                     <i class="bi bi-image text-secondary fs-4"></i>
@@ -120,21 +111,19 @@
                             <p class="text-secondary mb-1">Drop your image here</p>
                             <p class="text-muted small mb-3">or</p>
 
-                            <!-- File Input -->
                             <div class="input-group">
                                 <input type="file" name="product_image" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" accept="image/*">
                             </div>
 
-                            <!-- Error Message -->
                             <small id="fileError" class="text-danger d-none">Invalid file type. Please upload a JPG, PNG, or GIF.</small>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </form>
 </div>
+
 <script>
     // Image Preview Handling
     document.getElementById("inputGroupFile04").addEventListener("change", function (event) {
@@ -144,18 +133,15 @@
         const fileError = document.getElementById("fileError");
 
         if (file) {
-            // Validate image type
             const validTypes = ["image/jpeg", "image/png", "image/gif"];
             if (!validTypes.includes(file.type)) {
-                fileError.classList.remove("d-none"); // Show error message
-                preview.classList.add("d-none"); // Hide preview
-                defaultIcon.classList.remove("d-none"); // Show default icon
+                fileError.classList.remove("d-none");
+                preview.classList.add("d-none");
+                defaultIcon.classList.remove("d-none");
                 return;
             }
 
-            fileError.classList.add("d-none"); // Hide error if valid
-
-            // Read and show image preview
+            fileError.classList.add("d-none");
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
@@ -168,51 +154,20 @@
             defaultIcon.classList.remove("d-none");
         }
     });
-</script>
-<script>
+
+    // Form Validation
     document.addEventListener('DOMContentLoaded', function() {
-        const barcodeNameInput = document.getElementById('barcode');
-        const barcodeyNameError = document.getElementById('barcodeError');
+        const form = document.getElementById('productForm');
+        const barcodeInput = document.getElementById('barcode');
+        const barcodeError = document.getElementById('barcodeError');
 
-        // Function to reset the input field and hide the error message
-        function resetForm() {
-            barcodeNameInput.classList.remove('is-invalid');
-            barcodeyNameError.style.display = 'none';
-            barcodeNameInput.value = ''; // Clear the input field
-        }
-
-        // Reset the form when the modal is closed
-        document.getElementById('AddProductModel').addEventListener('hidden.bs.modal', function () {
-            resetForm();
-        });
-
-        // Reset the form when the modal is opened
-        document.getElementById('AddProductModel').addEventListener('show.bs.modal', function () {
-            resetForm();
+        barcodeInput.addEventListener('input', function() {
+            barcodeInput.classList.remove('is-invalid');
+            barcodeError.style.display = 'none';
         });
 
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const barcodeName = barcodeNameInputt.value.trim().toUpperCase();
-
-            if (existingCategories.includes(categoryName)) {
-                // Show validation error inside the input field
-                barcodeNameInputt.classList.add('is-invalid');
-                categoryNameError.style.display = 'block';
-            } else {
-                // Hide validation error if it was shown earlier
-                barcodeNameInput.classList.remove('is-invalid');
-                barcodeyNameError.style.display = 'none';
-                // Proceed with form submission
-                form.submit();
-            }
-        });
-
-        // Clear validation error when the user starts typing
-        barcodeNameInput.addEventListener('input', function() {
-            barcodeNameInput.classList.remove('is-invalid');
-            categoryNameError.style.display = 'none';
+            // Add custom validation if needed, otherwise let it submit
         });
     });
 </script>
