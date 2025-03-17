@@ -55,18 +55,10 @@
                                         </div>
                                     </div>
                                 </td>
-<<<<<<< HEAD
-
-                                <td>
-                                    <span class="badge bg-primary-subtle text-primary rounded-pill">
-                                        <i class="bi bi-cup-hot me-1"></i>
-                                        <?= $product['category_name'] ?>
-=======
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill">
                                         <i class="bi bi-cup-hot me-1"></i>
                                         <?= htmlspecialchars($product['category_name']) ?>
->>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5
                                     </span>
                                 </td>
                                 <td>
@@ -78,13 +70,9 @@
                                 <td <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'style="color: red;"' : '' ?>>
                                     <?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?>
                                 </td>
-<<<<<<< HEAD
-                                <td>$<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?></td>
-=======
                                 <td>
                                     $<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
                                 </td>
->>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
@@ -115,7 +103,6 @@
         }
     }
 </script>
-<<<<<<< HEAD
 
 
 
@@ -161,5 +148,3 @@ foreach ($products as $product) {
         });
     </script>
 <?php endif; ?>
-=======
->>>>>>> 018bf4ed5eb44933804eb2dae071d1e21e904ff5
