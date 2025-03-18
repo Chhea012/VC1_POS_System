@@ -4,9 +4,12 @@ require_once "Models/ProfileModel.php";
 
 class ProfileController extends BaseController {
     private $profileModel;
+    private $securityService;
 
     public function __construct() {
         $this->profileModel = new ProfileModel();
+        // $this->securityService = $securityService;
+
     }
 
     // Display the profile page
@@ -87,6 +90,33 @@ class ProfileController extends BaseController {
             }
         } else {
             $this->redirect('/profile');
+        }
+    }
+    public function changePassword() {
+        // Check if the form was submitted
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];  // Assuming user is logged in and their user_id is stored in session
+            $currentPassword = $_POST['currentPassword'];
+            $newPassword = $_POST['newPassword'];
+            $confirmPassword = $_POST['confirmPassword'];
+
+            // Validate new password confirmation
+            if ($newPassword !== $confirmPassword) {
+                $error = "New password and confirmation do not match.";
+                $this->view('profile/setting_security', ['error' => $error]);
+                return;
+            }
+
+            // Call the service method to handle password change
+            $result = $this->securityService->changePassword($userId, $currentPassword, $newPassword);
+
+            if ($result === true) {
+                $success = "Password updated successfully!";
+                $this->view('profile/setting_security', ['success' => $success]);
+            } else {
+                $error = $result;
+                $this->view('profile/setting_security', ['error' => $error]);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ class ProfileModel {
     public function __construct() {
         $this->db = new Database();
     }
-
+    
     // Fetch the first admin user with role name
     public function getAdminUser() {
         try {
@@ -48,6 +48,30 @@ class ProfileModel {
         } catch (Exception $e) {
             error_log("Error updating user: " . $e->getMessage());
             throw $e; // Throw exception to be caught in controller
+        }
+    }
+    public function getPasswordUser($userId) {
+        // Fetch the user's password from the database based on the user_id
+        try {
+            $stmt = $this->db->prepare("SELECT password FROM users WHERE user_id = :user_id");
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error fetching user password: " . $e->getMessage());
+            return false;
+        }
+    }
+    public function updatePassword($userId, $newHashedPassword) {
+        // Update the user's password in the database
+        try {
+            $stmt = $this->db->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
+            $stmt->bindParam(':password', $newHashedPassword);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            error_log("Error updating user password: " . $e->getMessage());
+            return false;
         }
     }
 }

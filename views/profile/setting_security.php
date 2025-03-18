@@ -16,14 +16,21 @@
                 <!-- Change Password -->
                 <div class="card mb-6 mt-2">
                     <h5 class="card-header ">Change Password</h5>
+                    <?php if (isset($error)): ?>
+                        <div class="error"><?php echo $error; ?></div>
+                    <?php endif; ?>
+
+                    <?php if (isset($success)): ?>
+                        <div class="success"><?php echo $success; ?></div>
+                    <?php endif; ?>
                     <div class="card-body pt-1">
-                        <form id="formAccountSettings" method="GET" onsubmit="return false" class="fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                    <form id="formAccountSettings" method="POST" action="" class="fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
                             <div class="row">
                                 <div class="mb-6 col-md-6 form-password-toggle form-control-validation fv-plugins-icon-container">
                                     <label class="form-label" for="currentPassword">Current Password</label>
                                     <div class="input-group input-group-merge has-validation">
-                                        <input class="form-control" type="password" name="currentPassword" id="currentPassword" placeholder="············">
-                                        <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
+                                        <input class="form-control" type="password" name="currentPassword" value="<?php echo isset($currentPassword) ? $currentPassword : ''; ?>" id="currentPassword" placeholder="············" required>
+                                        <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide" onclick="togglePassword('password')"></i></span>
                                     </div>
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
                                 </div>
@@ -32,7 +39,7 @@
                                 <div class="mb-6 col-md-6 form-password-toggle form-control-validation fv-plugins-icon-container">
                                     <label class="form-label" for="newPassword">New Password</label>
                                     <div class="input-group input-group-merge has-validation">
-                                        <input class="form-control" type="password" id="newPassword" name="newPassword" placeholder="············">
+                                        <input class="form-control" type="password" name="newPassword" value="<?php echo isset($newPassword) ? htmlspecialchars($newPassword) : ''; ?>" id="newPassword" placeholder="············" required>
                                         <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
                                     </div>
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
@@ -41,7 +48,7 @@
                                 <div class="mb-6 col-md-6 form-password-toggle form-control-validation fv-plugins-icon-container">
                                     <label class="form-label" for="confirmPassword">Confirm New Password</label>
                                     <div class="input-group input-group-merge has-validation">
-                                        <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" placeholder="············">
+                                        <input class="form-control" type="password" name="confirmPassword" value="<?php echo isset($confirmPassword) ? htmlspecialchars($confirmPassword) : ''; ?>" id="confirmPassword" placeholder="············" required>
                                         <span class="input-group-text cursor-pointer"><i class="icon-base bx bx-hide"></i></span>
                                     </div>
                                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
@@ -61,6 +68,26 @@
                         </form>
                     </div>
                 </div>
+                <script>
+                    function togglePassword(fieldId) {
+                        const passwordField = document.getElementById(fieldId);
+                        const icon = document.getElementById('icon' + capitalizeFirstLetter(fieldId));
+
+                        if (passwordField.type === "password") {
+                            passwordField.type = "text";
+                            icon.classList.remove('bx-hide');
+                            icon.classList.add('bx-show');
+                        } else {
+                            passwordField.type = "password";
+                            icon.classList.remove('bx-show');
+                            icon.classList.add('bx-hide');
+                        }
+                    }
+
+                    function capitalizeFirstLetter(string) {
+                        return string.charAt(0).toUpperCase() + string.slice(1);
+                    }
+</script>
                 <!--/ Change Password -->
 
                 <!-- Two-steps verification -->
