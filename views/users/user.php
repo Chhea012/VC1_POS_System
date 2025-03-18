@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <!-- /Views/users/user.php -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <a href="/users/create" class="btn btn-primary mb-3">+ Add New User</a>

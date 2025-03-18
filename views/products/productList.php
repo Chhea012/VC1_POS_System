@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <?php require_once 'Models/productModel.php' ?> 
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Sales Cards -->

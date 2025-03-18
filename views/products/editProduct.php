@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <div class="m-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h4 text-secondary">Update Product</h1>

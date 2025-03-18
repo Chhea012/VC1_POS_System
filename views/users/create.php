@@ -1,4 +1,13 @@
-<!-- /Views/users/create.php -->
+
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?><!-- /Views/users/create.php -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container mt-4 mb-4">
         <h2>Create Users</h2>
