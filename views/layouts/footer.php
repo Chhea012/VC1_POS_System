@@ -33,4 +33,3 @@
 </body>
 
 </html>
-views/products/uploads/caffe-m.png
