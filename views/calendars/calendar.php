@@ -54,13 +54,29 @@
     </div>
 </div>
 
+<!-- Event Detail Modal -->
+<div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Event Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Title:</strong> <span id="detailTitle"></span></p>
+                <p><strong>Date:</strong> <span id="detailDate"></span></p>
+                <p><strong>Category:</strong> <span id="detailCategory"></span></p>
+                <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                <button class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     
-    // Load events from localStorage
     let storedEvents = JSON.parse(localStorage.getItem('events')) || [
         { title: 'New Product', start: '2025-02-17', color: '#00000', category: 'business', description: 'Launch new product' },
         { title: 'Meeting with Client', start: '2025-02-17', color: '#9370DB', category: 'personal', description: 'Discuss project' },
@@ -74,54 +90,25 @@
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
-        events: storedEvents
+        events: storedEvents,
+        eventClick: function(info) {
+            document.getElementById("detailTitle").innerText = info.event.title;
+            document.getElementById("detailDate").innerText = info.event.startStr;
+            document.getElementById("detailCategory").innerText = info.event.extendedProps.category;
+            document.getElementById("detailDescription").innerText = info.event.extendedProps.description;
+            document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
+            
+            var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
+            modal.show();
+        }
     });
     calendar.render();
 
-    // Handle event filtering
-    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
-        item.addEventListener('click', function(event) {
-            event.preventDefault();
-            let selectedCategory = this.getAttribute('data-filter');
-            document.getElementById('eventFilter').innerText = this.innerText;
-
-            let filteredEvents = selectedCategory === 'all' 
-                ? storedEvents 
-                : storedEvents.filter(event => event.category === selectedCategory);
-            
-            calendar.removeAllEvents();
-            calendar.addEventSource(filteredEvents);
-        });
-    });
-
-    // Handle form submission to add new event
-    document.getElementById("eventForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        // Get form values
-        let title = document.getElementById("eventTitle").value;
-        let date = document.getElementById("eventDate").value;
-        let category = document.getElementById("eventCategory").value;
-        let description = document.getElementById("eventDescription").value;
-        let color = category === "personal" ? "#9370DB" : category === "business" ? "#87CEEB" : "#90EE90";
-
-        let newEvent = { title, start: date, color, category, description };
-
-        // Add event to calendar
-        calendar.addEvent(newEvent);
-
-        // Save to localStorage
-        storedEvents.push(newEvent);
-        localStorage.setItem('events', JSON.stringify(storedEvents));
-
-        // Reset form & close modal
-        document.getElementById("eventForm").reset();
-        var modal = bootstrap.Modal.getInstance(document.getElementById("addEventModal"));
-        modal.hide();
+    document.getElementById("deleteEventBtn").addEventListener("click", function() {
+        let eventId = this.getAttribute("data-event-id");
+        let updatedEvents = storedEvents.filter(event => event.id !== eventId);
+        localStorage.setItem('events', JSON.stringify(updatedEvents));
+        location.reload();
     });
 });
 </script>
-    
-
- 
-   
