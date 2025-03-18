@@ -25,6 +25,9 @@ $route = new Router();
 $route->get("/", [LoginController::class, 'login']);
 
 $route->get("/register", [RegisterController::class, 'register']);
+$route->post("/register/store", [RegisterController::class, 'store']);
+
+
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
 
