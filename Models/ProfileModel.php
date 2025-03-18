@@ -1,4 +1,5 @@
 <?php
+// /Models/ProfileModel.php
 require_once "Database/Database.php";
 
 class ProfileModel {
@@ -8,11 +9,11 @@ class ProfileModel {
         $this->db = new Database();
     }
 
-    // Fetch the first admin user
+    // Fetch the first admin user with role name
     public function getAdminUser() {
         try {
             $stmt = $this->db->query("
-                SELECT u.user_id, u.user_name, u.email, u.profile_image, u.phone_number
+                SELECT u.user_id, u.user_name, u.email, u.profile_image, u.phone_number, r.role_name
                 FROM users u 
                 JOIN roles r ON u.role_id = r.role_id 
                 WHERE r.role_name = 'admin' 
@@ -26,34 +27,27 @@ class ProfileModel {
         }
     }
 
-    // Update user data
-    public function updateUser($user_id, $user_name, $email, $phone_number, $address, $city_province) {
+    // Update user data including profile image
+    public function updateUser($user_id, $data) {
         try {
-            $stmt = $this->db->query("
-                UPDATE users 
-                SET user_name = :user_name, email = :email, phone_number = :phone_number 
-                WHERE user_id = :user_id
-            ", [
-                ':user_name' => $user_name,
-                ':email' => $email,
-                ':phone_number' => $phone_number,
+            $sql = "UPDATE users 
+                    SET user_name = :user_name, 
+                        email = :email, 
+                        phone_number = :phone_number, 
+                        profile_image = :profile_image
+                    WHERE user_id = :user_id";
+            $params = [
+                ':user_name' => $data['user_name'],
+                ':email' => $data['email'],
+                ':phone_number' => $data['phone_number'],
+                ':profile_image' => $data['profile_image'],
                 ':user_id' => $user_id
-            ]);
+            ];
+            $this->db->query($sql, $params);
             return true;
         } catch (Exception $e) {
             error_log("Error updating user: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    // Delete user
-    public function deleteUser($user_id) {
-        try {
-            $stmt = $this->db->query("DELETE FROM users WHERE user_id = :user_id", [':user_id' => $user_id]);
-            return true;
-        } catch (Exception $e) {
-            error_log("Error deleting user: " . $e->getMessage());
-            return false;
+            throw $e; // Throw exception to be caught in controller
         }
     }
 }

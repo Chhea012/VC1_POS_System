@@ -3,26 +3,28 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h4 text-secondary">Add a new product</h1>
         <div class="d-flex gap-2">
-            <button type="button" class="btn btn-outline-secondary">Discard</button>
-            <button type="button" class="btn btn-outline-primary">Save draft</button>
+            <a href="/products" class="btn btn-outline-secondary" >Discard</a>
+            
             <button type="submit" form="productForm" class="btn btn-primary">Publish Product</button>
         </div>
     </div>
 
     <?php if (isset($_SESSION['success_message'])): ?>
-<div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
-    <i class="fas fa-check-circle"></i> <?php echo $_SESSION['success_message']; ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php unset($_SESSION['success_message']); ?>
-<?php endif; ?>
+        <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <?php echo $_SESSION['success_message']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['success_message']); ?>
+    <?php endif; ?>
 
     <?php if (isset($_SESSION['error_message'])): ?>
-    <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
-        <i class="fas fa-exclamation-circle"></i><?php echo $_SESSION['error_message']; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <?php unset($_SESSION['error_message']); ?>
+        <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            <?php echo $_SESSION['error_message']; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['error_message']); ?>
     <?php endif; ?>
 
     <form id="productForm" method="POST" action="/products/store" enctype="multipart/form-data">
@@ -40,11 +42,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label small text-secondary">Category</label>
-                                <select name="category" class="form-select" required>
-                                    <option value="Drinks">Drinks</option>
-                                    <option value="Noodle">Noodle</option>
-                                    <option value="Pizza">Pizza</option>
-                                    <option value="IceDessert">IceDessert</option>
+                                <select name="category_id" class="form-select" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <?php foreach ($categories as $category): ?>
+                                        <option value="<?php echo htmlspecialchars($category['category_id']); ?>">
+                                            <?php echo htmlspecialchars($category['category_name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-md-6">

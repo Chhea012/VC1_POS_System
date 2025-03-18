@@ -1,15 +1,15 @@
 <?php
+// /Controllers/ProfileController.php
 require_once "Models/ProfileModel.php";
 
 class ProfileController extends BaseController {
     private $profileModel;
-    private $user;
 
     public function __construct() {
         $this->profileModel = new ProfileModel();
     }
 
-    // Profile page (with image)
+    // Display the profile page
     public function index() {
         $user = $this->profileModel->getAdminUser();
         if (!$user) {
@@ -19,75 +19,74 @@ class ProfileController extends BaseController {
         $this->view("profile/profile", ["user" => $user]);
     }
 
-    // Security page (with password change)
-    public function security() {
-        $user = $this->profileModel->getAdminUser();
-        if (!$user) {
-            $this->view("error", ["message" => "No admin user found in the database."]);
-            return;
-        }
-        $this->view("profile/security", ["user" => $user]);
-    }
-
-    // Update profile (including image)
-    public function edit($user_id) {
-        $user = $this->user->getUserById($user_id);
-        if (!$user) {
-            die("User not found.");
-        }
-        $roles = $this->user->getRoles();
-        $this->view('users/edit', ['user' => $user, 'roles' => $roles]);
-    }
-
-    // Added method to update user
+    // Update profile including image upload
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = (int)$_POST['user_id'];
-            if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['role_id'])) {
-                die("All required fields must be filled.");
+            if (empty($_POST['userName']) || empty($_POST['email'])) {
+                $user = $this->profileModel->getAdminUser();
+                $this->view("profile/profile", ["user" => $user, "error" => "All required fields must be filled."]);
+                return;
             }
 
-            // Handle file upload (optional update)
+            // Handle file upload
             $profileImage = $_POST['existing_image'] ?? '';
-            if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../images/';
+            if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['profileImage'];
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $maxSize = 2 * 1024 * 1024; // 2MB
+
+                // Validate file
+                if (!in_array($file['type'], $allowedTypes)) {
+                    $user = $this->profileModel->getAdminUser();
+                    $this->view("profile/profile", ["user" => $user, "error" => "Invalid file type. Only JPG, PNG, and GIF are allowed."]);
+                    return;
+                }
+                if ($file['size'] > $maxSize) {
+                    $user = $this->profileModel->getAdminUser();
+                    $this->view("profile/profile", ["user" => $user, "error" => "File too large. Maximum size is 2MB."]);
+                    return;
+                }
+
+                // Define upload directory
+                $uploadDir = __DIR__ . '/../Views/assets/uploads/';
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $fileName = uniqid() . '-' . basename($_FILES['profile_image']['name']);
+                $fileName = uniqid() . '-' . basename($file['name']);
                 $uploadFile = $uploadDir . $fileName;
-                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
-                    $profileImage = $fileName;
-                    // Delete old image if it exists
-                    if (!empty($_POST['existing_image']) && file_exists($uploadDir . $_POST['existing_image'])) {
-                        unlink($uploadDir . $_POST['existing_image']);
-                    }
+                if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
+                    $user = $this->profileModel->getAdminUser();
+                    $this->view("profile/profile", ["user" => $user, "error" => "Failed to upload image."]);
+                    return;
+                }
+                $profileImage = '/Views/assets/uploads/' . $fileName;
+
+                // Delete old image if it exists
+                $oldImagePath = $uploadDir . basename($_POST['existing_image']);
+                if (!empty($_POST['existing_image']) && file_exists($oldImagePath) && $_POST['existing_image'] !== $profileImage) {
+                    unlink($oldImagePath);
                 }
             }
 
             // Prepare data
             $data = [
-                'user_name' => $_POST['user_name'],
+                'user_name' => $_POST['userName'],
                 'email' => $_POST['email'],
-                'role_id' => (int)$_POST['role_id'],
-                'profile_image' => $profileImage,
-                'phone_number' => $_POST['phone_number'] ?? ''
+                'phone_number' => $_POST['phoneNumber'] ?? '',
+                'profile_image' => $profileImage
             ];
-
-            // Update password only if provided
-            if (!empty($_POST['password'])) {
-                $data['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            }
 
             // Update in database
             try {
-                $this->user->updateUser($user_id, $data);
-                $this->redirect('/users');
+                $this->profileModel->updateUser($user_id, $data);
+                $this->redirect('/profile');
             } catch (Exception $e) {
-                die("Error updating user: " . $e->getMessage());
+                $user = $this->profileModel->getAdminUser();
+                $this->view("profile/profile", ["user" => $user, "error" => "Error updating user: " . $e->getMessage()]);
             }
         } else {
-            $this->redirect('/users');
+            $this->redirect('/profile');
         }
     }
 }

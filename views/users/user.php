@@ -1,3 +1,4 @@
+<!-- /Views/users/user.php -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <a href="/users/create" class="btn btn-primary mb-3">+ Add New User</a>
     <div class="table-responsive">
@@ -17,11 +18,11 @@
                     <?php foreach ($users as $user): ?>
                         <tr class="bg-light">
                             <td class="text-center">
-                                <img src="<?= $user['profile_image'] ?? '/default-profile.png' ?>" class="rounded-circle" width="40" height="40" alt="Profile">
+                                <img src="<?= htmlspecialchars($user['profile_image'] ?? '/Views/assets/uploads/default-profile.png') ?>" class="rounded-circle" width="40" height="40" alt="Profile">
                             </td>
                             <td><?= htmlspecialchars($user['user_name']) ?></td>
                             <td><?= htmlspecialchars($user['email']) ?></td>
-                            <td><span class="badge bg-info text-dark"> <?= htmlspecialchars($user['role_name']) ?></span></td>
+                            <td><span class="badge bg-info text-dark"><?= htmlspecialchars($user['role_name']) ?></span></td>
                             <td><?= htmlspecialchars($user['phone_number']) ?></td>
                             <td>
                                 <div class="dropdown">

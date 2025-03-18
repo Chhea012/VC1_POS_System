@@ -135,9 +135,12 @@
                         <i class="bi bi-download me-1"></i> Export
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" id="exportPDF">PDF</a></li>
+                    <li>
+                        <form method="POST" action="/generate/generatepdf" class="d-inline">
+                            <button type="submit" class="dropdown-item" id="exportPDF">Generate PDF</button>
+                        </form>
+                    </li>
                         <li><a class="dropdown-item" id="exportExcel">Excel</a></li>
-                        <li><a class="dropdown-item" id="exportCSV">CSV</a></li>
                     </ul>
                 </div>
 

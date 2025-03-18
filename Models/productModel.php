@@ -44,6 +44,15 @@ class ProductManager
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getCategories($storeId = null)
+    {
+        $query = "SELECT category_id, category_name FROM categories";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
     // Store a new product
     public function storeNewProduct($title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $image)
     {
@@ -92,7 +101,7 @@ class ProductManager
             ");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':title', $title);
-            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT); // Fixed to category_id
+            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT); 
             $stmt->bindParam(':barcode', $barcode);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':description', $description);
@@ -101,7 +110,7 @@ class ProductManager
             $stmt->bindParam(':in_stock', $in_stock, PDO::PARAM_INT);
             $stmt->bindParam(':image_path', $image_path);
 
-            $result = $stmt->execute();
+            $result = $stmt->execute(); 
             if (!$result) {
                 error_log("Update Error: " . implode(", ", $stmt->errorInfo()));
             }

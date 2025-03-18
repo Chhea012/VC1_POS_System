@@ -37,24 +37,21 @@ class productController extends BaseController
     public function create()
     {
         $products = $this->productManager->getAllProducts();
-        $this->view('products/addProduct', ['products' => $products]);
+        $categories = $this->productManager->getCategories(); // No parameter needed
+    
+        $this->view('products/addProduct', [
+            'products'   => $products,
+            'categories' => $categories,
+        ]);
     }
+    
 
     public function store()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             try {
                 $title        = trim($_POST['title']);
-                $category_map = [
-                    'Drinks'     => 9, // Updated to match your table
-                    'Noodle'     => 10,
-                    'Pizza'      => 11,
-                    'IceDessert' => 12, // Adjust this if IceDessert has a different ID
-                ];
-                $category_id = $category_map[$_POST['category']] ?? null;
-                if (! $category_id) {
-                    throw new Exception("Invalid category selected.");
-                }
+                $category_id = trim($_POST['category_id']);
                 $barcode          = ! empty($_POST['barcode']) ? trim($_POST['barcode']) : null;
                 $quantity         = (int) $_POST['quantity'];
                 $description      = ! empty($_POST['description']) ? trim($_POST['description']) : null;
@@ -100,25 +97,27 @@ class productController extends BaseController
     public function edit($id)
     {
         $product  = $this->productManager->getProductById($id);
-        $products = $this->productManager->getAllProducts(); // Misnamed as categories in original
-
+        $products = $this->productManager->getAllProducts();
+        $categories = $this->productManager->getCategories(); // Add this line
+    
         if (! $product) {
             header("Location: /products");
             exit;
         }
-
+    
         $this->view('products/editProduct', [
             'product'    => $product,
-            'categories' => $products, // Should ideally be a list of categories
+            'categories' => $categories,
         ]);
     }
+    
 
     public function update($product_id)
 {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
             $title        = trim($_POST['title']);
-            $category_id = $category_map[$_POST['category']] ?? null;
+            $category_id = trim($_POST['category_id']);
             $barcode          = trim($_POST['barcode']);
             $quantity         = (int) $_POST['quantity'];
             $description      = trim($_POST['description']);
