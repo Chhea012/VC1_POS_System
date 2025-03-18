@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,9 +8,6 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 <div class="container-xxl flex-grow-1 container-p-y ">
-=======
-<div class="container-xxl flex-grow-1 container-p-y">
->>>>>>> 93c54e04aafa9d01a10eca61737f7fb64878baf3
     <h2 class="mb-3">Calendar</h2>
     <div class="mb-3 d-flex justify-content-between">
         <div class="dropdown">

@@ -15,7 +15,6 @@ if (!isset($_SESSION['user'])) {
             <a href="/products" class="btn btn-secondary">Cancel</a>
         </div>
     </div>
-
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
             <i class="fas fa-check-circle"></i>
@@ -24,7 +23,6 @@ if (!isset($_SESSION['user'])) {
         </div>
         <?php unset($_SESSION['success_message']); ?>
     <?php endif; ?>
-
     <?php if (isset($_SESSION['error_message'])): ?>
         <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
             <i class="fas fa-exclamation-circle"></i>
