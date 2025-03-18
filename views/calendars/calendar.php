@@ -85,12 +85,11 @@ if (!isset($_SESSION['user'])) {
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    
-    let storedEvents = JSON.parse(localStorage.getItem('events')) || [
-        { title: 'New Product', start: '2025-02-17', color: '#00000', category: 'business', description: 'Launch new product' },
-        { title: 'Meeting with Client', start: '2025-02-17', color: '#9370DB', category: 'personal', description: 'Discuss project' },
-        { title: 'New Stock', start: '2025-02-19', color: '#90EE90', category: 'stock', description: 'Restock inventory' },
-    ];
+
+    // Ensure stored events have unique IDs
+    let storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+    storedEvents = storedEvents.map((event, index) => ({ id: event.id || index.toString(), ...event }));
+    localStorage.setItem('events', JSON.stringify(storedEvents));
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
@@ -101,23 +100,79 @@ if (!isset($_SESSION['user'])) {
         },
         events: storedEvents,
         eventClick: function(info) {
+            // Show event details in the modal
             document.getElementById("detailTitle").innerText = info.event.title;
             document.getElementById("detailDate").innerText = info.event.startStr;
             document.getElementById("detailCategory").innerText = info.event.extendedProps.category;
             document.getElementById("detailDescription").innerText = info.event.extendedProps.description;
+
+            // Save event ID in button attribute for deletion
             document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
-            
+
             var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
             modal.show();
         }
     });
+
     calendar.render();
 
+    // ADD EVENT FUNCTION
+    document.getElementById("eventForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        let title = document.getElementById("eventTitle").value;
+        let date = document.getElementById("eventDate").value;
+        let category = document.getElementById("eventCategory").value;
+        let description = document.getElementById("eventDescription").value;
+
+        if (!title || !date) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        // Generate unique ID
+        let eventId = new Date().getTime().toString();
+
+        let newEvent = {
+            id: eventId,
+            title: title,
+            start: date,
+            category: category,
+            description: description
+        };
+
+        // Add event to localStorage
+        storedEvents.push(newEvent);
+        localStorage.setItem("events", JSON.stringify(storedEvents));
+
+        // Add event to FullCalendar
+        calendar.addEvent(newEvent);
+
+        // Close modal after adding event
+        var addEventModal = bootstrap.Modal.getInstance(document.getElementById("addEventModal"));
+        addEventModal.hide();
+
+        // Clear form fields
+        document.getElementById("eventForm").reset();
+    });
+
+    // DELETE EVENT FUNCTION
     document.getElementById("deleteEventBtn").addEventListener("click", function() {
         let eventId = this.getAttribute("data-event-id");
-        let updatedEvents = storedEvents.filter(event => event.id !== eventId);
-        localStorage.setItem('events', JSON.stringify(updatedEvents));
-        location.reload();
+
+        // Remove event from FullCalendar
+        let event = calendar.getEventById(eventId);
+        if (event) {
+            event.remove();
+        }
+
+        // Remove event from localStorage
+        storedEvents = storedEvents.filter(event => event.id !== eventId);
+        localStorage.setItem('events', JSON.stringify(storedEvents));
+
+        // Close modal
+        var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
+        eventDetailModal.hide();
     });
 });
 </script>
