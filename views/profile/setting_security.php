@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Account Settings /</span> Security</h4>
@@ -10,9 +19,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="javascript:void(0);"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/billing_setting"><i class="icon-base bx bx-detail icon-sm me-1_5"></i> Billing &amp; Plans</a>
                         </li>
                     </ul>
                 </div>

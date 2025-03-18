@@ -1,3 +1,13 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
+<!-- /Views/users/edit.php -->
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="container mt-4 mb-4">
         <h2>Edit User</h2>
@@ -29,6 +39,10 @@
             </div>
             <div class="mb-3">
                 <label for="profile_image" class="form-label">Profile Image</label>
+                <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*">
+                <div class="mt-2">
+                    <img id="image_preview" src="<?= htmlspecialchars($user['profile_image'] ?? '/Views/assets/uploads/default-profile.png') ?>" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: block;">
+                </div>
             </div>
             <div class="mb-3">
                 <label for="phone_number" class="form-label">Phone Number</label>

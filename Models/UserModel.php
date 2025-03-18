@@ -1,4 +1,5 @@
 <?php
+// /Models/UserModel.php
 require_once 'Database/Database.php';
 
 class UserModel {
@@ -72,7 +73,6 @@ class UserModel {
             'role_id' => $data['role_id'],
             'profile_image' => $data['profile_image'],
             'phone_number' => $data['phone_number']
-            
         ];
 
         if (isset($data['password'])) {

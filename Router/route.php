@@ -6,7 +6,6 @@ require_once "Controllers/AdminController.php";
 require_once "Controllers/productController.php";
 require_once "Controllers/ProfileController.php";
 require_once "Controllers/SettingSecurityController.php";
-require_once "Controllers/BillingSettingController.php";
 require_once "Controllers/ChartController.php";
 require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
@@ -17,6 +16,7 @@ require_once "Controllers/IceController.php";
 require_once "Controllers/DrinkController.php";
 require_once "Controllers/FoodController.php";
 require_once "Controllers/UserController.php";
+require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
 
 $route = new Router();
@@ -25,11 +25,17 @@ $route = new Router();
 $route->get("/", [LoginController::class, 'login']);
 
 $route->get("/register", [RegisterController::class, 'register']);
+$route->post("/register/store", [RegisterController::class, 'store']);
+
+
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
+
 $route->get("/edit_profile", [ProfileController::class, 'index']);
+
+
+
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
-$route->get("/billing_setting", [BillingSettingController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
@@ -41,6 +47,8 @@ $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
+
+
 
 // -product route -
 $route->get("/products", [productController::class, 'index']);
@@ -60,6 +68,9 @@ $route->post('/users/store', [UserController::class, 'store']);
 $route->get("/users/edit/{user_id}", [UserController::class, 'edit']); // Added
 $route->post("/users/update", [UserController::class, 'update']); // Added
 $route->get("/users/delete/{user_id}", [UserController::class, 'delete']); // Added
+
+// calendar
+$route->get("/calendar", [CalendarController::class, 'index']);
 
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);

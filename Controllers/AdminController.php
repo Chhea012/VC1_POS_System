@@ -11,6 +11,7 @@ class AdminController extends BaseController {
     }
 
     public function index() {
+<<<<<<< HEAD
         // Get Low stock products
         $lowStockProducts = $this->adminHome->getLowStockProducts();
         
@@ -22,6 +23,9 @@ class AdminController extends BaseController {
             'lowStockProducts' => $lowStockProducts,
             'highStockProducts' => $highStockProducts
         ]);
+=======
+        $this->view('admins/dashboard');
+>>>>>>> 21ead53f3d416f570fda699831dbec8eda9d1dee
     }
 }
 
