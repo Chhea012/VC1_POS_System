@@ -28,7 +28,7 @@ class ProductManager
     
         // Add stock filter if provided
         if ($stock_filter === 'high') {
-            $query .= " AND p.quantity > 5"; // Adjust threshold as needed
+            $query .= " AND p.quantity >= 5"; // Adjust threshold as needed
         } elseif ($stock_filter === 'low') {
             $query .= " AND p.quantity <5"; // Adjust threshold as needed
         }
