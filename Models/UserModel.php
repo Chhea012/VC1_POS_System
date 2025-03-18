@@ -103,4 +103,31 @@ class UserModel {
             return false;
         }
     }
+    public function getPasswordUser($userId) {
+        try {
+            // Prepare the SQL query with a placeholder for the user_id
+            $stmt = $this->db->prepare("SELECT password FROM users WHERE user_id = :user_id");
+            
+            // Bind the actual value of userId to the placeholder
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    
+            // Execute the query
+            $stmt->execute();
+    
+            // Fetch the result as an associative array
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            // Check if a result was found and return the password, or false if no result
+            if ($result) {
+                return $result['password'];
+            } else {
+                return false; // No user found with that user_id
+            }
+        } catch (Exception $e) {
+            // Log the error message in case of any exceptions
+            error_log("Error fetching password for user with ID $userId: " . $e->getMessage());
+            return false;
+        }
+    }
+    
 }
