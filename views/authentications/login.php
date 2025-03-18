@@ -75,7 +75,7 @@
                   class="form-control"
                   id="email"
                   name="email"
-                  placeholder="Enter your email or username"
+                  placeholder="Enter your email"
                   autofocus />
                 <div class="text-danger" id="email-error"></div> <!-- Error message -->
               </div>
@@ -139,41 +139,46 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- error of message -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const form = document.getElementById("formAuthentication");
-      const emailInput = document.getElementById("email");
-      const passwordInput = document.getElementById("password");
-      const emailError = document.getElementById("email-error");
-      const passwordError = document.getElementById("password-error");
+          document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("formAuthentication");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const emailError = document.getElementById("email-error");
+        const passwordError = document.getElementById("password-error");
 
-      form.addEventListener("submit", function(event) {
-        let isValid = true;
-        emailError.textContent = "";
-        passwordError.textContent = "";
+        form.addEventListener("submit", function (event) {
+            let isValid = true;
+            emailError.textContent = "";
+            passwordError.textContent = "";
 
-        // Validate Email/Username
-        if (emailInput.value.length < 6) {
-          emailError.textContent = "Username must be more than 6 characters";
-          emailInput.classList.add("is-invalid"); // Bootstrap error style
-          isValid = false;
-        } else {
-          emailInput.classList.remove("is-invalid");
-        }
+            const emailValue = emailInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+            
+            // Email validation using regex
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailPattern.test(emailValue)) {
+                emailError.textContent = "Please enter a valid email address.";
+                emailInput.classList.add("is-invalid");
+                isValid = false;
+            } else {
+                emailInput.classList.remove("is-invalid");
+            }
 
-        // Validate Password
-        if (passwordInput.value.length < 6) {
-          passwordError.textContent = "Password must be more than 6 characters";
-          passwordInput.classList.add("is-invalid");
-          isValid = false;
-        } else {
-          passwordInput.classList.remove("is-invalid");
-        }
+            // Password validation (minimum 6 characters)
+            if (passwordValue.length < 6) {
+                passwordError.textContent = "Password must be at least 6 characters long.";
+                passwordInput.classList.add("is-invalid");
+                isValid = false;
+            } else {
+                passwordInput.classList.remove("is-invalid");
+            }
 
-        // Prevent form submission if validation fails
-        if (!isValid) {
-          event.preventDefault();
-        }
-      });
+            // Prevent form submission if validation fails
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
     });
   </script>
 
