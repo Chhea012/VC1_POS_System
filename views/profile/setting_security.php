@@ -11,9 +11,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="javascript:void(0);"><i class="icon-base bx bx-lock-alt icon-sm me-1_5"></i> Setting Security</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/billing_setting"><i class="icon-base bx bx-detail icon-sm me-1_5"></i> Billing &amp; Plans</a>
-                        </li>
                     </ul>
                 </div>
                 <!-- Change Password -->

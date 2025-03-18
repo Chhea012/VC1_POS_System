@@ -1,5 +1,5 @@
 <?php
-
+// /Controllers/UserController.php
 require_once 'Models/UserModel.php';
 
 class UserController extends BaseController {
@@ -29,16 +29,29 @@ class UserController extends BaseController {
             // Handle file upload
             $profileImage = '';
             if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../images/';
+                $file = $_FILES['profile_image'];
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $maxSize = 2 * 1024 * 1024; // 2MB
+
+                // Validate file
+                if (!in_array($file['type'], $allowedTypes)) {
+                    die("Invalid file type. Only JPG, PNG, and GIF are allowed.");
+                }
+                if ($file['size'] > $maxSize) {
+                    die("File too large. Maximum size is 2MB.");
+                }
+
+                // Define upload directory
+                $uploadDir = __DIR__ . '/../Views/assets/uploads/';
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $fileName = uniqid() . '-' . basename($_FILES['profile_image']['name']);
+                $fileName = uniqid() . '-' . basename($file['name']);
                 $uploadFile = $uploadDir . $fileName;
-                if (!move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
+                if (!move_uploaded_file($file['tmp_name'], $uploadFile)) {
                     die("Failed to upload image.");
                 }
-                $profileImage = $fileName;
+                $profileImage = '/Views/assets/uploads/' . $fileName; // Web-accessible path
             }
 
             // Prepare data with encrypted password
@@ -65,7 +78,6 @@ class UserController extends BaseController {
         }
     }
 
-    // Added method to show edit form
     public function edit($user_id) {
         $user = $this->user->getUserById($user_id);
         if (!$user) {
@@ -75,7 +87,6 @@ class UserController extends BaseController {
         $this->view('users/edit', ['user' => $user, 'roles' => $roles]);
     }
 
-    // Added method to update user
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user_id = (int)$_POST['user_id'];
@@ -86,17 +97,32 @@ class UserController extends BaseController {
             // Handle file upload (optional update)
             $profileImage = $_POST['existing_image'] ?? '';
             if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../images/';
+                $file = $_FILES['profile_image'];
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                $maxSize = 2 * 1024 * 1024; // 2MB
+
+                // Validate file
+                if (!in_array($file['type'], $allowedTypes)) {
+                    die("Invalid file type. Only JPG, PNG, and GIF are allowed.");
+                }
+                if ($file['size'] > $maxSize) {
+                    die("File too large. Maximum size is 2MB.");
+                }
+
+                // Define upload directory
+                $uploadDir = __DIR__ . '/../Views/assets/uploads/';
                 if (!file_exists($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $fileName = uniqid() . '-' . basename($_FILES['profile_image']['name']);
+                $fileName = uniqid() . '-' . basename($file['name']);
                 $uploadFile = $uploadDir . $fileName;
-                if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadFile)) {
-                    $profileImage = $fileName;
+                if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
+                    $profileImage = '/Views/assets/uploads/' . $fileName;
+
                     // Delete old image if it exists
-                    if (!empty($_POST['existing_image']) && file_exists($uploadDir . $_POST['existing_image'])) {
-                        unlink($uploadDir . $_POST['existing_image']);
+                    $oldImagePath = $uploadDir . basename($_POST['existing_image']);
+                    if (!empty($_POST['existing_image']) && file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
                     }
                 }
             }
@@ -128,12 +154,12 @@ class UserController extends BaseController {
             $this->redirect('/users');
         }
     }
-    // Added method to delete user
+
     public function delete($user_id) {
         $user = $this->user->getUserById($user_id);
         if ($user) {
-            $uploadDir = '../images/';
-            $imagePath = $uploadDir . $user['profile_image'];
+            $uploadDir = __DIR__ . '/../Views/assets/uploads/';
+            $imagePath = $uploadDir . basename($user['profile_image']);
             if (!empty($user['profile_image']) && file_exists($imagePath)) {
                 if (!unlink($imagePath)) {
                     die("Failed to delete image: $imagePath");
@@ -143,7 +169,8 @@ class UserController extends BaseController {
         }
         $this->redirect('/users');
     }
-    public function authentication()  {
+
+    public function authentication() {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $user = $this->user->getUserByEmail($email);
@@ -151,13 +178,14 @@ class UserController extends BaseController {
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
-            $_SESSION['user'] = $user; // Store user ID or relevant data
-            $this->redirect("/dashboard");   // Redirect to dashboard
+            $_SESSION['user'] = $user;
+            $this->redirect("/dashboard");
         } else {
             $data = ['error' => 'Invalid Email or Password!'];
-            $this->redirect('/'); // Show login with error
+            $this->redirect('/');
         }
     }
+
     public function logout() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();

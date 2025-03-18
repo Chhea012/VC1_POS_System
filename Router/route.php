@@ -6,7 +6,6 @@ require_once "Controllers/AdminController.php";
 require_once "Controllers/productController.php";
 require_once "Controllers/ProfileController.php";
 require_once "Controllers/SettingSecurityController.php";
-require_once "Controllers/BillingSettingController.php";
 require_once "Controllers/ChartController.php";
 require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
@@ -27,9 +26,12 @@ $route->get("/", [LoginController::class, 'login']);
 $route->get("/register", [RegisterController::class, 'register']);
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
+
 $route->get("/edit_profile", [ProfileController::class, 'index']);
+
+
+
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
-$route->get("/billing_setting", [BillingSettingController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
