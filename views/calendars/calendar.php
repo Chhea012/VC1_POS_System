@@ -105,7 +105,7 @@ if (!isset($_SESSION['user'])) {
         ...event,
         backgroundColor: event.category === "stock" ? "orange" :
                          event.category === "personal" ? "lightgreen" :
-                         event.category === "business" ? "yellow" : "blue",
+                         event.category === "business" ? "lightblue" : "blue",
         borderColor: event.category === "stock" ? "white" :
                      event.category === "personal" ? "white" :
                      event.category === "business" ? "white" : "white",
@@ -150,7 +150,7 @@ if (!isset($_SESSION['user'])) {
             ...event,
             backgroundColor: event.category === "stock" ? "orange" :
                              event.category === "personal" ? "lightgreen" :
-                             event.category === "business" ? "yellow" : "blue",
+                             event.category === "business" ? "lightblue" : "blue",
             borderColor: event.category === "stock" ? "white" :
                          event.category === "personal" ? "white" :
                          event.category === "business" ? "white" : "white",
