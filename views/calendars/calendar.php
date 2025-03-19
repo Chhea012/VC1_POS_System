@@ -76,6 +76,7 @@ if (!isset($_SESSION['user'])) {
                 <p><strong>Date:</strong> <span id="detailDate"></span></p>
                 <p><strong>Category:</strong> <span id="detailCategory"></span></p>
                 <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                <button class="btn btn-warning " id="editEventBtn">Edit Event</button>
                 <button class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
             </div>
         </div>
@@ -83,41 +84,180 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    
-    let storedEvents = JSON.parse(localStorage.getItem('events')) || [
-        { title: 'New Product', start: '2025-02-17', color: '#00000', category: 'business', description: 'Launch new product' },
-        { title: 'Meeting with Client', start: '2025-02-17', color: '#9370DB', category: 'personal', description: 'Discuss project' },
-        { title: 'New Stock', start: '2025-02-19', color: '#90EE90', category: 'stock', description: 'Restock inventory' },
-    ];
+    document.addEventListener("DOMContentLoaded", function () {
+    var calendarEl = document.getElementById("calendar");
+
+    let storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+    storedEvents = storedEvents.map((event, index) => ({
+        id: event.id || index.toString(),
+        ...event,
+    }));
+    localStorage.setItem("events", JSON.stringify(storedEvents));
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        events: storedEvents,
-        eventClick: function(info) {
+        initialView: "dayGridMonth",
+    headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+    },
+    events: storedEvents.map(event => ({
+        ...event,
+        backgroundColor: event.category === "stock" ? "orange" :
+                         event.category === "personal" ? "lightgreen" :
+                         event.category === "business" ? "lightblue" : "blue",
+        borderColor: event.category === "stock" ? "white" :
+                     event.category === "personal" ? "white" :
+                     event.category === "business" ? "white" : "white",
+    })),
+
+        eventClick: function (info) {
             document.getElementById("detailTitle").innerText = info.event.title;
             document.getElementById("detailDate").innerText = info.event.startStr;
             document.getElementById("detailCategory").innerText = info.event.extendedProps.category;
             document.getElementById("detailDescription").innerText = info.event.extendedProps.description;
+
+            document.getElementById("editEventBtn").setAttribute("data-event-id", info.event.id);
             document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
-            
+
             var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
             modal.show();
-        }
+        },
     });
+
     calendar.render();
 
-    document.getElementById("deleteEventBtn").addEventListener("click", function() {
-        let eventId = this.getAttribute("data-event-id");
-        let updatedEvents = storedEvents.filter(event => event.id !== eventId);
-        localStorage.setItem('events', JSON.stringify(updatedEvents));
-        location.reload();
+    // ✅ Handle category filter selection (Fix: Hide/Show Events Properly)
+    document.querySelectorAll(".dropdown-item").forEach((item) => {
+    item.addEventListener("click", function (e) {
+        e.preventDefault();
+        let filterCategory = this.getAttribute("data-filter");
+
+        document.getElementById("eventFilter").innerText = this.innerText;
+        document.getElementById("eventFilter").setAttribute("data-selected", filterCategory);
+
+        // 🔹 Remove all events before adding the filtered ones
+        calendar.removeAllEvents();
+
+        let filteredEvents = storedEvents;
+
+        if (filterCategory !== "all") {
+            filteredEvents = storedEvents.filter(event => event.category === filterCategory);
+        }
+
+        // 🔹 Ensure colors are applied again
+        filteredEvents = filteredEvents.map(event => ({
+            ...event,
+            backgroundColor: event.category === "stock" ? "orange" :
+                             event.category === "personal" ? "lightgreen" :
+                             event.category === "business" ? "lightblue" : "blue",
+            borderColor: event.category === "stock" ? "white" :
+                         event.category === "personal" ? "white" :
+                         event.category === "business" ? "white" : "white",
+        }));
+
+        calendar.addEventSource(filteredEvents);
     });
 });
+
+
+    // ✅ ADD EVENT FUNCTION
+    document.getElementById("eventForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let title = document.getElementById("eventTitle").value;
+        let date = document.getElementById("eventDate").value;
+        let category = document.getElementById("eventCategory").value;
+        let description = document.getElementById("eventDescription").value;
+
+        if (!title || !date) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        let eventId = new Date().getTime().toString();
+
+        let newEvent = {
+            id: eventId,
+            title: title,
+            start: date,
+            category: category,
+            description: description,
+        };
+
+        storedEvents.push(newEvent);
+        localStorage.setItem("events", JSON.stringify(storedEvents));
+
+        calendar.addEvent(newEvent);
+
+        var addEventModal = bootstrap.Modal.getInstance(document.getElementById("addEventModal"));
+        addEventModal.hide();
+        document.getElementById("eventForm").reset();
+    });
+
+    // ✅ DELETE EVENT FUNCTION
+    document.getElementById("deleteEventBtn").addEventListener("click", function () {
+        let eventId = this.getAttribute("data-event-id");
+
+        let event = calendar.getEventById(eventId);
+        if (event) {
+            event.remove();
+        }
+
+        storedEvents = storedEvents.filter((event) => event.id !== eventId);
+        localStorage.setItem("events", JSON.stringify(storedEvents));
+
+        var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
+        eventDetailModal.hide();
+    });
+
+    // ✅ EDIT EVENT FUNCTION
+    document.getElementById("editEventBtn").addEventListener("click", function () {
+        let eventId = this.getAttribute("data-event-id");
+        let event = storedEvents.find((event) => event.id === eventId);
+
+        if (event) {
+            document.getElementById("eventTitle").value = event.title;
+            document.getElementById("eventDate").value = event.start;
+            document.getElementById("eventCategory").value = event.category;
+            document.getElementById("eventDescription").value = event.description;
+
+            var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
+            eventDetailModal.hide();
+
+            var addEventModal = new bootstrap.Modal(document.getElementById("addEventModal"));
+            addEventModal.show();
+
+            document.getElementById("eventForm").onsubmit = function (e) {
+                e.preventDefault();
+
+                let calendarEvent = calendar.getEventById(eventId);
+                if (calendarEvent) {
+                    calendarEvent.remove();
+                }
+
+                storedEvents = storedEvents.filter((event) => event.id !== eventId);
+
+                let updatedEvent = {
+                    id: eventId,
+                    title: document.getElementById("eventTitle").value,
+                    start: document.getElementById("eventDate").value,
+                    category: document.getElementById("eventCategory").value,
+                    description: document.getElementById("eventDescription").value,
+                };
+
+                storedEvents.push(updatedEvent);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+
+                calendar.addEvent(updatedEvent);
+
+                addEventModal.hide();
+                document.getElementById("eventForm").reset();
+                document.getElementById("eventForm").onsubmit = null;
+            };
+        }
+    });
+});
+
+
 </script>
