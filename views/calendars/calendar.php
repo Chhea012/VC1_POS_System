@@ -76,6 +76,7 @@ if (!isset($_SESSION['user'])) {
                 <p><strong>Date:</strong> <span id="detailDate"></span></p>
                 <p><strong>Category:</strong> <span id="detailCategory"></span></p>
                 <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                <button class="btn btn-warning " id="editEventBtn">Edit Event</button>
                 <button class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
             </div>
         </div>
@@ -107,6 +108,7 @@ if (!isset($_SESSION['user'])) {
             document.getElementById("detailDescription").innerText = info.event.extendedProps.description;
 
             // Save event ID in button attribute for deletion
+            document.getElementById("editEventBtn").setAttribute("data-event-id", info.event.id);
             document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
 
             var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
@@ -173,6 +175,65 @@ if (!isset($_SESSION['user'])) {
         // Close modal
         var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
         eventDetailModal.hide();
+
     });
+
+// EDIT EVENT FUNCTION
+document.getElementById("editEventBtn").addEventListener("click", function () {
+    let eventId = this.getAttribute("data-event-id");
+    let event = storedEvents.find(event => event.id === eventId);
+
+    if (event) {
+        document.getElementById("eventTitle").value = event.title;
+        document.getElementById("eventDate").value = event.start;
+        document.getElementById("eventCategory").value = event.category;
+        document.getElementById("eventDescription").value = event.description;
+
+        // Hide details modal, show edit modal
+        var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
+        eventDetailModal.hide();
+
+        var addEventModal = new bootstrap.Modal(document.getElementById("addEventModal"));
+        addEventModal.show();
+
+        // Update event when saving
+        document.getElementById("eventForm").onsubmit = function (e) {
+            e.preventDefault();
+
+            // Remove old event from FullCalendar
+            let calendarEvent = calendar.getEventById(eventId);
+            if (calendarEvent) {
+                calendarEvent.remove(); // Deletes the old event from the calendar
+            }
+
+            // Remove old event from storedEvents
+            storedEvents = storedEvents.filter(event => event.id !== eventId);
+
+            // Create the updated event
+            let updatedEvent = {
+                id: eventId, // Keep same ID to prevent duplication
+                title: document.getElementById("eventTitle").value,
+                start: document.getElementById("eventDate").value,
+                category: document.getElementById("eventCategory").value,
+                description: document.getElementById("eventDescription").value
+            };
+
+            // Add updated event to storedEvents
+            storedEvents.push(updatedEvent);
+
+            // Update localStorage
+            localStorage.setItem("events", JSON.stringify(storedEvents));
+
+            // Re-add updated event to FullCalendar
+            calendar.addEvent(updatedEvent);
+
+            addEventModal.hide();
+            document.getElementById("eventForm").reset();
+            document.getElementById("eventForm").onsubmit = null; // Reset form handler
+        };
+    }
+});
+
+
 });
 </script>
