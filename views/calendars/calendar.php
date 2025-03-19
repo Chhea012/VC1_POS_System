@@ -84,42 +84,85 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+    document.addEventListener("DOMContentLoaded", function () {
+    var calendarEl = document.getElementById("calendar");
 
-    // Ensure stored events have unique IDs
-    let storedEvents = JSON.parse(localStorage.getItem('events')) || [];
-    storedEvents = storedEvents.map((event, index) => ({ id: event.id || index.toString(), ...event }));
-    localStorage.setItem('events', JSON.stringify(storedEvents));
+    let storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+    storedEvents = storedEvents.map((event, index) => ({
+        id: event.id || index.toString(),
+        ...event,
+    }));
+    localStorage.setItem("events", JSON.stringify(storedEvents));
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        events: storedEvents,
-        eventClick: function(info) {
-            // Show event details in the modal
+        initialView: "dayGridMonth",
+    headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+    },
+    events: storedEvents.map(event => ({
+        ...event,
+        backgroundColor: event.category === "stock" ? "orange" :
+                         event.category === "personal" ? "lightgreen" :
+                         event.category === "business" ? "yellow" : "blue",
+        borderColor: event.category === "stock" ? "white" :
+                     event.category === "personal" ? "white" :
+                     event.category === "business" ? "white" : "white",
+    })),
+
+        eventClick: function (info) {
             document.getElementById("detailTitle").innerText = info.event.title;
             document.getElementById("detailDate").innerText = info.event.startStr;
             document.getElementById("detailCategory").innerText = info.event.extendedProps.category;
             document.getElementById("detailDescription").innerText = info.event.extendedProps.description;
 
-            // Save event ID in button attribute for deletion
             document.getElementById("editEventBtn").setAttribute("data-event-id", info.event.id);
             document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
 
             var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
             modal.show();
-        }
+        },
     });
 
     calendar.render();
 
-    // ADD EVENT FUNCTION
-    document.getElementById("eventForm").addEventListener("submit", function(e) {
+    // ✅ Handle category filter selection (Fix: Hide/Show Events Properly)
+    document.querySelectorAll(".dropdown-item").forEach((item) => {
+    item.addEventListener("click", function (e) {
+        e.preventDefault();
+        let filterCategory = this.getAttribute("data-filter");
+
+        document.getElementById("eventFilter").innerText = this.innerText;
+        document.getElementById("eventFilter").setAttribute("data-selected", filterCategory);
+
+        // 🔹 Remove all events before adding the filtered ones
+        calendar.removeAllEvents();
+
+        let filteredEvents = storedEvents;
+
+        if (filterCategory !== "all") {
+            filteredEvents = storedEvents.filter(event => event.category === filterCategory);
+        }
+
+        // 🔹 Ensure colors are applied again
+        filteredEvents = filteredEvents.map(event => ({
+            ...event,
+            backgroundColor: event.category === "stock" ? "orange" :
+                             event.category === "personal" ? "lightgreen" :
+                             event.category === "business" ? "yellow" : "blue",
+            borderColor: event.category === "stock" ? "white" :
+                         event.category === "personal" ? "white" :
+                         event.category === "business" ? "white" : "white",
+        }));
+
+        calendar.addEventSource(filteredEvents);
+    });
+});
+
+
+    // ✅ ADD EVENT FUNCTION
+    document.getElementById("eventForm").addEventListener("submit", function (e) {
         e.preventDefault();
 
         let title = document.getElementById("eventTitle").value;
@@ -132,7 +175,6 @@ if (!isset($_SESSION['user'])) {
             return;
         }
 
-        // Generate unique ID
         let eventId = new Date().getTime().toString();
 
         let newEvent = {
@@ -140,100 +182,82 @@ if (!isset($_SESSION['user'])) {
             title: title,
             start: date,
             category: category,
-            description: description
+            description: description,
         };
 
-        // Add event to localStorage
         storedEvents.push(newEvent);
         localStorage.setItem("events", JSON.stringify(storedEvents));
 
-        // Add event to FullCalendar
         calendar.addEvent(newEvent);
 
-        // Close modal after adding event
         var addEventModal = bootstrap.Modal.getInstance(document.getElementById("addEventModal"));
         addEventModal.hide();
-
-        // Clear form fields
         document.getElementById("eventForm").reset();
     });
 
-    // DELETE EVENT FUNCTION
-    document.getElementById("deleteEventBtn").addEventListener("click", function() {
+    // ✅ DELETE EVENT FUNCTION
+    document.getElementById("deleteEventBtn").addEventListener("click", function () {
         let eventId = this.getAttribute("data-event-id");
 
-        // Remove event from FullCalendar
         let event = calendar.getEventById(eventId);
         if (event) {
             event.remove();
         }
 
-        // Remove event from localStorage
-        storedEvents = storedEvents.filter(event => event.id !== eventId);
-        localStorage.setItem('events', JSON.stringify(storedEvents));
+        storedEvents = storedEvents.filter((event) => event.id !== eventId);
+        localStorage.setItem("events", JSON.stringify(storedEvents));
 
-        // Close modal
         var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
         eventDetailModal.hide();
-
     });
 
-// EDIT EVENT FUNCTION
-document.getElementById("editEventBtn").addEventListener("click", function () {
-    let eventId = this.getAttribute("data-event-id");
-    let event = storedEvents.find(event => event.id === eventId);
+    // ✅ EDIT EVENT FUNCTION
+    document.getElementById("editEventBtn").addEventListener("click", function () {
+        let eventId = this.getAttribute("data-event-id");
+        let event = storedEvents.find((event) => event.id === eventId);
 
-    if (event) {
-        document.getElementById("eventTitle").value = event.title;
-        document.getElementById("eventDate").value = event.start;
-        document.getElementById("eventCategory").value = event.category;
-        document.getElementById("eventDescription").value = event.description;
+        if (event) {
+            document.getElementById("eventTitle").value = event.title;
+            document.getElementById("eventDate").value = event.start;
+            document.getElementById("eventCategory").value = event.category;
+            document.getElementById("eventDescription").value = event.description;
 
-        // Hide details modal, show edit modal
-        var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
-        eventDetailModal.hide();
+            var eventDetailModal = bootstrap.Modal.getInstance(document.getElementById("eventDetailModal"));
+            eventDetailModal.hide();
 
-        var addEventModal = new bootstrap.Modal(document.getElementById("addEventModal"));
-        addEventModal.show();
+            var addEventModal = new bootstrap.Modal(document.getElementById("addEventModal"));
+            addEventModal.show();
 
-        // Update event when saving
-        document.getElementById("eventForm").onsubmit = function (e) {
-            e.preventDefault();
+            document.getElementById("eventForm").onsubmit = function (e) {
+                e.preventDefault();
 
-            // Remove old event from FullCalendar
-            let calendarEvent = calendar.getEventById(eventId);
-            if (calendarEvent) {
-                calendarEvent.remove(); // Deletes the old event from the calendar
-            }
+                let calendarEvent = calendar.getEventById(eventId);
+                if (calendarEvent) {
+                    calendarEvent.remove();
+                }
 
-            // Remove old event from storedEvents
-            storedEvents = storedEvents.filter(event => event.id !== eventId);
+                storedEvents = storedEvents.filter((event) => event.id !== eventId);
 
-            // Create the updated event
-            let updatedEvent = {
-                id: eventId, // Keep same ID to prevent duplication
-                title: document.getElementById("eventTitle").value,
-                start: document.getElementById("eventDate").value,
-                category: document.getElementById("eventCategory").value,
-                description: document.getElementById("eventDescription").value
+                let updatedEvent = {
+                    id: eventId,
+                    title: document.getElementById("eventTitle").value,
+                    start: document.getElementById("eventDate").value,
+                    category: document.getElementById("eventCategory").value,
+                    description: document.getElementById("eventDescription").value,
+                };
+
+                storedEvents.push(updatedEvent);
+                localStorage.setItem("events", JSON.stringify(storedEvents));
+
+                calendar.addEvent(updatedEvent);
+
+                addEventModal.hide();
+                document.getElementById("eventForm").reset();
+                document.getElementById("eventForm").onsubmit = null;
             };
-
-            // Add updated event to storedEvents
-            storedEvents.push(updatedEvent);
-
-            // Update localStorage
-            localStorage.setItem("events", JSON.stringify(storedEvents));
-
-            // Re-add updated event to FullCalendar
-            calendar.addEvent(updatedEvent);
-
-            addEventModal.hide();
-            document.getElementById("eventForm").reset();
-            document.getElementById("eventForm").onsubmit = null; // Reset form handler
-        };
-    }
+        }
+    });
 });
 
 
-});
 </script>
