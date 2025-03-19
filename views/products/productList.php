@@ -6,6 +6,8 @@ if (!isset($_SESSION['user'])) {
     header("Location: /");
     exit();
 }
+
+
 ?>
 <?php require_once 'Models/productModel.php' ?> 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -78,47 +80,42 @@ if (!isset($_SESSION['user'])) {
         <div class="card-body">
             <h5 class="mb-3">Filter</h5>
             <div class="row mb-3">
-                <!-- Filter Fields -->
-                <div class="col-md-4">
+                <!-- Category Filter -->
+                <div class="col-md-4 w-50">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
-                            Status
+                            <?= isset($_GET['category_id']) ? htmlspecialchars($categories[array_search($_GET['category_id'], array_column($categories, 'category_id'))]['category_name']) : 'Category' ?>
                             <i class="bi bi-chevron-right"></i>
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" href="#">Active</a></li>
-                            <li><a class="dropdown-item" href="#">Inactive</a></li>
-                            <li><a class="dropdown-item" href="#">Confirmed</a></li>
-                            <li><a class="dropdown-item" href="#">Schedule</a></li>
+                            <!-- Show "All Categories" Option -->
+                            <li><a class="dropdown-item" href="?<?= http_build_query(array_merge($_GET, ['category_id' => null])) ?>">All Categories</a></li>
+                            
+                            <!-- Loop through categories -->
+                            <?php foreach ($categories as $category): ?>
+                                <li>
+                                    <a class="dropdown-item" href="?<?= http_build_query(array_merge($_GET, ['category_id' => $category['category_id']])) ?>">
+                                        <?= htmlspecialchars($category['category_name']) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- stock  -->
+                <div class="col-md-4 w-50">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
-                            Category
+                            <?= isset($_GET['stock']) ? ucfirst($_GET['stock']) . ' Stock' : 'Stock' ?>
                             <i class="bi bi-chevron-right"></i>
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" href="#">Drink</a></li>
-                            <li><a class="dropdown-item" href="#">Food</a></li>
-                            <li><a class="dropdown-item" href="#">Snack</a></li>
+                            <li><a class="dropdown-item" href="?<?= http_build_query(array_merge($_GET, ['stock' => null])) ?>">All Stock</a></li>
+                            <li><a class="dropdown-item" href="?<?= http_build_query(array_merge($_GET, ['stock' => 'high'])) ?>">High Stock</a></li>
+                            <li><a class="dropdown-item" href="?<?= http_build_query(array_merge($_GET, ['stock' => 'low'])) ?>">Low Stock</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
-                            Stock
-                            <i class="bi bi-chevron-right"></i>
-                        </button>
-                        <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" href="#">In Stock</a></li>
-                            <li><a class="dropdown-item" href="#">Out of Stock</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             <div class="row align-items-center mt-5">
                         <div class="col-md-4">

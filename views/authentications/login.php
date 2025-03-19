@@ -65,7 +65,7 @@
             </div>
             <!-- /Logo -->
             <h4 class="mb-2">Welcome to Mak Oun Sing 👋</h4>
-            <p class="mb-4">Please sign-in your account go to dashboard</p>
+            <p class="mb-4">Please sign-in your account go to Dashboard</p>
 
             <form id="formAuthentication" class="mb-3" action="/users/authentication" method="POST">
               <div class="mb-3">
