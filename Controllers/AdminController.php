@@ -16,11 +16,13 @@ class AdminController extends BaseController {
         
         // Get High stock products
         $highStockProducts = $this->adminHome->getHighStockProducts();
+        $totalStock = $this->adminHome->totalProduct();
 
         // Pass both the low and high stock products to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
-            'highStockProducts' => $highStockProducts
+            'highStockProducts' => $highStockProducts,
+            'totalStock' => $totalStock
         ]);
 
     }

@@ -27,6 +27,14 @@ class adminHome {
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // ✅ Fetch all results
     }
+
+    public function totalProduct(){
+        $query = "SELECT SUM(products.quantity) AS total FROM products";
+    
+        $stmt = $this->db->query($query);
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Fetch only one row
+    }
+    
 }
 
 
