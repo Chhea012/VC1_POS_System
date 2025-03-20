@@ -14,6 +14,40 @@ class ProductManager
         }
     }
 
+    public function getAllpage($limit, $offset, $category_id = null, $stock_filter = null)
+    {
+        $query = "SELECT p.*, c.category_name
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  WHERE 1=1"; // Use 1=1 to easily append conditions
+    
+        // Add category filter if provided
+        if ($category_id !== null) {
+            $query .= " AND p.category_id = :category_id";
+        }
+    
+        // Add stock filter if provided
+        if ($stock_filter === 'high') {
+            $query .= " AND p.quantity >= 5"; // Adjust threshold as needed
+        } elseif ($stock_filter === 'low') {
+            $query .= " AND p.quantity <5"; // Adjust threshold as needed
+        }
+    
+        $query .= " ORDER BY p.product_id DESC
+                    LIMIT :limit OFFSET :offset";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+    
+        if ($category_id !== null) {
+            $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        }
+    
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Fetch all products with category names
     public function getAllProducts()
     {
@@ -138,6 +172,4 @@ class ProductManager
             $stmt = $this->db->prepare($sql); // ✅ Correct: Use prepare() instead of query()
             $stmt->execute(['product_id' => $product_id]); // ✅ Pass the parameter separately
         }
-        
-    
 }

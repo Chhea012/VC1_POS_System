@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <?php require_once "Models/iceModel.php"; ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -18,6 +27,7 @@
                     <div class="card p-4 shadow-sm">
                         <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-100" alt="Popular IceDessert">
                         <div class="mt-2">⭐⭐⭐⭐⭐</div>
+                        <p class="mt-2"><?= htmlspecialchars($product['product_name']) ?></p>
                     </div>
                 </div>
             <?php endforeach;
@@ -130,9 +140,14 @@ document.getElementById('barcode').addEventListener('blur', function() {
 </script>
 
 
+<<<<<<< HEAD
 <!-- Added Low Stock Alert Logic with Bootstrap Toast -->
 <?php
 // Check for low stock and prepare alert content
+=======
+<!-- Low Stock Alert -->
+<?php
+>>>>>>> b8a297d7bab1bb3a946c251fb85b408afb80c1d7
 $low_stock_items = [];
 foreach ($products as $product) {
     if (isset($product['quantity']) && $product['quantity'] < 5) {
@@ -141,6 +156,7 @@ foreach ($products as $product) {
 }
 ?>
 
+<<<<<<< HEAD
 <!-- Bootstrap Toast for Low Stock Alert -->
 <?php if (!empty($low_stock_items)): ?>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -169,3 +185,32 @@ foreach ($products as $product) {
         });
     </script>
 <?php endif; ?>
+=======
+<?php if (!empty($low_stock_items)): ?>
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="lowStockToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+            <strong class="me-auto">Low Stock Alert</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <ul class="list-unstyled mb-0">
+                <?php foreach ($low_stock_items as $item): ?>
+                    <li><?php echo $item; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var lowStockToast = new bootstrap.Toast(document.getElementById('lowStockToast'), {
+            delay: 5000 
+        });
+        lowStockToast.show();
+    });
+</script>
+<?php endif; ?>
+>>>>>>> b8a297d7bab1bb3a946c251fb85b408afb80c1d7

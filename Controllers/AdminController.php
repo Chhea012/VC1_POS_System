@@ -1,7 +1,31 @@
 <?php
+require_once 'Models/AdminModel.php';
 
 class AdminController extends BaseController {
+
+    private $adminHome;
+
+    public function __construct()
+    {
+        $this->adminHome = new adminHome();
+    }
+
     public function index() {
-        $this->view('admins/dashboard');
+        // Get Low stock products
+        $lowStockProducts = $this->adminHome->getLowStockProducts();
+        
+        // Get High stock products
+        $highStockProducts = $this->adminHome->getHighStockProducts();
+        $totalStock = $this->adminHome->totalProduct();
+
+        // Pass both the low and high stock products to the view
+        $this->view('admins/dashboard', [
+            'lowStockProducts' => $lowStockProducts,
+            'highStockProducts' => $highStockProducts,
+            'totalStock' => $totalStock
+        ]);
+
     }
 }
+
+

@@ -12,25 +12,30 @@ class productController extends BaseController
 
     public function index()
     {
-        $itemsPerPage = isset($_GET['items']) ? (int) $_GET['items'] : 10;
-        $currentPage  = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $itemsPerPage = isset($_GET['items']) ? (int)$_GET['items'] : 10;
+        $currentPage  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset       = ($currentPage - 1) * $itemsPerPage;
-
-        $products      = $this->productManager->getAllProducts(); // Note: Pagination not fully implemented here
-        $totalProducts = $this->productManager->getTotalProducts();
+        $category_id  = isset($_GET['category_id']) && !empty($_GET['category_id']) ? (int)$_GET['category_id'] : null;
+        $stock_filter = isset($_GET['stock']) ? $_GET['stock'] : null;
+    
+        $products = $this->productManager->getAllpage($itemsPerPage, $offset, $category_id, $stock_filter);
+        $totalProducts = $this->productManager->getTotalProducts($category_id, $stock_filter);
         $totalPages    = ceil($totalProducts / $itemsPerPage);
-
+        $categories    = $this->productManager->getCategories(); // Fetch categories for dropdown
+    
         $salesData = [
             'in_store'  => ['amount' => 500, 'orders' => 56, 'change' => 4.7, 'positive' => true],
             'website'   => ['amount' => 100, 'orders' => 56, 'change' => 2.7, 'positive' => true],
             'affiliate' => ['amount' => 500, 'orders' => 56, 'change' => 3.7, 'positive' => false],
         ];
+    
         $this->view('products/productList', [
             'products'     => $products,
             'currentPage'  => $currentPage,
             'itemsPerPage' => $itemsPerPage,
             'totalPages'   => $totalPages,
             'salesData'    => $salesData,
+            'categories'   => $categories, // Pass categories to the view
         ]);
     }
 

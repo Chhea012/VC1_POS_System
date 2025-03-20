@@ -1,3 +1,12 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <div class="m-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h4 text-secondary">Update Product</h1>
@@ -6,7 +15,6 @@
             <a href="/products" class="btn btn-secondary">Cancel</a>
         </div>
     </div>
-
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
             <i class="fas fa-check-circle"></i>
@@ -15,7 +23,6 @@
         </div>
         <?php unset($_SESSION['success_message']); ?>
     <?php endif; ?>
-
     <?php if (isset($_SESSION['error_message'])): ?>
         <div class="alert alert-danger alert-dismissible fade show custom-alert" role="alert">
             <i class="fas fa-exclamation-circle"></i>

@@ -25,11 +25,17 @@ $route = new Router();
 $route->get("/", [LoginController::class, 'login']);
 
 $route->get("/register", [RegisterController::class, 'register']);
+$route->post("/register/store", [RegisterController::class, 'store']);
+
+
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
 
 $route->get("/edit_profile", [ProfileController::class, 'index']);
 
+// Profile routes
+$route->get("/profile", [ProfileController::class, 'index']); // Profile page
+$route->post("/profile/update", [ProfileController::class, 'update']); // Profile update route
 
 
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
