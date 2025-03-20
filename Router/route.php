@@ -45,7 +45,7 @@ $route->get("/category", [categoryController::class, 'index']);
 $route->get("/drink", [InventoryController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
-$route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
+// $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
@@ -75,4 +75,5 @@ $route->get("/calendar", [CalendarController::class, 'index']);
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
+$route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
 $route->route();

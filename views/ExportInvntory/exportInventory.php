@@ -9,10 +9,12 @@ if (!isset($_SESSION['user'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Inventory Report</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -51,7 +53,8 @@ if (!isset($_SESSION['user'])) {
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
@@ -110,10 +113,26 @@ if (!isset($_SESSION['user'])) {
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h4 class="date-time">DateTime: <?= date('l, F jS, Y') ?></h4>
-        <h1>Products List</h1>
+    <div class="container justify-content-between row">   
+        <img src="../assets/modules/img/logo/logo.png" alt="" class="img-fluid" style="width: 100px;">
+        <div class="container mt-3 ">
+            <div class="col-8">
+                <p>Street: 2004, Tek Thla, Sen Sok, Phnom Penh</p>
+                <p>Phone: (+855) 456-7890</p>
+                <p>Date: <span id="invoiceDate"></span></p>
+
+            </div>
+
+        </div>
+
+        <h3 class="fw-bold text-center mt-3">Inventory Product Report</h3>
+
+        <script>
+            // Set current date
+            document.getElementById('invoiceDate').textContent = new Date().toLocaleDateString();
+        </script>
         <table>
             <thead>
                 <tr>
@@ -128,22 +147,32 @@ if (!isset($_SESSION['user'])) {
             <tbody>
                 <?php foreach ($products as $product): ?>
                 <tr>
-                    <td><?= htmlspecialchars($product['name']) ?></td>
-                    <td><span class="badge"><?= htmlspecialchars($product['category_name']) ?></span></td>
                     <td>
-                        <span class="<?= isset($product['quantity']) && $product['quantity'] < 5 ? 'low-stock' : 'high-stock' ?>">
+                        <?= htmlspecialchars($product['name']) ?>
+                    </td>
+                    <td><span class="badge">
+                            <?= htmlspecialchars($product['category_name']) ?>
+                        </span></td>
+                    <td>
+                        <span
+                            class="<?= isset($product['quantity']) && $product['quantity'] < 5 ? 'low-stock' : 'high-stock' ?>">
                             <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
                         </span>
                     </td>
-                    <td>$<?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
-                    <td><?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
+                    <td>$
+                        <?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?>
+                    </td>
+                    <td>
+                        <?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?>
+                    </td>
                     <td>
                         <?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
-        </table>    
+        </table>
     </div>
 </body>
+
 </html>
