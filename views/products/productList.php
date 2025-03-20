@@ -230,7 +230,7 @@
                                             <i class="bi bi-trash me-2"></i>Delete
                                         </a>
                                         <form id="delete-form-<?php echo $product['product_id']?>" action="/products/delete/<?php echo $product['product_id']?>" method="POST" style="display:none;">
-                                            <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
+                                            <input type="hidden" name="_method" value="DELETE">
                                         </form>
                                     </li>
                                     </ul>
@@ -309,6 +309,44 @@
         </div>
     </div>
 </div>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+        <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastText">
+                    Success message here
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var toastElement = document.getElementById("toastMessage");
+            var toastText = document.getElementById("toastText");
+
+            <?php if (isset($_SESSION['success_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                toastElement.classList.add("bg-success");
+            <?php unset($_SESSION['success_message']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                toastElement.classList.add("bg-danger");
+            <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
+
+            var toast = new bootstrap.Toast(toastElement, {
+                delay: 1000 // Set delay to 1000ms (1 second)
+            });
+            toast.show();
+        });
+    </script>
+<?php endif; ?>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const productSelect = document.getElementById("productSelect");

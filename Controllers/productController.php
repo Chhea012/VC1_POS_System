@@ -151,6 +151,7 @@ class productController extends BaseController
                 $in_stock, $db_image_path
             )) {
                 header("Location: /products");
+                $_SESSION['success_message'] = "Edit Product successfully!";
                 exit;
             } else {
                 throw new Exception("Error updating product.");
@@ -164,11 +165,17 @@ class productController extends BaseController
     // Delete a product
     public function delete($product_id)
     {
+        // Perform the deletion
         $this->productManager->delete($product_id);
+        
+        // Set a success message
         $_SESSION['success_message'] = "Product deleted successfully!";
+        
+        // Redirect to the product list page
         header("Location: /products");
         exit;
     }
+    
     
     public function show($id)
     {
@@ -195,6 +202,42 @@ class productController extends BaseController
         }
     }
 
-
+    public function updateQuantity()
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            try {
+                $product_id = filter_input(INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT);
+                $new_quantity = filter_input(INPUT_POST, 'new_quantity', FILTER_SANITIZE_NUMBER_INT);
+    
+                if (!$product_id || $new_quantity === null) {
+                    throw new Exception("Invalid input data");
+                }
+    
+                // Fetch the current quantity from DB
+                $currentProduct = $this->productManager->getProductById($product_id);
+                if (!$currentProduct) {
+                    throw new Exception("Product not found.");
+                }
+    
+                $current_quantity = (int) $currentProduct['quantity'];
+                $updated_quantity = $current_quantity + $new_quantity; // Sum both
+    
+                $result = $this->productManager->updateProductQuantity($product_id, $updated_quantity);
+    
+                if ($result) {
+                    $_SESSION['success_message'] = "Quantity updated successfully!";
+                    header("Location: /products");
+                    exit;
+                } else {
+                    throw new Exception("Error updating quantity.");
+                }
+            } catch (Exception $e) {
+                $_SESSION['error_message'] = $e->getMessage();
+                error_log("Quantity Update Error: " . $e->getMessage());
+                header("Location: /products/updateQTY");
+                exit;
+            }
+        }
+    }
     
 }

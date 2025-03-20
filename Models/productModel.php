@@ -173,6 +173,28 @@ class ProductManager
             $stmt->execute(['product_id' => $product_id]); // ✅ Pass the parameter separately
         }
 
-
+        // In ProductManager.php, add this method
+public function updateProductQuantity($product_id, $quantity)
+{
+    try {
+        $stmt = $this->db->prepare("
+            UPDATE products SET 
+                quantity = :quantity,
+                updated_at = NOW()
+            WHERE product_id = :product_id
+        ");
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+        
+        $result = $stmt->execute();
+        if (!$result) {
+            error_log("Quantity Update Error: " . implode(", ", $stmt->errorInfo()));
+        }
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Quantity Update Error: " . $e->getMessage());
+        return false;
+    }
+}
         
 }

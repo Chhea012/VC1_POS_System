@@ -60,6 +60,8 @@ $route->get("/products/view/{product_id}", [productController::class, 'show']);
 $route->get("/products/edit/{product_id}", [productController::class, 'edit']);
 $route->post("/products/update/{product_id}", [productController::class, 'update']);
 $route->post("/products/updateQuantity", [productController::class, 'updateQuantity']);
+$route->post("/products/delete/{product_id}", [productController::class, 'delete']);
+
 
 //route user
 $route->get("/users", [UserController::class, 'index']);
