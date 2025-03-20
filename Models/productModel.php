@@ -172,6 +172,4 @@ class ProductManager
             $stmt = $this->db->prepare($sql); // ✅ Correct: Use prepare() instead of query()
             $stmt->execute(['product_id' => $product_id]); // ✅ Pass the parameter separately
         }
-        
-    
 }
