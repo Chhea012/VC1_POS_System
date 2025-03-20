@@ -161,8 +161,6 @@ class productController extends BaseController
         }
     }
 }
-
-
     // Delete a product
     public function delete($product_id)
     {
@@ -196,4 +194,7 @@ class productController extends BaseController
             echo json_encode(["error" => "Product not found"]);
         }
     }
+
+
+    
 }

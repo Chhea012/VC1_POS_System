@@ -53,11 +53,13 @@ $route->post('/category/store', [categoryController::class, 'store']);
 // -product route -
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
+$route->get("/products/updateQTY", [productController::class, 'updateQTY']);
+$route->post("/products/updateQTY", [productController::class, 'updateQTY']);
 $route->post("/products/store", [productController::class, 'store']);
 $route->get("/products/view/{product_id}", [productController::class, 'show']);
 $route->get("/products/edit/{product_id}", [productController::class, 'edit']);
 $route->post("/products/update/{product_id}", [productController::class, 'update']);
-$route->post("/products/delete/{product_id}", [productController::class, 'delete']);
+$route->post("/products/updateQuantity", [productController::class, 'updateQuantity']);
 
 //route user
 $route->get("/users", [UserController::class, 'index']);
