@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Handle file upload
         // Define the target directory where the image will be stored
-        $target_dir = __DIR__ . "/uploads/"; // Ensure you are using the absolute path
+        $target_dir = __DIR__ . "uploads/"; // Ensure you are using the absolute path
         $target_file = $target_dir . basename($_FILES["product_image"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -103,6 +103,35 @@ $stmt->execute($display_categories);
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+if (isset($_GET['product_id'])) {
+    try {
+        $delete_id = $_GET['product_id'];
+        
+        // Fetch the product image path
+        $sql = "SELECT image FROM products WHERE product_id =?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$delete_id]);
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($product) {
+            // Delete the product record
+            $sql = "DELETE FROM products WHERE product_id =?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$delete_id]);
+            
+            // Delete the image file if it exists
+            if (!empty($product['image']) && file_exists(__DIR__ . '/food' . $product['image'])) {
+                unlink(__DIR__ . '/' . $product['image']);
+            }
+            
+            $success_message = "Product deleted successfully!";
+        } else {
+            $error_message = "Product not found.";
+        }
+    } catch (PDOException $e) {
+        $error_message = "Error: " . $e->getMessage();
+    }
+}
 
 ?>
 

@@ -35,14 +35,11 @@ $route->get("/edit_profile", [ProfileController::class, 'index']);
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->get("/food", [FoodController::class, 'index']);
-$route->get("/ice", [IceController::class, 'index']);
 $route->post('/category/store', [categoryController::class, 'store']);
 $route->get("/category", [categoryController::class, 'index']);
-$route->get("/drink", [InventoryController::class, 'index']);
-$route->get("/food", [FoodController::class, 'index']);
-$route->get("/ice", [IceController::class, 'index']);
-$route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
+// $route->get("/food", [FoodController::class, 'index']);
+
+$route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
@@ -72,4 +69,19 @@ $route->get("/calendar", [CalendarController::class, 'index']);
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
+
+//delete inventory drinks
+$route->get("/drink", [DrinkController::class, 'index']);
+$route->post("/drink/delete/{product_id}", [DrinkController::class, 'delete']);
+
+// delete food inventory
+$route->get("/food", [FoodController::class, 'index']);
+$route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
+
+
+// delete ice inventory
+$route->get("/ice", [IceController::class, 'index']);
+$route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
+
+
 $route->route();
