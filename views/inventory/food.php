@@ -24,6 +24,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="card p-4 shadow-sm">
                     <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-100" alt="<?= htmlspecialchars($product['product_name']) ?>">
                     <div class="mt-2">⭐⭐⭐⭐⭐</div>
+                    <p class="mt-2"><?= htmlspecialchars($product['product_name']) ?></p>
                 </div>
             </div>
         <?php endforeach; ?>
