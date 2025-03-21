@@ -82,63 +82,70 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Image preview
-            const profileImageInput = document.getElementById('profile_image');
-            const preview = document.getElementById('image_preview');
-
-            if (!profileImageInput || !preview) {
-                console.error("Element not found: profile_image or image_preview");
-                return;
-            }
-
-            profileImageInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                console.log("File selected:", file); // Debug
-                if (file) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.style.display = 'block';
-                } else {
-                    preview.style.display = 'none';
-                }
-            });
-
-            // Client-side form validation
             const form = document.getElementById("formAuthentication");
-            const fields = ["user_name", "email", "password", "role_id"];
+            const userNameInput = document.getElementById("user_name");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const roleInput = document.getElementById("role_id");
+            const submitButton = form.querySelector("button[type='submit']");
+
+            // Create a loading spinner element
+            const loadingContainer = document.createElement("div");
+            loadingContainer.style.display = "none";
+            loadingContainer.style.textAlign = "center";
+            loadingContainer.style.marginTop = "10px";
+
+            const spinner = document.createElement("div");
+            spinner.classList.add("spinner-border", "text-primary");
+            spinner.setAttribute("role", "status");
+
+            const loadingText = document.createElement("span");
+            loadingText.textContent = " Registering...";
+            loadingText.style.display = "block";
+            loadingText.style.marginTop = "5px";
+
+            loadingContainer.appendChild(spinner);
+            loadingContainer.appendChild(loadingText);
+            submitButton.parentNode.appendChild(loadingContainer);
 
             form.addEventListener("submit", function(event) {
                 let isValid = true;
-                fields.forEach(field => {
-                    const input = document.getElementById(field);
-                    let errorElement = document.getElementById(field + "_error");
-                    if (!errorElement) {
-                        errorElement = document.createElement("p");
-                        errorElement.id = field + "_error";
-                        errorElement.style.color = "red";
-                        errorElement.style.fontSize = "0.8rem";
-                        errorElement.style.marginTop = "5px";
-                        input.parentNode.appendChild(errorElement);
-                    }
-                    if (!input.value.trim()) {
-                        errorElement.textContent = `${field.replace('_', ' ')} is required.`;
-                        input.classList.add("is-invalid");
-                        isValid = false;
-                    } else if (field === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-                        errorElement.textContent = "Invalid email format.";
-                        input.classList.add("is-invalid");
-                        isValid = false;
-                    } else if (field === "password" && input.value.length < 8) {
-                        errorElement.textContent = "Password must be at least 8 characters.";
-                        input.classList.add("is-invalid");
-                        isValid = false;
-                    } else {
-                        errorElement.textContent = "";
-                        input.classList.remove("is-invalid");
-                    }
-                });
+
+                const emailValue = emailInput.value.trim();
+                const passwordValue = passwordInput.value.trim();
+                const userNameValue = userNameInput.value.trim();
+                const roleValue = roleInput.value.trim();
+
+                // Email validation using regex
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!userNameValue) {
+                    isValid = false;
+                }
+                if (!emailPattern.test(emailValue)) {
+                    isValid = false;
+                }
+                if (passwordValue.length < 8) {
+                    isValid = false;
+                }
+                if (!roleValue) {
+                    isValid = false;
+                }
+
                 if (!isValid) {
                     event.preventDefault();
+                    return;
                 }
+
+                // Show loading animation and disable button
+                submitButton.disabled = true;
+                submitButton.textContent = "Signing up...";
+                loadingContainer.style.display = "block";
+
+                // Simulate loading for 5 seconds before redirecting to dashboard
+                setTimeout(() => {
+                    window.location.href = "/dashboard"; // Redirect to dashboard
+                }, 200);
             });
         });
     </script>
