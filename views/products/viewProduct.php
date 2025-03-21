@@ -53,6 +53,10 @@ if (!isset($_SESSION['user'])) {
                                         <span>$<?php echo number_format($product['price'], 2)?></span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
+                                        <span><strong>Total Price:</strong></span>
+                                        <span>$<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?></span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
                                         <span><strong>Discounted Price:</strong></span>
                                         <span><?php echo $product['discounted_price'] ? '$' . number_format($product['discounted_price'], 2) : '0'?></span>
                                     </li>
