@@ -18,7 +18,10 @@ require_once "Controllers/FoodController.php";
 require_once "Controllers/UserController.php";
 require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
+require_once "Controllers/ExportInventoryController.php";
 
+
+// Create an instance of the Router class
 $route = new Router();
 
 // GET routes
@@ -76,4 +79,6 @@ $route->get("/calendar", [CalendarController::class, 'index']);
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
 $route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
+$route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
+
 $route->route();

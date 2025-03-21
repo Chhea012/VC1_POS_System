@@ -1,84 +1,46 @@
 <?php
-require_once 'vendor/autoload.php'; // Load Dompdf
-require_once 'Models/ExportProductDetailModel.php'; // Ensure correct path
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../Models/ExportInventoryModel.php';
 
 use Dompdf\Dompdf;
-use Dompdf\Options;
 
 class ExportInventoryController
 {
-    public function export($category_id)
+    public function index()
     {
-        // Fetch data from model
-        $exportPdfModel = new ExportInventoryModel();
-        $products = $exportPdfModel->getInventory($category_id);
+        $inventoryPdfModel = new ExportInventoryModel();
+        $products = $inventoryPdfModel->getProducts();
+        $data = ['products' => $products];
+        return $this->renderView('ExportInvntory/exportInventory', $data); // Updated path
+    }
 
-        // Start HTML for PDF
-        $html = '<!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Inventory Report</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; }
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: left;
-                        }
-                        th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                </head>
-                <body>
-                <h2>Inventory Report</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
-
-        // Check if there are products
-        if (!empty($products)) {
-            foreach ($products as $product) {
-                $html .= "<tr>
-                            <td>{$product['id']}</td>
-                            <td>{$product['name']}</td>
-                            <td>{$product['category_name']}</td>
-                            <td>\${$product['price']}</td>
-                            <td>{$product['quantity']}</td>
-                          </tr>";
-            }
+    public function exportInventoryPdf()
+    {
+        $exportInventoryModel = new ExportInventoryModel();
+        $products = $exportInventoryModel->getProducts();
+        $imagePath = realpath(__DIR__ . '/../views/assets/modules/img/logo/logo.png');
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $mimeType = mime_content_type($imagePath);
+            $logoSrc = "data:$mimeType;base64,$imageData";
         } else {
-            $html .= '<tr><td colspan="5" style="text-align: center;">No products found in this category</td></tr>';
+            $logoSrc = '';
         }
+        $html = $this->renderView('ExportInvntory/exportInventory', ['products' => $products]); // Updated path
 
-        // Close table and HTML
-        $html .= '</tbody></table></body></html>';
-
-        // Initialize Dompdf
-        $options = new Options();
-        $options->set('defaultFont', 'Arial');
-
-        $dompdf = new Dompdf($options);
+        $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
+        $dompdf->stream('inventory.pdf', ['Attachment' => true]);
+    }
 
-        // Output the PDF as a downloadable file
-        $dompdf->stream("inventory_report.pdf", ["Attachment" => true]);
-
-        exit; // Stop further execution
+    private function renderView($view, $data = [])
+    {
+        extract($data);
+        ob_start();
+        require_once __DIR__ . '/../views/' . $view . '.php'; // Lowercase 'views' to match your path
+        return ob_get_clean();
     }
 }
