@@ -137,5 +137,32 @@ class UserModel {
             return false;
         }
     }
+    public function updateUser($user_id, $data) {
+        $sql = "UPDATE users SET user_name = :user_name, email = :email, role_id = :role_id, 
+                profile_image = :profile_image, phone_number = :phone_number, 
+                address = :address, city_province = :city_province";
+
+        if (isset($data['password'])) {
+            $sql .= ", password = :password";
+        }
+
+        $sql .= " WHERE user_id = :user_id";
+
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user_name', $data['user_name']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':role_id', $data['role_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':profile_image', $data['profile_image']);
+        $stmt->bindParam(':phone_number', $data['phone_number']);
+        $stmt->bindParam(':address', $data['address']);
+        $stmt->bindParam(':city_province', $data['city_province']);
+
+        if (isset($data['password'])) {
+            $stmt->bindParam(':password', $data['password']);
+        }
+
+        return $stmt->execute();
+    }
     
 }
