@@ -114,37 +114,36 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <script>
-    function confirmDelete(product_id) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            document.getElementById('delete-form-' + product_id).submit();
-        }
+function confirmDelete(product_id) {
+    document.getElementById('delete-form-' + product_id).submit();
+}
+
+// Barcode validation without alert
+document.getElementById('barcode').addEventListener('blur', function() {
+    const barcode = this.value;
+    const errorElement = document.getElementById('barcode-error');
+
+    if (barcode) {
+        fetch(`/products/check-barcode?barcode=${barcode}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorElement.textContent = 'This barcode already exists!';
+                    document.getElementById('barcode').classList.add('is-invalid');
+                } else {
+                    errorElement.textContent = '';
+                    document.getElementById('barcode').classList.remove('is-invalid');
+                }
+            })
+            .catch(() => {
+                errorElement.textContent = 'Error checking barcode.';
+            });
     }
-
-    document.getElementById('barcode').addEventListener('blur', function() {
-        const barcode = this.value;
-        const errorElement = document.getElementById('barcode-error');
-
-        if (barcode) {
-            fetch(`/products/check-barcode?barcode=${barcode}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        errorElement.textContent = 'This barcode already exists!';
-                        document.getElementById('barcode').classList.add('is-invalid');
-                    } else {
-                        errorElement.textContent = '';
-                        document.getElementById('barcode').classList.remove('is-invalid');
-                    }
-                })
-                .catch(() => {
-                    errorElement.textContent = 'Error checking barcode.';
-                });
-        }
-    });
+});
 </script>
 
 
-<!-- Added Low Stock Alert Logic with Bootstrap Toast -->
+ Added Low Stock Alert Logic with Bootstrap Toast
 <?php
 // Check for low stock and prepare alert content
 $low_stock_items = [];

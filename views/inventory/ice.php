@@ -110,11 +110,10 @@ if (!isset($_SESSION['user'])) {
 <!-- Delete Product Function -->
 <script>
 function confirmDelete(product_id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        document.getElementById('delete-form-' + product_id).submit();
-    }
+    document.getElementById('delete-form-' + product_id).submit();
 }
 
+// Barcode validation without alert
 document.getElementById('barcode').addEventListener('blur', function() {
     const barcode = this.value;
     const errorElement = document.getElementById('barcode-error');
@@ -136,10 +135,7 @@ document.getElementById('barcode').addEventListener('blur', function() {
             });
     }
 });
-
-
 </script>
-
 
 <!-- Low Stock Alert -->
 <?php
