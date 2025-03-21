@@ -96,6 +96,9 @@ if (!isset($_SESSION['user'])) {
                                                 <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
+                                                <form id="delete-form-<?= $product['product_id'] ?>" action="/food/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -109,17 +112,42 @@ if (!isset($_SESSION['user'])) {
     </div>
 </div>
 
-<!-- delete product function  -->
 <script>
-    function confirmDelete(id) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            window.location.href = 'delete_product.php?id=' + id;
-        }
+function confirmDelete(product_id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        document.getElementById('delete-form-' + product_id).submit();
     }
+}
+
+document.getElementById('barcode').addEventListener('blur', function() {
+    const barcode = this.value;
+    const errorElement = document.getElementById('barcode-error');
+
+    if (barcode) {
+        fetch(`/products/check-barcode?barcode=${barcode}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorElement.textContent = 'This barcode already exists!';
+                    document.getElementById('barcode').classList.add('is-invalid');
+                } else {
+                    errorElement.textContent = '';
+                    document.getElementById('barcode').classList.remove('is-invalid');
+                }
+            })
+            .catch(() => {
+                errorElement.textContent = 'Error checking barcode.';
+            });
+    }
+});
+
+
 </script>
 
-<!-- Low Stock Alert -->
+
+<!-- Added Low Stock Alert Logic with Bootstrap Toast -->
 <?php
+// Check for low stock and prepare alert content
 $low_stock_items = [];
 foreach ($products as $product) {
     if (isset($product['quantity']) && $product['quantity'] < 5) {
@@ -128,30 +156,31 @@ foreach ($products as $product) {
 }
 ?>
 
+<!-- Bootstrap Toast for Low Stock Alert -->
 <?php if (!empty($low_stock_items)): ?>
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="lowStockToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-            <strong class="me-auto">Low Stock Alert</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            <ul class="list-unstyled mb-0">
-                <?php foreach ($low_stock_items as $item): ?>
-                    <li><?php echo $item; ?></li>
-                <?php endforeach; ?>
-            </ul>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="lowStockToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+                <strong class="me-auto">Low Stock Alert</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <ul class="list-unstyled mb-0">
+                    <?php foreach ($low_stock_items as $item): ?>
+                        <li><?php echo $item; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var lowStockToast = new bootstrap.Toast(document.getElementById('lowStockToast'), {
-            delay: 5000 
+    <!-- JavaScript to Trigger Toast on Page Load -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var lowStockToast = new bootstrap.Toast(document.getElementById('lowStockToast'), {
+                delay: 5000 // Auto-hide after 5 seconds (optional)
+            });
+            lowStockToast.show();
         });
-        lowStockToast.show();
-    });
-</script>
+    </script>
 <?php endif; ?>

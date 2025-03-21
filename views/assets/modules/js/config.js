@@ -82,11 +82,18 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 //  code link list product //
-    function confirmDelete(productId) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            window.location.href = 'delete_product.php?id=' + productId;
+function confirmDelete(id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        let form = document.getElementById(`delete-form-${id}`);
+        if (form) {
+            form.submit();
+        } else {
+            console.warn(`Form with ID delete-form-${id} not found.`);
         }
     }
+}
+
+
 
 
             function searchProduct() {

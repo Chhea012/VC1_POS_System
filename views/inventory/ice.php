@@ -90,6 +90,9 @@ if (!isset($_SESSION['user'])) {
                                                 <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
+                                                <form id="delete-form-<?= $product['product_id'] ?>" action="/ice/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -105,11 +108,35 @@ if (!isset($_SESSION['user'])) {
 
 <!-- Delete Product Function -->
 <script>
-    function confirmDelete(id) {
-        if (confirm('Are you sure you want to delete this product?')) {
-            window.location.href = 'delete_product.php?id=' + id;
-        }
+function confirmDelete(product_id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        document.getElementById('delete-form-' + product_id).submit();
     }
+}
+
+document.getElementById('barcode').addEventListener('blur', function() {
+    const barcode = this.value;
+    const errorElement = document.getElementById('barcode-error');
+
+    if (barcode) {
+        fetch(`/products/check-barcode?barcode=${barcode}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    errorElement.textContent = 'This barcode already exists!';
+                    document.getElementById('barcode').classList.add('is-invalid');
+                } else {
+                    errorElement.textContent = '';
+                    document.getElementById('barcode').classList.remove('is-invalid');
+                }
+            })
+            .catch(() => {
+                errorElement.textContent = 'Error checking barcode.';
+            });
+    }
+});
+
+
 </script>
 
 

@@ -43,14 +43,11 @@ $route->post("/profile/update", [ProfileController::class, 'update']); // Profil
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->get("/food", [FoodController::class, 'index']);
-$route->get("/ice", [IceController::class, 'index']);
 $route->post('/category/store', [categoryController::class, 'store']);
 $route->get("/category", [categoryController::class, 'index']);
-$route->get("/drink", [InventoryController::class, 'index']);
-$route->get("/food", [FoodController::class, 'index']);
-$route->get("/ice", [IceController::class, 'index']);
-$route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
+// $route->get("/food", [FoodController::class, 'index']);
+
+$route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
@@ -58,11 +55,15 @@ $route->post('/category/store', [categoryController::class, 'store']);
 // -product route -
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
+$route->get("/products/updateQTY", [productController::class, 'updateQTY']);
+$route->post("/products/updateQTY", [productController::class, 'updateQTY']);
 $route->post("/products/store", [productController::class, 'store']);
 $route->get("/products/view/{product_id}", [productController::class, 'show']);
 $route->get("/products/edit/{product_id}", [productController::class, 'edit']);
 $route->post("/products/update/{product_id}", [productController::class, 'update']);
+$route->post("/products/updateQuantity", [productController::class, 'updateQuantity']);
 $route->post("/products/delete/{product_id}", [productController::class, 'delete']);
+
 
 //route user
 $route->get("/users", [UserController::class, 'index']);
@@ -84,4 +85,19 @@ $route->get("/orders/create", [CreateOrderController::class, 'index']);
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
+
+//delete inventory drinks
+$route->get("/drink", [DrinkController::class, 'index']);
+$route->post("/drink/delete/{product_id}", [DrinkController::class, 'delete']);
+
+// delete food inventory
+$route->get("/food", [FoodController::class, 'index']);
+$route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
+
+
+// delete ice inventory
+$route->get("/ice", [IceController::class, 'index']);
+$route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
+
+
 $route->route();
