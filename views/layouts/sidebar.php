@@ -68,12 +68,12 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="./dashboard" class="menu-link">
+                            <a href="/orders" class="menu-link">
                                 <div data-i18n="Order list">Order List</div>
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="./dashboard" class="menu-link">
+                            <a href="/orders/create" class="menu-link">
                                 <div data-i18n="Order detail">Order details</div>
                             </a>
                         </li>
