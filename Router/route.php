@@ -89,14 +89,17 @@ $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepd
 //delete inventory drinks
 $route->get("/drink", [DrinkController::class, 'index']);
 $route->post("/drink/delete/{product_id}", [DrinkController::class, 'delete']);
+$route->get("/inventory/viewdrink/{product_id}", [DrinkController::class, 'show']);
 
 // delete food inventory
 $route->get("/food", [FoodController::class, 'index']);
+$route->get("/inventory/viewfood/{product_id}", [FoodController::class, 'show']);
 $route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
 
 
 // delete ice inventory
 $route->get("/ice", [IceController::class, 'index']);
+$route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
 

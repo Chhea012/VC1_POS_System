@@ -47,13 +47,14 @@ private $productManager;
     
     public function show($id)
     {
-        $ice = $this->productManager->getProductById($id);
+        $product = $this->productManager->getProductById($id);
 
-        if (! $ice) {
-            header("Location: /ice");
+        if (! $product) {
+            header("Location: /inventory");
             exit;
         }
 
-        $this->view('inventory/ice', ['ice' => $ice]);
+        $this->view('inventory/viewice', ['product' => $product]);
     }
+
 }

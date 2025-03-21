@@ -12,9 +12,9 @@ if (!isset($_SESSION['user'])) {
 <div class="container-xxl flex-grow-1 container-p-y">
     <h5 class="mb-3">The popular items:</h5>
     <div class="row text-center">
-        <?php 
+        <?php
         // Filter popular products where amount > 20
-        $popular_products = array_filter($products, function($product) {
+        $popular_products = array_filter($products, function ($product) {
             return isset($product['price'], $product['quantity']) && ($product['price'] * $product['quantity']) >= 20;
         });
 
@@ -91,14 +91,15 @@ if (!isset($_SESSION['user'])) {
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="view_product.php?id=<?= $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
-                                                    <i class="bi bi-trash me-2"></i>Delete
-                                                </a>
-                                                <form id="delete-form-<?= $product['product_id'] ?>" action="/food/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
-                                                    <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
-                                                </form>
+                                                <a class="dropdown-item" href="/inventory/viewfood/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a>
+                                            </li>
+                                            <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
+                                                <i class="bi bi-trash me-2"></i>Delete
+                                            </a>
+                                            <form id="delete-form-<?= $product['product_id'] ?>" action="/food/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
+                                                <input type="hidden" name="_method" value="DELETE"> <!-- Workaround for DELETE method -->
+                                            </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -113,35 +114,33 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <script>
-function confirmDelete(product_id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        document.getElementById('delete-form-' + product_id).submit();
+    function confirmDelete(product_id) {
+        if (confirm('Are you sure you want to delete this product?')) {
+            document.getElementById('delete-form-' + product_id).submit();
+        }
     }
-}
 
-document.getElementById('barcode').addEventListener('blur', function() {
-    const barcode = this.value;
-    const errorElement = document.getElementById('barcode-error');
+    document.getElementById('barcode').addEventListener('blur', function() {
+        const barcode = this.value;
+        const errorElement = document.getElementById('barcode-error');
 
-    if (barcode) {
-        fetch(`/products/check-barcode?barcode=${barcode}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.exists) {
-                    errorElement.textContent = 'This barcode already exists!';
-                    document.getElementById('barcode').classList.add('is-invalid');
-                } else {
-                    errorElement.textContent = '';
-                    document.getElementById('barcode').classList.remove('is-invalid');
-                }
-            })
-            .catch(() => {
-                errorElement.textContent = 'Error checking barcode.';
-            });
-    }
-});
-
-
+        if (barcode) {
+            fetch(`/products/check-barcode?barcode=${barcode}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        errorElement.textContent = 'This barcode already exists!';
+                        document.getElementById('barcode').classList.add('is-invalid');
+                    } else {
+                        errorElement.textContent = '';
+                        document.getElementById('barcode').classList.remove('is-invalid');
+                    }
+                })
+                .catch(() => {
+                    errorElement.textContent = 'Error checking barcode.';
+                });
+        }
+    });
 </script>
 
 

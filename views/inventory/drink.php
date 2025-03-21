@@ -86,8 +86,10 @@ if (!isset($_SESSION['user'])) {
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="view_product.php?id=<?= $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>view</a></li>
-                                            <li>
+                                        <li>
+                                            <a class="dropdown-item" href="/inventory/viewdrink/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a>
+                                        </li>
+
                                                 <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
