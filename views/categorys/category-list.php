@@ -67,7 +67,7 @@ $existingCategories = array_map(function ($product) {
                             <th>CATEGORY</th>
                             <th>STOCK</th>
                             <th>QTY</th>
-                            <th>TOTAL</th>
+                            <th>TOTAL-PRICE</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
@@ -78,7 +78,7 @@ $existingCategories = array_map(function ($product) {
                             ?>
 
 
-<tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
+                            <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
                                 <td>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox">
@@ -96,7 +96,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'], 2) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'] * $product['total_quantity'], 2) ?></td>
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-light border-0 p-0" data-bs-toggle="dropdown">
@@ -113,7 +113,7 @@ $existingCategories = array_map(function ($product) {
                                     </div>
                                 </td>
                             </tr>
-                            
+
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -124,81 +124,81 @@ $existingCategories = array_map(function ($product) {
     </tbody>
 
 
-<!-- Modal for adding a new category -->
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog">
-        <div class="modal-content shadow-lg rounded-4 border-0">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="categoryModalLabel">
-                    <i class="bi bi-folder-plus me-2"></i> Add New Category
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form action="/category/store" method="POST">
-                    <div class="mb-3">
-                        <label for="category_name" class="form-label fw-semibold">Category Name</label>
-                        <input type="text" class="form-control form-control-lg rounded-3" id="category_name" name="category_name" placeholder="Enter category name" required>
-                        <div id="categoryNameError" class="invalid-feedback">
-                            Category name already exists!
+    <!-- Modal for adding a new category -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog">
+            <div class="modal-content shadow-lg rounded-4 border-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="categoryModalLabel">
+                        <i class="bi bi-folder-plus me-2"></i> Add New Category
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form action="/category/store" method="POST">
+                        <div class="mb-3">
+                            <label for="category_name" class="form-label fw-semibold">Category Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-3" id="category_name" name="category_name" placeholder="Enter category name" required>
+                            <div id="categoryNameError" class="invalid-feedback">
+                                Category name already exists!
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
-                            <i class="bi bi-check-circle me-2"></i> Save Category
-                        </button>
-                    </div>
-                </form>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-check-circle me-2"></i> Save Category
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('#categoryModal form');
-        const categoryNameInput = document.getElementById('category_name');
-        const categoryNameError = document.getElementById('categoryNameError');
-        const existingCategories = <?php echo json_encode($existingCategories); ?>; // Use PHP to pass existing categories
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('#categoryModal form');
+            const categoryNameInput = document.getElementById('category_name');
+            const categoryNameError = document.getElementById('categoryNameError');
+            const existingCategories = <?php echo json_encode($existingCategories); ?>; // Use PHP to pass existing categories
 
-        // Function to reset the input field and hide the error message
-        function resetForm() {
-            categoryNameInput.classList.remove('is-invalid');
-            categoryNameError.style.display = 'none';
-            categoryNameInput.value = ''; // Clear the input field
-        }
-
-        // Reset the form when the modal is closed
-        document.getElementById('categoryModal').addEventListener('hidden.bs.modal', function () {
-            resetForm();
-        });
-
-        // Reset the form when the modal is opened
-        document.getElementById('categoryModal').addEventListener('show.bs.modal', function () {
-            resetForm();
-        });
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const categoryName = categoryNameInput.value.trim().toUpperCase();
-
-            if (existingCategories.includes(categoryName)) {
-                // Show validation error inside the input field
-                categoryNameInput.classList.add('is-invalid');
-                categoryNameError.style.display = 'block';
-            } else {
-                // Hide validation error if it was shown earlier
+            // Function to reset the input field and hide the error message
+            function resetForm() {
                 categoryNameInput.classList.remove('is-invalid');
                 categoryNameError.style.display = 'none';
-                // Proceed with form submission
-                form.submit();
+                categoryNameInput.value = ''; // Clear the input field
             }
-        });
 
-        // Clear validation error when the user starts typing
-        categoryNameInput.addEventListener('input', function() {
-            categoryNameInput.classList.remove('is-invalid');
-            categoryNameError.style.display = 'none';
+            // Reset the form when the modal is closed
+            document.getElementById('categoryModal').addEventListener('hidden.bs.modal', function() {
+                resetForm();
+            });
+
+            // Reset the form when the modal is opened
+            document.getElementById('categoryModal').addEventListener('show.bs.modal', function() {
+                resetForm();
+            });
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+
+                const categoryName = categoryNameInput.value.trim().toUpperCase();
+
+                if (existingCategories.includes(categoryName)) {
+                    // Show validation error inside the input field
+                    categoryNameInput.classList.add('is-invalid');
+                    categoryNameError.style.display = 'block';
+                } else {
+                    // Hide validation error if it was shown earlier
+                    categoryNameInput.classList.remove('is-invalid');
+                    categoryNameError.style.display = 'none';
+                    // Proceed with form submission
+                    form.submit();
+                }
+            });
+
+            // Clear validation error when the user starts typing
+            categoryNameInput.addEventListener('input', function() {
+                categoryNameInput.classList.remove('is-invalid');
+                categoryNameError.style.display = 'none';
+            });
         });
-    });
-</script>
+    </script>
