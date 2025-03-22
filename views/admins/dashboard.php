@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
-                        <h1 class="card-title mb-2 text-primary">120</h1>
+                        <h1 class="card-title mb-2 text-primary">10</h1>
                         <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +12 🔥</small>
                     </div>
                 </div>
@@ -75,8 +75,12 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Default Products 🛒</span>
-                        <h1 class="card-title mb-2 text-success">20</h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +11 🌟</small>
+                        <h1 class="card-title mb-2 text-success"><?= $addedStock ?></h1>
+                        <?php if ($addedStock >= 0): ?>
+                            <small class="text-success fs-6">
+                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?>  🌟
+                            </small>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -100,11 +104,14 @@
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Total Stock 📦</span>
                         <h1 class="card-title mb-2 text-warning"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +10 ⚡</small>
+                        <?php if ($addedStock >= 0): ?>
+                            <small class="text-success fs-6">
+                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?> ⚡
+                            </small>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-
             <!-- Weather Widget -->
             <div class="col-lg-8 mb-4 order-2 w-100">
                 <div class="card p-3">
@@ -163,7 +170,7 @@
                         </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Expenses 💰</span>
                         <h1 class="card-title mb-2 text-info">10.00 $</h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +2.42 $ 💸</small>
+                        <small class="text-danger fs-6"><i class="bx bx-down-arrow-alt"></i> +2.42 $ 💸</small>
                     </div>
                 </div>
             </div>
@@ -313,43 +320,48 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body p-3">
+                    <div class="card-body p-0">
                         <div class="tab-content">
-                            <!-- Low Stock Tab -->
-                            <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
-                                <ul class="list-group list-group-flush">
-                                    <?php foreach ($lowStockProducts as $product): ?>
-                                        <li class="list-group-item d-flex align-items-center justify-content-between mb-3 shadow-sm rounded">
-                                            <div class="d-flex align-items-center">
-                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" class="avatar-lg rounded-circle me-3" alt="Product Image" />
-                                                <div>
-                                                    <h6 class="mb-1"><?php echo $product['product_name'] ?></h6>
-                                                    <small class="text-muted">Stock:                                                                                     <?php echo $product['quantity'] ?></small>
-                                                </div>
+                      <!-- Low Stock Tab -->
+                        <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
+                            <ul class="list-group list-group-flush">
+                                <?php foreach ($lowStockProducts as $product): ?>
+                                    <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 shadow-sm border rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" 
+                                                class="rounded-circle" 
+                                                style="width: 40px; height: 50px;" 
+                                                alt="Product Image" />
+                                            <div class="ms-3">
+                                                <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
+                                                <small class="text-muted">Stock: <span class="fw-semibold text-danger"><?php echo $product['quantity'] ?></span></small>
                                             </div>
-                                            <button class="btn btn-sm btn-warning">Restock</button>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-
-                            <!-- High Stock Tab -->
-                            <div class="tab-pane fade" id="high-stock" role="tabpanel">
-                                <ul class="list-group list-group-flush">
-                                    <?php foreach ($highStockProducts as $product): ?>
-                                        <li class="list-group-item d-flex align-items-center justify-content-between mb-3 shadow-sm rounded">
-                                            <div class="d-flex align-items-center">
-                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" class="avatar-lg rounded-circle me-3" alt="Product Image" />
-                                                <div>
-                                                    <h6 class="mb-1"><?php echo $product['product_name'] ?></h6>
-                                                    <small class="text-muted">Stock:                                                                                     <?php echo $product['quantity'] ?></small>
-                                                </div>
+                                        </div>
+                                        <a href="/products" class="btn btn-sm btn-warning px-3 fw-semibold">Restore</a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <!-- High Stock Tab -->
+                        <div class="tab-pane fade m-1" id="high-stock" role="tabpanel">
+                            <ul class="list-group list-group-flush">
+                                <?php foreach ($highStockProducts as $product): ?>
+                                    <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 mx- shadow-sm border rounded">
+                                        <div class="d-flex align-items-center">
+                                            <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" 
+                                                class="rounded-circle " 
+                                                style="width: 40px; height: 50px;"  
+                                                alt="Product Image" />
+                                            <div class="ms-3">
+                                                <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
+                                                <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
                                             </div>
-                                            <button class="btn btn-sm btn-success">Manage</button>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+                                        </div>
+                                        <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -401,6 +413,7 @@
                                         <div>
                                             <p class="mb-n1 mt-1">Expenses This Week</p>
                                             <small class="text-muted">$39 less than last week</small>
+
                                         </div>
                                     </div>
                                 </div>
