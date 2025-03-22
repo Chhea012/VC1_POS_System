@@ -85,8 +85,9 @@ if (!isset($_SESSION['user'])) {
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="view_product.php?id=<?= $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
-                                            <li>
+                                        <li>
+                                            <a class="dropdown-item" href="/inventory/viewice/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a>
+                                        </li>
                                                 <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
@@ -109,11 +110,10 @@ if (!isset($_SESSION['user'])) {
 <!-- Delete Product Function -->
 <script>
 function confirmDelete(product_id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        document.getElementById('delete-form-' + product_id).submit();
-    }
+    document.getElementById('delete-form-' + product_id).submit();
 }
 
+// Barcode validation without alert
 document.getElementById('barcode').addEventListener('blur', function() {
     const barcode = this.value;
     const errorElement = document.getElementById('barcode-error');
@@ -135,10 +135,7 @@ document.getElementById('barcode').addEventListener('blur', function() {
             });
     }
 });
-
-
 </script>
-
 
 <!-- Low Stock Alert -->
 <?php

@@ -74,7 +74,7 @@ if (!isset($_SESSION['user'])) {
                                 <label for="role" class="form-label">Role</label>
                                 <input class="form-control" type="text" id="role" name="role" 
                                        value="<?= htmlspecialchars($user['role_name'] ?? 'Admin') ?>" 
-                                       readonly>
+                                       required>
                             </div>
                         </div>
                         <div class="mt-2">
@@ -94,6 +94,7 @@ if (!isset($_SESSION['user'])) {
         const file = e.target.files[0];
         if (file) {
             preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
         }
     });
 

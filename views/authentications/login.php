@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html
   lang="en"
@@ -103,13 +102,6 @@
                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
               </div>
             </form>
-
-            <p class="text-center">
-              <span>New on our platform?</span>
-              <a href="./register">
-                <span>Create an account</span>
-              </a>
-            </p>
           </div>
         </div>
 
@@ -139,46 +131,76 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- error of message -->
   <script>
-          document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("formAuthentication");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const emailError = document.getElementById("email-error");
-        const passwordError = document.getElementById("password-error");
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("formAuthentication");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const emailError = document.getElementById("email-error");
+      const passwordError = document.getElementById("password-error");
+      const submitButton = form.querySelector("button[type='submit']");
 
-        form.addEventListener("submit", function (event) {
-            let isValid = true;
-            emailError.textContent = "";
-            passwordError.textContent = "";
+      // Create a loading spinner element
+      const loadingContainer = document.createElement("div");
+      loadingContainer.style.display = "none";
+      loadingContainer.style.textAlign = "center";
+      loadingContainer.style.marginTop = "10px";
 
-            const emailValue = emailInput.value.trim();
-            const passwordValue = passwordInput.value.trim();
-            
-            // Email validation using regex
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            if (!emailPattern.test(emailValue)) {
-                emailError.textContent = "Please enter a valid email address.";
-                emailInput.classList.add("is-invalid");
-                isValid = false;
-            } else {
-                emailInput.classList.remove("is-invalid");
-            }
+      const spinner = document.createElement("div");
+      spinner.classList.add("spinner-border", "text-primary");
+      spinner.setAttribute("role", "status");
 
-            // Password validation (minimum 6 characters)
-            if (passwordValue.length < 6) {
-                passwordError.textContent = "Password must be at least 6 characters long.";
-                passwordInput.classList.add("is-invalid");
-                isValid = false;
-            } else {
-                passwordInput.classList.remove("is-invalid");
-            }
+      const loadingText = document.createElement("span");
+      loadingText.textContent = " Authenticating...";
+      loadingText.style.display = "block";
+      loadingText.style.marginTop = "5px";
 
-            // Prevent form submission if validation fails
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
+      loadingContainer.appendChild(spinner);
+      loadingContainer.appendChild(loadingText);
+      submitButton.parentNode.appendChild(loadingContainer);
+
+      form.addEventListener("submit", function(event) {
+        let isValid = true;
+        emailError.textContent = "";
+        passwordError.textContent = "";
+
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value.trim();
+
+        // Email validation using regex
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(emailValue)) {
+          emailError.textContent = "Please enter a valid email address.";
+          emailInput.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          emailInput.classList.remove("is-invalid");
+        }
+
+        // Password validation (minimum 6 characters)
+        if (passwordValue.length < 6) {
+          passwordError.textContent = "Password must be at least 6 characters long.";
+          passwordInput.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          passwordInput.classList.remove("is-invalid");
+        }
+
+        if (!isValid) {
+          event.preventDefault();
+          return;
+        }
+
+        // Show loading animation and disable button
+        submitButton.disabled = true;
+        submitButton.textContent = "Signing in...";
+        loadingContainer.style.display = "block";
+
+        // Simulate loading for 1 minute before redirecting to dashboard
+        setTimeout(() => {
+          window.location.href = "/dashboard"; // Redirect to dashboard
+        }, 60000); // 1 minute = 60,000 milliseconds
+      });
     });
   </script>
 

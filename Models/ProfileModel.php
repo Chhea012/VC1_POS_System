@@ -41,7 +41,10 @@ class ProfileModel {
             ':phone_number' => $data['phone_number']
         ];
 
-        // Check if profile image is provided
+        // Debugging: Check the incoming data
+        error_log("Profile Image Data: " . print_r($data['profile_image'], true));
+
+         // Add profile image if available
         if (!empty($data['profile_image'])) {
             $sql .= ", profile_image = :profile_image";
             $params[':profile_image'] = $data['profile_image'];
@@ -59,10 +62,13 @@ class ProfileModel {
         try {
             $stmt = $this->db->getConnection()->prepare($sql); // Use getConnection() to get PDO instance
             return $stmt->execute($params);
-        } catch (PDOException $e) {
-            error_log("SQL Error (update): " . $e->getMessage());
+        }catch (PDOException $e) {
+            error_log("SQL Error: " . $e->getMessage());
+            error_log("SQL Query: " . $sql);
+            error_log("SQL Params: " . print_r($params, true));
             throw $e;
         }
+        
     }
     
     public function getPasswordUser($userId) {

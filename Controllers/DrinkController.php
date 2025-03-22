@@ -49,14 +49,15 @@ class DrinkController extends BaseController {
     
     public function show($id)
     {
-        $drink = $this->productManager->getProductById($id);
+        $product = $this->productManager->getProductById($id);
 
-        if (! $drink) {
-            header("Location: /drink");
+        if (! $product) {
+            header("Location: /inventory");
             exit;
         }
 
-        $this->view('inventory/drink', ['drink' => $drink]);
+        $this->view('inventory/viewdrink', ['product' => $product]);
     }
+
 
 }

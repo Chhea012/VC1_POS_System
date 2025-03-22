@@ -44,16 +44,16 @@ class FoodController extends BaseController {
         exit;
     }
     
-    
     public function show($id)
     {
-        $food = $this->productManager->getProductById($id);
+        $product = $this->productManager->getProductById($id);
 
-        if (! $food) {
-            header("Location: /food");
+        if (! $product) {
+            header("Location: /inventory");
             exit;
         }
 
-        $this->view('inventory/food', ['food' => $food]);
+        $this->view('inventory/viewfood', ['product' => $product]);
     }
+
 }

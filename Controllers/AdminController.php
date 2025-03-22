@@ -17,14 +17,27 @@ class AdminController extends BaseController {
         // Get High stock products
         $highStockProducts = $this->adminHome->getHighStockProducts();
         $totalStock = $this->adminHome->totalProduct();
-
-        // Pass both the low and high stock products to the view
+        
+        // Get the current total money from the database
+        $totalMoney = $this->adminHome->sumTotalMoney();
+        
+        // Get the previous total from the database
+        $previousTotal = $this->adminHome->getPreviousTotalMoney()['total_money'] ?? 0;
+        
+        // Calculate the increment (difference between new and old totals)
+        $increment = $totalMoney['grand_total'] - $previousTotal;
+    
+        // Store the new total money in the database
+        $this->adminHome->storeTotalMoney($totalMoney['grand_total']);
+    
+        // Pass the necessary data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
             'highStockProducts' => $highStockProducts,
-            'totalStock' => $totalStock
+            'totalStock' => $totalStock,
+            'totalMoney' => $totalMoney,
+            'increment' => $increment
         ]);
-
     }
 }
 

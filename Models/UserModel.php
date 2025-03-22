@@ -17,6 +17,12 @@ class UserModel {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function hasAdmin() {
+        $sql = "SELECT COUNT(*) FROM users WHERE role_id = :role_id";
+        $stmt = $this->db->query($sql, ['role_id' => 1]);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function createUser($data) {
         $sql = "INSERT INTO users (user_name, email, password, role_id, profile_image, phone_number) 
                 VALUES (:user_name, :email, :password, :role_id, :profile_image, :phone_number)";
@@ -24,11 +30,12 @@ class UserModel {
             $this->db->query($sql, [
                 'user_name' => $data['user_name'],
                 'email' => $data['email'],
-                'password' => $data['password'],
+                'password' => password_hash($data['password'], PASSWORD_BCRYPT),
                 'role_id' => $data['role_id'],
-                'profile_image' => $data['profile_image'],
-                'phone_number' => $data['phone_number']
+                'profile_image' => $data['profile_image'] ?? null,
+                'phone_number' => $data['phone_number'] ?? null
             ]);
+            return true;
         } catch (PDOException $e) {
             error_log("SQL Error (create): " . $e->getMessage());
             throw $e;
@@ -58,7 +65,7 @@ class UserModel {
         $stmt = $this->db->query($sql, ['user_id' => $user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    // Update user data including profile image
+
     public function update($user_id, $data) {
         $sql = "UPDATE users SET 
                 user_name = :user_name, 
@@ -70,72 +77,47 @@ class UserModel {
             ':user_name' => $data['user_name'],
             ':email' => $data['email'],
             ':role_id' => $data['role_id'],
-            ':phone_number' => $data['phone_number']
+            ':phone_number' => $data['phone_number'] ?? null,
+            ':user_id' => $user_id
         ];
 
-        // Check if profile image is provided
         if (!empty($data['profile_image'])) {
             $sql .= ", profile_image = :profile_image";
             $params[':profile_image'] = $data['profile_image'];
         }
 
-        // Check if password needs updating
         if (!empty($data['password'])) {
             $sql .= ", password = :password";
             $params[':password'] = password_hash($data['password'], PASSWORD_BCRYPT);
         }
 
         $sql .= " WHERE user_id = :user_id";
-        $params[':user_id'] = $user_id;
 
         try {
-            $stmt = $this->db->prepare($sql);
+            $pdo = $this->db->getConnection(); // Get PDO instance
+            $stmt = $pdo->prepare($sql);       // Use PDO directly
             return $stmt->execute($params);
         } catch (PDOException $e) {
             error_log("SQL Error (update): " . $e->getMessage());
             throw $e;
         }
     }
-    
+
     public function deleteUser($user_id) {
         $sql = "DELETE FROM users WHERE user_id = :user_id";
-        $this->db->query($sql, ['user_id' => $user_id]);
+        try {
+            $this->db->query($sql, ['user_id' => $user_id]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("SQL Error (delete): " . $e->getMessage());
+            throw $e;
+        }
     }
 
+
     public function getUserByEmail($email) {
-        try {
-            $sql = "SELECT * FROM users WHERE email = :email";
-            $stmt = $this->db->query($sql, ['email' => $email]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
-            return false;
-        }
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->db->query($sql, ['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public function getPasswordUser($userId) {
-        try {
-            // Prepare the SQL query with a placeholder for the user_id
-            $stmt = $this->db->prepare("SELECT password FROM users WHERE user_id = :user_id");
-            
-            // Bind the actual value of userId to the placeholder
-            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    
-            // Execute the query
-            $stmt->execute();
-    
-            // Fetch the result as an associative array
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            // Check if a result was found and return the password, or false if no result
-            if ($result) {
-                return $result['password'];
-            } else {
-                return false; // No user found with that user_id
-            }
-        } catch (Exception $e) {
-            // Log the error message in case of any exceptions
-            error_log("Error fetching password for user with ID $userId: " . $e->getMessage());
-            return false;
-        }
-    }
-    
 }

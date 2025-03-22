@@ -51,7 +51,7 @@
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
                         <h1 class="card-title mb-2 text-primary">120</h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +72.80% 🔥</small>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +12 🔥</small>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/wallet-info.png" alt="Wallet Info" class="rounded" width="50" height="50">
+                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Wallet Info" class="rounded" width="50" height="50">
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -76,7 +76,7 @@
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Default Products 🛒</span>
                         <h1 class="card-title mb-2 text-success">20</h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +28.42% 🌟</small>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +11 🌟</small>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Total Stock 📦</span>
                         <h1 class="card-title mb-2 text-warning"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +28.42% ⚡</small>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +10 ⚡</small>
                     </div>
                 </div>
             </div>
@@ -138,8 +138,8 @@
                             </div>
                         </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Income 💰</span>
-                        <h1 class="card-title mb-2 text-info"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +28.42% 💸</small>
+                        <h1 class="card-title mb-2 text-info">22.00 $</h1>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +14.42 $ 💸</small>
                     </div>
                 </div>
             </div>
@@ -162,8 +162,8 @@
                             </div>
                         </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Expenses 💰</span>
-                        <h1 class="card-title mb-2 text-info"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +28.42% 💸</small>
+                        <h1 class="card-title mb-2 text-info">10.00 $</h1>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +2.42 $ 💸</small>
                     </div>
                 </div>
             </div>
@@ -179,13 +179,20 @@
                                     <i class="bx bx-dots-vertical-rounded fs-5"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
                                 </div>
                             </div>
                         </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Total Money 💰</span>
-                        <h1 class="card-title mb-2 text-info"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +28.42% 💸</small>
+                        <h1 class="card-title mb-2 text-info"><?php echo number_format($totalMoney['grand_total'], 2); ?>$</h1>
+                            <!-- Display increment only if it's a positive value -->
+                            <?php if ($increment >= 0): ?>
+                                    <small class="text-success fs-6">
+                                        <i class="bx bx-up-arrow-alt"></i> 
+                                        + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
+                                    </small>
+                            <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -405,3 +412,34 @@
         </div>
     </div>
 </div>
+
+<script>
+
+document.getElementById('today').addEventListener('click', function() {
+    fetchTotalMoney('today');
+});
+
+document.getElementById('tomorrow').addEventListener('click', function() {
+    fetchTotalMoney('tomorrow');
+});
+
+function fetchTotalMoney(date) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'path_to_your_controller_method', true); // Replace with actual path, e.g., '/admin/getIncomeByDate'
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onload = function() {
+        if (xhr.status === 1000) {
+            var data = JSON.parse(xhr.responseText);
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById('totalMoney').innerText = data.grand_total + '$';
+            }
+        }
+    };
+    
+    xhr.send('date=' + date);
+}
+
+</script>
