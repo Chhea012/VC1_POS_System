@@ -118,13 +118,12 @@
     <img src="<?php echo $logoSrc . '/views/assets/modules/img/logo/logo.png'; ?>" alt="" class="img-fluid" style="width: 100px;">
             <div class="col-8">
                 <p>Street: 2004, Tek Thla, Sen Sok, Phnom Penh</p>
-                <p>Phone: (+855) 456-7890</p>
+                <p>Phone: (+855) 60 27 22 78</p>
                 <p class="date-time">DateTime: <?= date('l, F jS, Y') ?></p>
             </div>
         </div>
 
-        <h3 class="fw-bold text-center mt-3">Inventory Product Report - IceDessert</h3>
-
+        <h1 class="fw-bold text-center mt-3 text-center">Inventory Product Report - IceDessert</h1>
         <table>
             <thead>
                 <tr>
