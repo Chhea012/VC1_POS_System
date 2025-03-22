@@ -20,6 +20,7 @@ require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
 require_once "Controllers/OrderController.php";
 require_once "Controllers/CreateOrderController.php";
+require_once "Controllers/NotificationController.php";
 
 $route = new Router();
 
@@ -77,7 +78,7 @@ $route->get("/users/delete/{user_id}", [UserController::class, 'delete']); // Ad
 
 // calendar
 $route->get("/calendar", [CalendarController::class, 'index']);
-
+$route->get("/notification", [NotificationController::class, 'index']);
 
 // orders
 $route->get("/orders", [OrderController::class, 'index']);

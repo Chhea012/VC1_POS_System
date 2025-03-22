@@ -33,6 +33,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-globe"></i> Language
                                 </a>
+                              
                                 <!-- Dropdown menu with Khmer and English options -->
                                 <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                                     <li>
@@ -47,6 +48,10 @@
                                     </li>
                                 </ul>
                             </li>
+                              <!-- notification Icon  -->
+                              <a class="nav-link" href="./notification" id="notificationDropdown" role="button" aria-expanded="false">
+                                    <i class="bx bx-bell bx-sm"></i>    
+                                </a>
                             <li class="nav-item lh-1 me-3 p4">
                                 <!-- <i class="bx bx-moon" id="darkModeToggle"></i> -->
                             </li>
