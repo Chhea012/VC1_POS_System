@@ -196,10 +196,10 @@
         submitButton.textContent = "Signing in...";
         loadingContainer.style.display = "block";
 
-        // Simulate loading for 5 seconds before redirecting to dashboard
+        // Simulate loading for 1 minute before redirecting to dashboard
         setTimeout(() => {
           window.location.href = "/dashboard"; // Redirect to dashboard
-        }, 200);
+        }, 60000); // 1 minute = 60,000 milliseconds
       });
     });
   </script>

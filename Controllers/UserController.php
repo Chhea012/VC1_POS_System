@@ -18,7 +18,8 @@ class UserController extends BaseController {
             return;
         }
         $users = $this->user->getUsers();
-        $this->view('users/user', ['users' => $users]);
+        $roles = $this->user->getRoles(); // Fetch roles for the create modal
+        $this->view('users/user', ['users' => $users, 'roles' => $roles]); // Pass both users and roles
     }
 
     public function create() {
@@ -45,14 +46,14 @@ class UserController extends BaseController {
 
         if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['role_id'])) {
             $_SESSION['error'] = "All required fields must be filled.";
-            $this->redirect('/users/create');
+            $this->redirect('/users');
             return;
         }
 
         $role_id = (int)$_POST['role_id'];
         if ($role_id === 1 && $this->user->hasAdmin()) { // Prevent multiple admins
             $_SESSION['error'] = "An admin user already exists. Only one admin is allowed.";
-            $this->redirect('/users/create');
+            $this->redirect('/users');
             return;
         }
 
@@ -64,7 +65,7 @@ class UserController extends BaseController {
 
             if (!in_array($file['type'], $allowedTypes) || $file['size'] > $maxSize) {
                 $_SESSION['error'] = "Invalid file type or size. Only JPG, PNG, GIF (max 2MB) allowed.";
-                $this->redirect('/users/create');
+                $this->redirect('/users');
                 return;
             }
 
@@ -78,7 +79,7 @@ class UserController extends BaseController {
                 $profileImage = '/Views/assets/uploads/' . $fileName;
             } else {
                 $_SESSION['error'] = "Failed to upload image.";
-                $this->redirect('/users/create');
+                $this->redirect('/users');
                 return;
             }
         }
@@ -98,7 +99,7 @@ class UserController extends BaseController {
             $this->redirect('/users');
         } catch (Exception $e) {
             $_SESSION['error'] = "Error creating user: " . $e->getMessage();
-            $this->redirect('/users/create');
+            $this->redirect('/users');
         }
     }
 
@@ -119,7 +120,6 @@ class UserController extends BaseController {
         $roles = $this->user->getRoles();
         $this->view('users/edit', ['user' => $user, 'roles' => $roles]);
     }
-
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -223,7 +223,6 @@ class UserController extends BaseController {
             $this->redirect('/users');
             return;
         }
-
 
         $uploadDir = __DIR__ . '/../Views/assets/uploads/';
         $imagePath = $uploadDir . basename($user['profile_image']);
