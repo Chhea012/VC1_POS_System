@@ -1,4 +1,5 @@
 <?php
+// /Views/users/user.php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,8 +8,22 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 ?>
-<!-- /Views/users/user.php -->
 <div class="container-xxl flex-grow-1 container-p-y">
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_SESSION['success']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_SESSION['error']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
     <a href="/users/create" class="btn btn-primary mb-3">+ Add New User</a>
     <div class="table-responsive">
         <table class="table table-hover align-middle table-striped border rounded shadow-sm">
@@ -32,7 +47,7 @@ if (!isset($_SESSION['user'])) {
                             <td><?= htmlspecialchars($user['user_name']) ?></td>
                             <td><?= htmlspecialchars($user['email']) ?></td>
                             <td><span class="badge bg-info text-dark"><?= htmlspecialchars($user['role_name']) ?></span></td>
-                            <td><?= htmlspecialchars($user['phone_number']) ?></td>
+                            <td><?= htmlspecialchars($user['phone_number'] ?? 'N/A') ?></td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light btn-sm border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -52,14 +67,14 @@ if (!isset($_SESSION['user'])) {
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="8" class="text-center text-muted">No users found</td>
+                        <td colspan="6" class="text-center text-muted">No users found</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
     </div>
 
-    <!-- Bootstrap Delete Confirmation Modal -->
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -81,7 +96,6 @@ if (!isset($_SESSION['user'])) {
     </div>
 </div>
 
-<!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
 <script>
