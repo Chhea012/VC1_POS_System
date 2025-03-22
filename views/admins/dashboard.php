@@ -50,8 +50,8 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
-                        <h1 class="card-title mb-2 text-primary">10</h1>
-                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +12 🔥</small>
+                        <h1 class="card-title mb-2 text-primary">11</h1>
+                        <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +8 🔥</small>
                     </div>
                 </div>
             </div>
@@ -397,10 +397,10 @@
                                     <div>
                                         <small class="text-muted d-block">Total Balance</small>
                                         <div class="d-flex align-items-center">
-                                            <h6 class="mb-0 me-1">$459.10</h6>
+                                            <h6 class="mb-0 me-1">$19.10</h6>
                                             <small class="text-success fw-semibold">
                                                 <i class="bx bx-chevron-up"></i>
-                                                42.9%
+                                                22.9%
                                             </small>
                                         </div>
                                     </div>
@@ -412,7 +412,7 @@
                                         </div>
                                         <div>
                                             <p class="mb-n1 mt-1">Expenses This Week</p>
-                                            <small class="text-muted">$39 less than last week</small>
+                                            <small class="text-muted">$23 less than last week</small>
 
                                         </div>
                                     </div>
