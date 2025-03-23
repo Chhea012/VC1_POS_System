@@ -60,9 +60,7 @@ $existingCategories = array_map(function ($product) {
                     <thead class="table-light">
                         <tr class="fw-semibold">
                             <th width="40px">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="selectAll">
-                                </div>
+                             #
                             </th>
                             <th>CATEGORY</th>
                             <th>STOCK</th>
@@ -79,11 +77,7 @@ $existingCategories = array_map(function ($product) {
 
 
                             <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
+                            <td class="text-center row-number"></td>
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
                                         <?php echo htmlspecialchars($product['category_name']) ?>
@@ -288,3 +282,11 @@ $existingCategories = array_map(function ($product) {
         }
 
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.row-number').forEach((cell, index) => {
+      cell.textContent = index + 1; // Adds numbering starting from 1
+    });
+  });
+</script>>
