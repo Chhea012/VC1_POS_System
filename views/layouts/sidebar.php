@@ -74,33 +74,8 @@
                         </li>
                         <li class="menu-item">
                             <a href="/orders/create" class="menu-link">
-                                <div data-i18n="Order detail">Order details</div>
+                                <div data-i18n="Order detail">Add Order</div>
                             </a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <div data-i18n="Customer">Customers</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="/users" class="menu-link">
-                                <div data-i18n="All customer">All Customers</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <div data-i18n="Customer detail">Customer Details</div>
-                            </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                    <a href="./dashboard" class="menu-link">
-                                        <div data-i18n="Overview">Overview</div>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                     </ul>
@@ -132,53 +107,14 @@
         </li>
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                <div data-i18n="Authentications">Authentications</div>
+                <i class='bx bxs-user-account '></i>
+                
+                <div data-i18n="User"> Users</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="/users/logout" class="menu-link" target="_blank">
-                        <div data-i18n="login">Logout</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/register" class="menu-link" target="_blank">
-                        <div data-i18n="Register">Register</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="/forgotpassword" class="menu-link" target="_blank">
-                        <div data-i18n="Verify email">Verify Email</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-
-                <i class='menu-icon icon-base bx bx-food-menu'></i>
-
-                <div data-i18n="Invoice"> Invoice</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="list">List</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="Preview">Preview</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="Edit">Edit</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="Add">Add</div>
+                    <a href="/users" class="menu-link" target="_blank">
+                        <div data-i18n="login">All User</div>
                     </a>
                 </li>
             </ul>
@@ -197,11 +133,6 @@
                         <div data-i18n="Weather">Weather</div>
                     </a>
                 </li>
-                <li class="menu-item ">
-                    <a href="/chart" class="menu-link">
-                        <div data-i18n="Chart">Chart</div>
-                    </a>
-                </li>
             </ul>
         <li class="menu-item">
             <a href="calendar" class="menu-link">
@@ -211,23 +142,5 @@
         </li>
 
         </li>
-        <!-- Forms & Tables -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text"> Tables</span></li>
-        <!-- Forms -->
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon icon-base bx bx-grid"></i>
-                <div data-i18n="DataTables">DataTables</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="./dashboard" class="menu-link">
-                        <div data-i18n="User Score">User Score</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
     </ul>
 </aside>
-
-
