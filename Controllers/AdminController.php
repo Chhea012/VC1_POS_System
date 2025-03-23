@@ -2,11 +2,9 @@
 require_once 'Models/AdminModel.php';
 
 class AdminController extends BaseController {
-
     private $adminHome;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->adminHome = new adminHome();
     }
 
@@ -26,19 +24,23 @@ class AdminController extends BaseController {
         
         // Calculate the increment (difference between new and old totals)
         $increment = $totalMoney['grand_total'] - $previousTotal;
-    
-        // Store the new total money in the database
+        
+        // Calculate added stock by comparing current and previous totals
+        $previousStock = $this->adminHome->getPreviousTotalStock()['total'] ?? 0;
+        $addedStock = $totalStock['total'] - $previousStock;
+        
+        // Store the new totals in the database
         $this->adminHome->storeTotalMoney($totalMoney['grand_total']);
-    
+        $this->adminHome->storeTotalStock($totalStock['total']);
+
         // Pass the necessary data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
             'highStockProducts' => $highStockProducts,
             'totalStock' => $totalStock,
             'totalMoney' => $totalMoney,
-            'increment' => $increment
+            'increment' => $increment,
+            'addedStock' => $addedStock
         ]);
     }
 }
-
-

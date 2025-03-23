@@ -33,6 +33,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-globe"></i> Language
                                 </a>
+                              
                                 <!-- Dropdown menu with Khmer and English options -->
                                 <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                                     <li>
@@ -47,6 +48,15 @@
                                     </li>
                                 </ul>
                             </li>
+                     <!-- Notification Bell -->
+                     <a class="nav-link" href="./notification" id="notificationDropdown" role="button" aria-expanded="false" style="position: relative;">
+                        <i class="bx bx-bell bx-sm"></i>
+                        <span id="notification-count" class="badge"
+                            style="position: absolute; top: -5px; right: -5px; background: red; color: white; padding: 5px; border-radius: 50%; display: none;">
+                        </span>
+                    </a>
+
+                       
                             <li class="nav-item lh-1 me-3 p4">
                                 <!-- <i class="bx bx-moon" id="darkModeToggle"></i> -->
                             </li>
@@ -106,4 +116,75 @@
                         </ul>
                     </div>
                 </nav>
+
+
+<!-- Add this script to manage the notification count -->
+<script>
+// Function to update the notification badge
+function updateNotificationBadge() {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    let unreadCount = events.filter(event => !event.isRead).length;
+    let badge = document.getElementById("notification-count");
+
+    if (unreadCount > 0) {
+        badge.textContent = unreadCount;
+        badge.style.display = "inline-block"; // Show the badge
+    } else {
+        badge.style.display = "none"; // Hide the badge if no unread notifications
+    }
+}
+
+// Call the function on page load
+document.addEventListener("DOMContentLoaded", function () {
+    updateNotificationBadge();
+});
+
+// If you already have functions like loadNotifications, dismissNotification, or markAsRead, 
+// make sure to call updateNotificationBadge() inside them. For example:
+
+// Example: If you have a loadNotifications function
+function loadNotifications() {
+    let notificationList = document.getElementById("notifications-list");
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    if (events.length === 0) {
+        notificationList.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bx bx-bell text-muted" style="font-size: 3rem;"></i>
+                <p class="text-muted mt-3">No new notifications.</p>
+            </div>`;
+        updateNotificationBadge(); // Update badge when no notifications
+        return;
+    }
+
+    // Add a read/unread state and timestamp if not present
+    events = events.map(event => ({
+        ...event,
+        isRead: event.isRead || false,
+        timestamp: event.timestamp || new Date().toISOString()
+    }));
+    localStorage.setItem("events", JSON.stringify(events));
+
+    // Your existing rendering logic for notifications...
+    updateNotificationBadge(); // Update badge after loading notifications
+}
+
+// Example: If you have a dismissNotification function
+function dismissNotification(index) {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    events.splice(index, 1);
+    localStorage.setItem("events", JSON.stringify(events));
+    loadNotifications();
+    updateNotificationBadge(); // Update badge after dismissing
+}
+
+// Example: If you have a markAsRead function
+function markAsRead(index) {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    events[index].isRead = !events[index].isRead; // Toggle read/unread
+    localStorage.setItem("events", JSON.stringify(events));
+    loadNotifications();
+    updateNotificationBadge(); // Update badge after marking as read/unread
+}
+</script>
                 

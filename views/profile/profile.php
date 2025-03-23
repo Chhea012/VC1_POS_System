@@ -36,7 +36,7 @@ if (!isset($_SESSION['user'])) {
                                 <i class="bx bx-upload d-block d-sm-none"></i>
                                 <input type="file" id="profileImage" name="profileImage" class="account-file-input" hidden accept="image/png, image/jpeg, image/gif">
                             </label>
-                            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" id="resetImageButton">
                                 <i class="bx bx-reset d-block d-sm-none"></i>
                                 <span class="d-none d-sm-block">Reset</span>
                             </button>
@@ -89,18 +89,26 @@ if (!isset($_SESSION['user'])) {
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Edit Image Preview Handler
     document.getElementById('profileImage').addEventListener('change', function(e) {
         const preview = document.getElementById('currentImage');
         const file = e.target.files[0];
         if (file) {
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
         }
     });
-
-    document.querySelector('.account-image-reset').addEventListener('click', function() {
-        const preview = document.getElementById('currentImage');
-        preview.src = '<?= htmlspecialchars($user['profile_image'] ?? '/Views/assets/uploads/default-profile.png') ?>';
-        document.getElementById('profileImage').value = '';
+});
+    // Reset the image to the default one when clicking reset button
+    document.getElementById("resetImageButton").addEventListener("click", function () {
+        document.getElementById("profileImage").value = '';  // Clear file input
+        document.getElementById("currentImage").src = '/Views/assets/uploads/default-profile.png';  // Reset to default image
     });
 </script>
