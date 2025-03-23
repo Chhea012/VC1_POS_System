@@ -20,6 +20,9 @@ require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
 require_once "Controllers/OrderController.php";
 require_once "Controllers/CreateOrderController.php";
+require_once "Controllers/OrderSummaryController.php";
+require_once "Controllers/OrderViewController.php";
+require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 
@@ -88,6 +91,12 @@ $route->get("/notification", [NotificationController::class, 'index']);
 // orders
 $route->get("/orders", [OrderController::class, 'index']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/view", [ OrderViewController::class, 'index']);
+// generate ---
+
+
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
