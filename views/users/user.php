@@ -216,10 +216,14 @@ $roles = $roles ?? [];
                             <input type="text" class="form-control" id="edit_phone_number" name="phone_number">
                         </div>
                         <div class="mb-3">
-                            <label for="edit_profile_image" class="form-label">Profile Image</label>
-                            <input type="file" class="form-control" id="edit_profile_image" name="profile_image" accept="image/*">
-                            <div class="mt-2">
-                                <img id="edit_image_preview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;" class="rounded">
+                            <label for="create_profile_image" class="form-label">Profile Image</label>
+                            <div id="image-upload-box" class="border rounded-2xl p-4 d-flex align-items-center justify-content-center" style="cursor: pointer; border: 2px dashed #6c757d; text-align: center;">
+                                <input type="file" id="create_profile_image" name="profile_image" accept="image/*" class="d-none" onchange="previewImage(event)">
+                                <div id="upload-placeholder" class="text-muted">
+                                    <i class="bx bx-upload" style="font-size: 3rem;"></i>
+                                    <p>Click or drag an image to upload</p>
+                                </div>
+                                <img id="create_image_preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 200px; display: none;" class="rounded">
                             </div>
                         </div>
                         <div class="d-flex gap-2">
