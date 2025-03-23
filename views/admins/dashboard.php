@@ -324,7 +324,7 @@
                         <div class="tab-content">
                       <!-- Low Stock Tab -->
                         <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                                 <?php foreach ($lowStockProducts as $product): ?>
                                     <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 shadow-sm border rounded">
                                         <div class="d-flex align-items-center">
@@ -344,12 +344,12 @@
                         </div>
                         <!-- High Stock Tab -->
                         <div class="tab-pane fade m-1" id="high-stock" role="tabpanel">
-                            <ul class="list-group list-group-flush">
+                            <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                                 <?php foreach ($highStockProducts as $product): ?>
                                     <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 mx- shadow-sm border rounded">
                                         <div class="d-flex align-items-center">
                                             <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" 
-                                                class="rounded-circle " 
+                                                class="rounded-circle" 
                                                 style="width: 40px; height: 50px;"  
                                                 alt="Product Image" />
                                             <div class="ms-3">
@@ -456,3 +456,24 @@ function fetchTotalMoney(date) {
 }
 
 </script>
+
+<style>
+    /* Custom scrollbar */
+.list-group-flush::-webkit-scrollbar {
+    width: 8px;
+}
+
+.list-group-flush::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.list-group-flush::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.list-group-flush::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
