@@ -43,8 +43,12 @@ $route->post("/profile/update", [ProfileController::class, 'update']); // Profil
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->post('/category/store', [categoryController::class, 'store']);
+// category route
 $route->get("/category", [categoryController::class, 'index']);
+$route->post('/category/store', [categoryController::class, 'store']);
+$route->get('/category/edit/{category_id}', [categoryController::class, 'edit']);
+$route->post('/category/update/{category_id}', [categoryController::class, 'update']);
+$route->post('/category/delete/{category_id}', [categoryController::class, 'delete']);
 // $route->get("/food", [FoodController::class, 'index']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
