@@ -145,7 +145,11 @@ if (! isset($_SESSION['user'])) {
                                     <button type="submit" class="dropdown-item" id="exportPDF">Generate PDF</button>
                                 </form>
                             </li>
-                            <li><a class="dropdown-item" id="exportExcel">Excel</a></li>
+                            <li>
+                               <form method="POST" action="/export/excel" class="d-inline">
+                                    <button type="submit" class="dropdown-item" id="exportExcel">Export Excel</button>
+                               </form>
+                            </li>
                         </ul>
                     </div>
 

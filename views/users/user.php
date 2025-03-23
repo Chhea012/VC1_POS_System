@@ -30,7 +30,7 @@ $roles = $roles ?? [];
     <?php endif; ?>
 
     <!-- Create User Button -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">+ Add New User</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">+ Add  User</button>
 
     <div class="table-responsive">
         <table class="table table-hover align-middle table-striped border rounded shadow-sm">

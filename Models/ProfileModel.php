@@ -40,36 +40,36 @@ class ProfileModel {
             ':role_id' => $data['role_id'],
             ':phone_number' => $data['phone_number']
         ];
-
+    
         // Debugging: Check the incoming data
         error_log("Profile Image Data: " . print_r($data['profile_image'], true));
-
-         // Add profile image if available
+    
+        // Add profile image if available
         if (!empty($data['profile_image'])) {
             $sql .= ", profile_image = :profile_image";
             $params[':profile_image'] = $data['profile_image'];
         }
-
+    
         // Check if password needs updating
         if (!empty($data['password'])) {
             $sql .= ", password = :password";
             $params[':password'] = password_hash($data['password'], PASSWORD_BCRYPT);
         }
-
+    
         $sql .= " WHERE user_id = :user_id";
         $params[':user_id'] = $user_id;
-
+    
         try {
             $stmt = $this->db->getConnection()->prepare($sql); // Use getConnection() to get PDO instance
             return $stmt->execute($params);
-        }catch (PDOException $e) {
+        } catch (PDOException $e) {
             error_log("SQL Error: " . $e->getMessage());
             error_log("SQL Query: " . $sql);
             error_log("SQL Params: " . print_r($params, true));
             throw $e;
         }
-        
     }
+    
     
     public function getPasswordUser($userId) {
         // Fetch the user's password from the database based on the user_id
