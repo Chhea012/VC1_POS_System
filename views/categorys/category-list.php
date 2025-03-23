@@ -101,18 +101,18 @@ $existingCategories = array_map(function ($product) {
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
                                         <ul class="dropdown-menu">
-                                        <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="<?php echo $product['category_id']; ?>" data-category-name="<?php echo htmlspecialchars($product['category_name']); ?>">
-                                            <i class="bi bi-pencil me-2"></i> Edit
-                                        </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['category_id'] ?>)">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </a>
-                                            <form id="delete-form-<?php echo $product['category_id'] ?>" action="/category/delete/<?php echo $product['category_id'] ?>" method="POST" style="display:none;">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                            </form>
+                                            <li>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="<?php echo $product['category_id']; ?>" data-category-name="<?php echo htmlspecialchars($product['category_name']); ?>">
+                                                    <i class="bi bi-pencil me-2"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['category_id'] ?>)">
+                                                    <i class="bi bi-trash me-2"></i>Delete
+                                                </a>
+                                                <form id="delete-form-<?php echo $product['category_id'] ?>" action="/category/delete/<?php echo $product['category_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
                                             </li>
                                         </ul>
                                     </div>
@@ -199,31 +199,31 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
 </div>
-    <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var toastElement = document.getElementById("toastMessage");
-                var toastText = document.getElementById("toastText");
+<?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var toastElement = document.getElementById("toastMessage");
+            var toastText = document.getElementById("toastText");
 
-                <?php if (isset($_SESSION['success_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
-                    toastElement.classList.add("bg-success");
-                    <?php unset($_SESSION['success_message']); ?>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['success_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                toastElement.classList.add("bg-success");
+                <?php unset($_SESSION['success_message']); ?>
+            <?php endif; ?>
 
-                <?php if (isset($_SESSION['error_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
-                    toastElement.classList.add("bg-danger");
-                    <?php unset($_SESSION['error_message']); ?>
-                <?php endif; ?>
+            <?php if (isset($_SESSION['error_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                toastElement.classList.add("bg-danger");
+                <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
 
-                var toast = new bootstrap.Toast(toastElement, {
-                    delay: 1000 // Set delay to 1000ms (1 second)
-                });
-                toast.show();
+            var toast = new bootstrap.Toast(toastElement, {
+                delay: 1000 // Set delay to 1000ms (1 second)
             });
-        </script>
-    <?php endif; ?>
+            toast.show();
+        });
+    </script>
+<?php endif; ?>
     <script>
             document.addEventListener('DOMContentLoaded', function() {
         // Modal and form variables
