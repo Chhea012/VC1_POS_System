@@ -30,7 +30,7 @@ $roles = $roles ?? [];
     <?php endif; ?>
 
     <!-- Create User Button -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">+ Add  User</button>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal">+ Add User</button>
 
     <div class="table-responsive">
         <table class="table table-hover align-middle table-striped border rounded shadow-sm">
@@ -62,21 +62,25 @@ $roles = $roles ?? [];
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end shadow">
                                         <li>
-                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#editUserModal" 
-                                                data-user-id="<?= $user['user_id'] ?>" 
-                                                data-user-name="<?= htmlspecialchars($user['user_name']) ?>" 
-                                                data-email="<?= htmlspecialchars($user['email']) ?>" 
-                                                data-role-id="<?= $user['role_id'] ?>" 
-                                                data-phone-number="<?= htmlspecialchars($user['phone_number'] ?? '') ?>" 
+                                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                                data-user-id="<?= $user['user_id'] ?>"
+                                                data-user-name="<?= htmlspecialchars($user['user_name']) ?>"
+                                                data-email="<?= htmlspecialchars($user['email']) ?>"
+                                                data-role-id="<?= $user['role_id'] ?>"
+                                                data-phone-number="<?= htmlspecialchars($user['phone_number'] ?? '') ?>"
                                                 data-profile-image="<?= htmlspecialchars($user['profile_image'] ?? '') ?>">
                                                 <i class="bi bi-pencil-square me-2"></i>Edit
                                             </button>
                                         </li>
-                                        <li>
-                                            <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-user-id="<?= $user['user_id'] ?>" data-user-name="<?= htmlspecialchars($user['user_name']) ?>">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </button>
-                                        </li>
+                                        <?php if (strtolower($user['role_name']) !== 'admin'): ?>
+                                            <li>
+                                                <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                                    data-user-id="<?= $user['user_id'] ?>" 
+                                                    data-user-name="<?= htmlspecialchars($user['user_name']) ?>">
+                                                    <i class="bi bi-trash me-2"></i>Delete
+                                                </button>
+                                            </li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
                             </td>
@@ -154,9 +158,13 @@ $roles = $roles ?? [];
                         </div>
                         <div class="mb-3">
                             <label for="create_profile_image" class="form-label">Profile Image</label>
-                            <input type="file" class="form-control" id="create_profile_image" name="profile_image" accept="image/*">
-                            <div class="mt-2">
-                                <img id="create_image_preview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;" class="rounded">
+                            <div id="image-upload-box" class="border rounded-2xl p-4 d-flex align-items-center justify-content-center" style="cursor: pointer; border: 2px dashed #6c757d; text-align: center;">
+                                <input type="file" id="create_profile_image" name="profile_image" accept="image/*" class="d-none" onchange="previewImage(event)">
+                                <div id="upload-placeholder" class="text-muted">
+                                    <i class="bx bx-upload" style="font-size: 3rem;"></i>
+                                    <p>Click or drag an image to upload</p>
+                                </div>
+                                <img id="create_image_preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 200px; display: none;" class="rounded">
                             </div>
                         </div>
                         <div class="d-flex gap-2">
@@ -262,20 +270,27 @@ $roles = $roles ?? [];
         });
 
         // Create Image Preview Handler
-        document.getElementById('create_profile_image').addEventListener('change', function(e) {
-            const preview = document.getElementById('create_image_preview');
-            const file = e.target.files[0];
+        const imageUploadBox = document.getElementById('image-upload-box');
+        const imageInput = document.getElementById('create_profile_image');
+        const imagePreview = document.getElementById('create_image_preview');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+
+        imageUploadBox.addEventListener('click', () => imageInput.click());
+
+        function previewImage(event) {
+            const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    preview.src = event.target.result;
-                    preview.style.display = 'block';
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadPlaceholder.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
             }
-        });
+        }
+
+        imageInput.addEventListener('change', previewImage);
 
         // Edit Modal Handler
         const editModal = document.getElementById('editUserModal');
@@ -293,7 +308,7 @@ $roles = $roles ?? [];
             document.getElementById('edit_email').value = email;
             document.getElementById('edit_role_id').value = roleId;
             document.getElementById('edit_phone_number').value = phoneNumber || '';
-            
+
             const editPreview = document.getElementById('edit_image_preview');
             if (profileImage) {
                 editPreview.src = profileImage;
