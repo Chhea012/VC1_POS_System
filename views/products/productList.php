@@ -8,7 +8,7 @@ if (! isset($_SESSION['user'])) {
 }
 
 ?>
-<?php require_once 'Models/productModel.php' ?>
+<?php require_once("Models/productModel.php");?>
 <div class="container-xxl flex-grow-1 container-p-y">
     <!-- Sales Cards -->
     <div class="card mb-4 shadow-sm">
