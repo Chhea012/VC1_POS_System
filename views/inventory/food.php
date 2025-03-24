@@ -143,7 +143,7 @@ document.getElementById('barcode').addEventListener('blur', function() {
 </script>
 
 
- Added Low Stock Alert Logic with Bootstrap Toast
+ <!-- Added Low Stock Alert Logic with Bootstrap Toast -->
 <?php
 // Check for low stock and prepare alert content
 $low_stock_items = [];
