@@ -183,4 +183,4 @@ foreach ($products as $product) {
       cell.textContent = index + 1; // Adds numbering starting from 1
     });
   });
-</script>>
+</script>
