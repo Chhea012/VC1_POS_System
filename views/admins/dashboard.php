@@ -1,18 +1,18 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (! isset($_SESSION['user'])) {
-    header("Location: /");
-    exit();
-}
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (! isset($_SESSION['user'])) {
+        header("Location: /");
+        exit();
+    }
 ?>
 
 <!-- Content wrapper -->
 <div class="content-wrapper">
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row g-4">
+    <div class="row g-4">
             <!-- Welcome Card (Full Width Hero) -->
             <div class="col-lg-12 order-0 mt-4">
                 <div class="card p-4 bg-light">
@@ -32,7 +32,6 @@ if (! isset($_SESSION['user'])) {
             </div>
 
             <!-- Product Sale Card -->
-            <a href=""></a>
             <div class="col-lg-4 order-1 mt-4">
                 <div class="card p-2 border-primary">
                     <div class="card-body">
@@ -70,8 +69,8 @@ if (! isset($_SESSION['user'])) {
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
                                 </div>
                             </div>
                         </div>
@@ -79,14 +78,14 @@ if (! isset($_SESSION['user'])) {
                         <h1 class="card-title mb-2 text-success"><?= $addedStock ?></h1>
                         <?php if ($addedStock >= 0): ?>
                             <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?> 🌟
+                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?>  🌟
                             </small>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
 
-            <!-- Total Stock Card -->
+            <!-- Total Stock Card --> 
             <div class="col-lg-4  order-1 mt-4">
                 <div class="card p-2 border-warning">
                     <div class="card-body">
@@ -99,11 +98,7 @@ if (! isset($_SESSION['user'])) {
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-<<<<<<< HEAD
-                                    <a class="dropdown-item" href="/category">views More</a>
-=======
                                     <a class="dropdown-item" href="/category">View More</a>
->>>>>>> 4b62de1420aef860bafc25655ae0d22683662eb8
                                 </div>
                             </div>
                         </div>
@@ -144,11 +139,11 @@ if (! isset($_SESSION['user'])) {
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
                                 </div>
                             </div>
-                        </div>
+                        </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Income 💰</span>
                         <h1 class="card-title mb-2 text-info">22.00 $</h1>
                         <small class="text-success fs-6"><i class="bx bx-up-arrow-alt"></i> +14.42 $ 💸</small>
@@ -168,11 +163,11 @@ if (! isset($_SESSION['user'])) {
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
                                 </div>
                             </div>
-                        </div>
+                        </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Expenses 💰</span>
                         <h1 class="card-title mb-2 text-info">10.00 $</h1>
                         <small class="text-danger fs-6"><i class="bx bx-down-arrow-alt"></i> +2.42 $ 💸</small>
@@ -191,20 +186,20 @@ if (! isset($_SESSION['user'])) {
                                     <i class="bx bx-dots-vertical-rounded fs-5"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
+                                <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
                                 </div>
                             </div>
-                        </div>
+                        </div>  
                         <span class="fw-semibold d-block mb-1 fs-5">Total Money 💰</span>
                         <h1 class="card-title mb-2 text-info"><?php echo number_format($totalMoney['grand_total'], 2); ?>$</h1>
-                        <!-- Display increment only if it's a positive value -->
-                        <?php if ($increment >= 0): ?>
-                            <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i>
-                                + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
-                            </small>
-                        <?php endif; ?>
+                            <!-- Display increment only if it's a positive value -->
+                            <?php if ($increment >= 0): ?>
+                                    <small class="text-success fs-6">
+                                        <i class="bx bx-up-arrow-alt"></i> 
+                                        + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
+                                    </small>
+                            <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -312,7 +307,7 @@ if (! isset($_SESSION['user'])) {
                     <div class="card-header d-flex justify-content-between align-items-center  text-white rounded-top">
                         <ul class="nav nav-pills" role="tablist">
                             <li class="nav-item">
-                                <button type="button" class="nav-link active btn btn-outline-info mx-1" role="tab" data-bs-toggle="tab" ;
+                                <button type="button" class="nav-link active btn btn-outline-info mx-1" role="tab" data-bs-toggle="tab" style="background-color: #;"
                                     data-bs-target="#low-stock" aria-controls="low-stock" aria-selected="true">
                                     <i class="bx bx-down-arrow-circle"></i> Low Stock
                                 </button>
@@ -361,11 +356,12 @@ if (! isset($_SESSION['user'])) {
                                                 <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
                                                 <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
                                             </div>
-                                            <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+                                        </div>
+                                        <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -418,6 +414,8 @@ if (! isset($_SESSION['user'])) {
                                             <p class="mb-n1 mt-1">Expenses This Week</p>
                                             <small class="text-muted">$23 less than last week</small>
 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -427,33 +425,35 @@ if (! isset($_SESSION['user'])) {
         </div>
     </div>
 </div>
-</div>
-</div>
 
 <script>
-    document.getElementById('today').addEventListener('click', function() {
-        fetchTotalMoney('today');
-    });
 
-    document.getElementById('tomorrow').addEventListener('click', function() {
-        fetchTotalMoney('tomorrow');
-    });
+document.getElementById('today').addEventListener('click', function() {
+    fetchTotalMoney('today');
+});
 
-    function fetchTotalMoney(date) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'path_to_your_controller_method', true); // Replace with actual path, e.g., '/admin/getIncomeByDate'
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+document.getElementById('tomorrow').addEventListener('click', function() {
+    fetchTotalMoney('tomorrow');
+});
 
-        xhr.onload = function() {
-            if (xhr.status === 1000) {
-                var data = JSON.parse(xhr.responseText);
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    document.getElementById('totalMoney').innerText = data.grand_total + '$';
-                }
+function fetchTotalMoney(date) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'path_to_your_controller_method', true); // Replace with actual path, e.g., '/admin/getIncomeByDate'
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onload = function() {
+        if (xhr.status === 1000) {
+            var data = JSON.parse(xhr.responseText);
+            if (data.error) {
+                alert(data.error);
+            } else {
+                document.getElementById('totalMoney').innerText = data.grand_total + '$';
             }
-        };
+        }
+    };
+    
+    xhr.send('date=' + date);
+}
 
 </script>
 
