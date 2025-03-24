@@ -73,7 +73,7 @@ class categoryController extends BaseController
         
         if ($result) {
             header("Location: /category");
-            $_SESSION['success_message'] = "Edit category name successfully!";
+            $_SESSION['success_message'] = "Edit category Name successfully!";
             exit;
         } else {
             throw new Exception("Error updating category.");
@@ -91,7 +91,7 @@ public function delete($category_id)
     $this->categoryModel->delete($category_id);
     
     // Set a success message
-    $_SESSION['success_message'] = "category deleted successfully!";
+    $_SESSION['success_message'] = "Category deleted successfully!";
     
     // Redirect to the product list page
     header("Location: /category");

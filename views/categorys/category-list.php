@@ -189,7 +189,7 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
     </div>
-
+    <!-- message alert edit and delete -->
     <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
