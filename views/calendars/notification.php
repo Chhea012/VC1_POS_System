@@ -49,38 +49,44 @@
             }));
             localStorage.setItem("events", JSON.stringify(events));
 
-            // Group notifications by start date (Today and Yesterday only)
             const groupedEvents = groupByDate(events);
 
-            let html = "";
-            for (const [dateLabel, eventGroup] of Object.entries(groupedEvents)) {
-                if (eventGroup.length === 0) continue; // Skip empty groups
-                html += `<h5 class="mt-4">${dateLabel}</h5>`;
-                html += eventGroup.map((event, index) => {
-                    const icon = event.title.toLowerCase().includes("birthday") ? "🎂" : "💼";
-                    const timeAgo = getTimeAgo(new Date(event.timestamp));
-                    const bgClass = event.isRead ? "bg-light" : "bg-primary-subtle";
-                    return `
-                        <div class="card mb-2 ${bgClass}" style="border-radius: 10px;">
-                            <div class="card-body d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-3" style="font-size: 1.5rem;">${icon}</span>
-                                    <div>
-                                        <strong>${event.title}</strong> - ${event.start}
-                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">${timeAgo}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-primary me-2" onclick="markAsRead(${index})">
-                                        ${event.isRead ? "Mark as Unread" : "Mark as Read"}
-                                    </button>
-                                </div>
-                            </div>
+let html = "";
+for (const [dateLabel, eventGroup] of Object.entries(groupedEvents)) {
+    if (eventGroup.length === 0) continue; // Skip empty groups
+    html += `<h5 class="mt-4">${dateLabel}</h5>`;
+    html += eventGroup.map((event, index) => {
+        const icon = event.title.toLowerCase().includes("birthday") ? "🎂" : "💼";
+        const timeAgo = getTimeAgo(new Date(event.timestamp));
+        const bgClass = event.isRead ? "bg-light" : "bg-primary-subtle";
+        return `
+            <div class="card mb-2 ${bgClass}" style="border-radius: 10px;">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3" style="font-size: 1.5rem;">${icon}</span>
+                        <div>
+                            <strong>${event.title}</strong> - ${event.start}
+                            <p class="text-muted mb-0" style="font-size: 0.9rem;">${timeAgo}</p>
                         </div>
-                    `;
-                }).join("");
-            }
-
+                    </div>
+                    <div>
+                        <div class="dropdown">
+                            <button style="background: none; border: none; padding: 0; font-size: 1.5rem; line-height: 0.5;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="markAsRead(${index})">${event.isRead ? "Mark as Unread" : "Mark as Read"}</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="dismissNotification(${index})">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
             notificationList.innerHTML = html;
             markAllButton.style.display = events.some(event => !event.isRead) ? "block" : "none";
             updateNotificationBadge(); // Update badge after loading notifications
