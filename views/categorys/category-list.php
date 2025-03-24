@@ -90,7 +90,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'] * $product['total_quantity']) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'], 2)?></td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
@@ -120,10 +120,7 @@ $existingCategories = array_map(function ($product) {
         </div>
     </div>
 
-<<<<<<< HEAD
     </tbody>
-=======
->>>>>>> 4b62de1420aef860bafc25655ae0d22683662eb8
     <!-- Modal for adding a new category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog">

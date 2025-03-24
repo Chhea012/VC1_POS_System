@@ -327,42 +327,6 @@ if (! isset($_SESSION['user'])) {
                     </div>
                     <div class="card-body p-0">
                         <div class="tab-content">
-<<<<<<< HEAD
-                            <!-- Low Stock Tab -->
-                            <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
-                                <ul class="list-group list-group-flush">
-                                    <?php foreach ($lowStockProducts as $product): ?>
-                                        <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 shadow-sm border rounded">
-                                            <div class="d-flex align-items-center">
-                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
-                                                    class="rounded-circle"
-                                                    style="width: 40px; height: 50px;"
-                                                    alt="Product Image" />
-                                                <div class="ms-3">
-                                                    <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
-                                                    <small class="text-muted">Stock: <span class="fw-semibold text-danger"><?php echo $product['quantity'] ?></span></small>
-                                                </div>
-                                            </div>
-                                            <a href="/products" class="btn btn-sm btn-warning px-3 fw-semibold">Restore</a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                            <!-- High Stock Tab -->
-                            <div class="tab-pane fade m-1" id="high-stock" role="tabpanel">
-                                <ul class="list-group list-group-flush">
-                                    <?php foreach ($highStockProducts as $product): ?>
-                                        <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 mx- shadow-sm border rounded">
-                                            <div class="d-flex align-items-center">
-                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
-                                                    class="rounded-circle "
-                                                    style="width: 40px; height: 50px;"
-                                                    alt="Product Image" />
-                                                <div class="ms-3">
-                                                    <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
-                                                    <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
-                                                </div>
-=======
                       <!-- Low Stock Tab -->
                         <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
                             <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
@@ -396,7 +360,6 @@ if (! isset($_SESSION['user'])) {
                                             <div class="ms-3">
                                                 <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
                                                 <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
->>>>>>> 4b62de1420aef860bafc25655ae0d22683662eb8
                                             </div>
                                             <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
                                         </li>
@@ -430,32 +393,6 @@ if (! isset($_SESSION['user'])) {
                         </div>
                     </div>
                     <div class="card-body">
-<<<<<<< HEAD
-                        <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
-                            <div class="d-flex p-4 pt-3">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <img src="views/assets/modules/img/icons/unicons/wallet.png" alt="User" />
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block">Total Balance</small>
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="mb-0 me-1">$459.10</h6>
-                                        <small class="text-success fw-semibold">
-                                            <i class="bx bx-chevron-up"></i>
-                                            42.9%
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="incomeChart"></div>
-                            <div class="d-flex justify-content-center pt-4 gap-2">
-                                <div class="flex-shrink-0">
-                                    <div id="expensesOfWeek"></div>
-                                </div>
-                                <div>
-                                    <p class="mb-n1 mt-1">Expenses This Week</p>
-                                    <small class="text-muted">$39 less than last week</small>
-=======
                     <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
                                 <div class="d-flex p-4 pt-3">
                                     <div class="avatar flex-shrink-0 me-3">
@@ -480,7 +417,6 @@ if (! isset($_SESSION['user'])) {
                                         <div>
                                             <p class="mb-n1 mt-1">Expenses This Week</p>
                                             <small class="text-muted">$23 less than last week</small>
->>>>>>> 4b62de1420aef860bafc25655ae0d22683662eb8
 
                                 </div>
                             </div>
@@ -519,11 +455,6 @@ if (! isset($_SESSION['user'])) {
             }
         };
 
-<<<<<<< HEAD
-        xhr.send('date=' + date);
-    }
-</script>
-=======
 </script>
 
 <style>
@@ -546,4 +477,3 @@ if (! isset($_SESSION['user'])) {
     background: #555;
 }
 </style>
->>>>>>> 4b62de1420aef860bafc25655ae0d22683662eb8
