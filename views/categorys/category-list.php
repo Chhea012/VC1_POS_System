@@ -286,7 +286,7 @@ $existingCategories = array_map(function ($product) {
             cell.textContent = index + 1; // Adds numbering starting from 1
             });
         });
-    </script>>
+    </script>
     <style>
         
         .plus-btn {
