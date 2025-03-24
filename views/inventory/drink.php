@@ -33,11 +33,7 @@ if (!isset($_SESSION['user'])) {
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="40px">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="selectAll">
-                                </div>
-                            </th>
+                            <th width="40px"> #</th>
                             <th>PRODUCT</th>
                             <th>CATEGORY</th>
                             <th>STOCK</th>
@@ -50,11 +46,7 @@ if (!isset($_SESSION['user'])) {
                     <tbody>
                         <?php foreach ($products as $product): ?>
                             <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </td>
+                            <td class="text-center row-number"></td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="me-2 text-primary"></div>
@@ -184,3 +176,11 @@ foreach ($products as $product) {
         });
     </script>
 <?php endif; ?>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.row-number').forEach((cell, index) => {
+      cell.textContent = index + 1; // Adds numbering starting from 1
+    });
+  });
+</script>>

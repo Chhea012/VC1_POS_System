@@ -20,6 +20,9 @@ require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
 require_once "Controllers/OrderController.php";
 require_once "Controllers/CreateOrderController.php";
+require_once "Controllers/OrderSummaryController.php";
+require_once "Controllers/OrderViewController.php";
+require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 
@@ -45,8 +48,12 @@ $route->post("/profile/update", [ProfileController::class, 'update']); // Profil
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->post('/category/store', [categoryController::class, 'store']);
+// category route
 $route->get("/category", [categoryController::class, 'index']);
+$route->post('/category/store', [categoryController::class, 'store']);
+$route->get('/category/edit/{category_id}', [categoryController::class, 'edit']);
+$route->post('/category/update/{category_id}', [categoryController::class, 'update']);
+$route->post('/category/delete/{category_id}', [categoryController::class, 'delete']);
 // $route->get("/food", [FoodController::class, 'index']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
@@ -84,6 +91,12 @@ $route->get("/notification", [NotificationController::class, 'index']);
 // orders
 $route->get("/orders", [OrderController::class, 'index']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/view", [ OrderViewController::class, 'index']);
+// generate ---
+
+
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);

@@ -61,15 +61,6 @@
                 <p><strong>Order Status:</strong> booked</p>
                 <p><strong>Payment Mode:</strong> Cash Payment</p>
             </div>
-
-            <!-- User Details -->
-            <div class="user-details mt-4">
-                <h3 class="section-title">User Details</h3>
-                <p><strong>Full Name:</strong> User Ved</p>
-                <p><strong>Email Address:</strong> userved@gmail.com</p>
-                <p><strong>Phone Number:</strong> 9876549879</p>
-            </div>
-
             <!-- Order Items Details -->
             <div class="order-items mt-4">
                 <h3 class="section-title">Order Items Details</h3>
@@ -100,7 +91,7 @@
                     </table>
                 </div>
                 <div class="mt-3 text-end">
-                    <h5 class="text-success"><strong>Grand Total:</strong> ₹32,399</h5>
+                    <h5 class=""><strong>Grand Total:</strong> $32,399</h5>
                 </div>
             </div>
         </div>
