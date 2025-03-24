@@ -110,18 +110,15 @@ $existingCategories = array_map(function ($product) {
                                             </li>
                                         </ul>
                                     </div>
-                                    </td>
+                                </td>
+                            </td>
                             </tr>
-
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-    </tbody>
-
 
     <!-- Modal for adding a new category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -151,39 +148,38 @@ $existingCategories = array_map(function ($product) {
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>                       
     <!-- Modal for editing a category -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog">
-        <div class="modal-content shadow-lg rounded-4 border-0">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="editCategoryModalLabel">
-                    <i class="bi bi-pencil me-2"></i> Edit Category
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form action="/category/update/<?php echo $product['category_id']; ?>" method="POST" id="editCategoryForm">
-                    <input type="hidden" id="edit_category_id" name="category_id">
-                    <div class="mb-3">
-                        <label for="edit_category_name" class="form-label fw-semibold">Category Name</label>
-                        <input type="text" class="form-control form-control-lg rounded-3" id="edit_category_name" name="category_name" placeholder="Enter category name" required>
-                        <div id="editCategoryNameError" class="invalid-feedback">
-                            Category name already exists!
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog">
+            <div class="modal-content shadow-lg rounded-4 border-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="editCategoryModalLabel">
+                        <i class="bi bi-pencil me-2"></i> Edit Category
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form action="/category/update/<?php echo $product['category_id']; ?>" method="POST" id="editCategoryForm">
+                        <input type="hidden" id="edit_category_id" name="category_id">
+                        <div class="mb-3">
+                            <label for="edit_category_name" class="form-label fw-semibold">Category Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-3" id="edit_category_name" name="category_name" placeholder="Enter category name" required>
+                            <div id="editCategoryNameError" class="invalid-feedback">
+                                Category name already exists!
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
-                            <i class="bi bi-check-circle me-2"></i> Save Changes
-                        </button>
-                    </div>
-                </form>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-check-circle me-2"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
         <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" id="toastText">
@@ -192,34 +188,35 @@ $existingCategories = array_map(function ($product) {
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
-</div>
-<?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var toastElement = document.getElementById("toastMessage");
-            var toastText = document.getElementById("toastText");
+    </div>
 
-            <?php if (isset($_SESSION['success_message'])): ?>
-                toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
-                toastElement.classList.add("bg-success");
-                <?php unset($_SESSION['success_message']); ?>
-            <?php endif; ?>
+    <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var toastElement = document.getElementById("toastMessage");
+                var toastText = document.getElementById("toastText");
 
-            <?php if (isset($_SESSION['error_message'])): ?>
-                toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
-                toastElement.classList.add("bg-danger");
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
+                <?php if (isset($_SESSION['success_message'])): ?>
+                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                    toastElement.classList.add("bg-success");
+                    <?php unset($_SESSION['success_message']); ?>
+                <?php endif; ?>
 
-            var toast = new bootstrap.Toast(toastElement, {
-                delay: 1000 // Set delay to 1000ms (1 second)
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                    toastElement.classList.add("bg-danger");
+                    <?php unset($_SESSION['error_message']); ?>
+                <?php endif; ?>
+
+                var toast = new bootstrap.Toast(toastElement, {
+                    delay: 1000 // Set delay to 1000ms (1 second)
+                });
+                toast.show();
             });
-            toast.show();
-        });
-    </script>
-<?php endif; ?>
+        </script>
+    <?php endif; ?>
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
         // Modal and form variables
         const editCategoryModal = document.getElementById('editCategoryModal');
         const editCategoryForm = document.getElementById('editCategoryForm');
@@ -277,16 +274,49 @@ $existingCategories = array_map(function ($product) {
         });
     });
    
-    function confirmDelete(categoryId) {
-            document.getElementById('delete-form-' + categoryId).submit();
-        }
+        function confirmDelete(categoryId) {
+                document.getElementById('delete-form-' + categoryId).submit();
+            }
 
-</script>
+    </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.row-number').forEach((cell, index) => {
-      cell.textContent = index + 1; // Adds numbering starting from 1
-    });
-  });
-</script>>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.row-number').forEach((cell, index) => {
+            cell.textContent = index + 1; // Adds numbering starting from 1
+            });
+        });
+    </script>>
+    <style>
+        
+        .plus-btn {
+        width: 18px;
+        height: 18px;
+        background: #696cff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        box-shadow: 
+            0 3px 5px rgba(0, 0, 0, 0.2), 
+            0 0 10px rgba(108, 99, 255, 0.4),
+            inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+    }
+    
+    .plus-btn:hover {
+        background: linear-gradient(135deg, #5a54e0, #4038c9);
+        box-shadow: 
+            0 5px 10px rgba(0, 0, 0, 0.3), 
+            0 0 15px rgba(108, 99, 255, 0.6);
+        transform: scale(1.15) rotate(5deg);
+    }
+    
+    </style>
