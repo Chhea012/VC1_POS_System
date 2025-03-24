@@ -76,7 +76,7 @@ $existingCategories = array_map(function ($product) {
                             ?>
 
 
-                            <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
+<tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
                             <td class="text-center row-number"></td>
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
@@ -90,7 +90,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'] * $product['total_quantity'], 2) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'], 2)?></td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
@@ -119,6 +119,7 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
     </div>
+
 
     <!-- Modal for adding a new category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -185,6 +186,7 @@ $existingCategories = array_map(function ($product) {
                 <div class="toast-body" id="toastText">
                     Success message here
                 </div>
+
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
@@ -266,6 +268,7 @@ $existingCategories = array_map(function ($product) {
                 editCategoryForm.submit();
             }
         });
+
 
         // Clear validation error when the user starts typing
         editCategoryNameInput.addEventListener('input', function() {
