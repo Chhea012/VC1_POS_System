@@ -15,14 +15,14 @@ if (!isset($_SESSION['user'])) {
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Product</label>
                     <select id="product" class="form-select">
-                        <option value="">-- Select Product --</option>
-                        <option value="Mi Note 8 Pro" data-price="16000">Mi Note 8 Pro - $16000</option>
-                        <option value="T-Shirt" data-price="399">T-Shirt - $399</option>
-                        <option value="Laptop" data-price="55000">Laptop - $55000</option>
-                        <option value="Headphones" data-price="2500">Headphones - $2500</option>
-                        <option value="Smartwatch" data-price="12000">Smartwatch - $12000</option>
-                        <option value="Backpack" data-price="1500">Backpack - $1500</option>
-                    </select>
+                <option value="">-- Select Product --</option>
+                <?php foreach ($selectProduct as $product): ?>
+                    <option value="<?php echo htmlspecialchars($product['product_name']); ?>" 
+                            data-price="<?php echo htmlspecialchars($product['price']); ?>">
+                        <?php echo htmlspecialchars($product['product_name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-bold">Discount (%)</label>
@@ -68,7 +68,7 @@ if (!isset($_SESSION['user'])) {
                     </select>
                 </div>
             </div>
-            <form id="orderForm" action="/orders/summary" method="POST">
+            <form id="orderForm" action="/orders/saveOrder" method="POST">
                 <input type="hidden" name="orderItems" id="orderItems">
                 <button type="submit" class="btn btn-warning mt-3" onclick="return placeOrder()">Proceed to Place Order</button>
             </form>
