@@ -35,11 +35,19 @@ class categoryController extends BaseController
                         // Redirect after success
                         $this->redirect('/category');
                     }
+                    if ($result) {
+                        $_SESSION['success_message'] = "category added successfully!";
+                        header("Location: /category");
+                        exit;
+                    } else {
+                        throw new Exception("Error inserting category into database.");
+                    }
                 } catch (Exception $e) {
-                    echo "<script>alert('" . $e->getMessage() . "');</script>";
+                    $_SESSION['error_message'] = $e->getMessage();
+                    error_log("Store Error: " . $e->getMessage());
+                    header("Location: /category");
+                    exit;
                 }
-            } else {
-                echo "<script>alert('Please enter a category name.');</script>";
             }
         }
     }
@@ -58,19 +66,23 @@ class categoryController extends BaseController
     }
     public function update($category_id)
     {
+        try {
         $category_name = $_POST['category_name']; // Get the updated category name from the form
         
         $result = $this->categoryModel->updateCategory($category_id, $category_name);
         
         if ($result) {
-            // Redirect or return a success message
-            header("Location: /category"); // Redirect back to the categories list
-            exit();
+            header("Location: /category");
+            $_SESSION['success_message'] = "Edit category Name successfully!";
+            exit;
         } else {
-            // Handle the error case
-            echo "Failed to update category.";
+            throw new Exception("Error updating category.");
         }
+    } catch (Exception $e) {
+        error_log("Update Error: " . $e->getMessage());
+        echo "<script>alert('" . $e->getMessage() . "');</script>";
     }
+}
     
 
 public function delete($category_id)
@@ -79,7 +91,7 @@ public function delete($category_id)
     $this->categoryModel->delete($category_id);
     
     // Set a success message
-    $_SESSION['success_message'] = "Product deleted successfully!";
+    $_SESSION['success_message'] = "Category deleted successfully!";
     
     // Redirect to the product list page
     header("Location: /category");

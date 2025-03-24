@@ -98,7 +98,7 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">views More</a>
+                                    <a class="dropdown-item" href="/category">View More</a>
                                 </div>
                             </div>
                         </div>
