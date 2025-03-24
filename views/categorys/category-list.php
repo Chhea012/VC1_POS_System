@@ -90,7 +90,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'] * $product['total_quantity'], 2) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'],2) ?></td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
