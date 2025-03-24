@@ -9,6 +9,7 @@
     }
     ?>
 
+    <!-- Notifications Section -->
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Notifications</h2>
@@ -21,6 +22,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             loadNotifications();
             checkTodayEvents();
+            updateNotificationBadge(); // Initial badge update
         });
 
         function loadNotifications() {
@@ -31,10 +33,11 @@
             if (events.length === 0) {
                 notificationList.innerHTML = `
                     <div class="text-center py-5">
-                        <i class="bi bi-bell text-muted" style="font-size: 3rem;"></i>
+                        <i class="bx bx-bell text-muted" style="font-size: 3rem;"></i>
                         <p class="text-muted mt-3">No new notifications.</p>
                     </div>`;
                 markAllButton.style.display = "none";
+                updateNotificationBadge(); // Update badge when no notifications
                 return;
             }
 
@@ -46,46 +49,54 @@
             }));
             localStorage.setItem("events", JSON.stringify(events));
 
-            // Group notifications by date
             const groupedEvents = groupByDate(events);
 
-            let html = "";
-            for (const [dateLabel, eventGroup] of Object.entries(groupedEvents)) {
-                html += `<h5 class="mt-4">${dateLabel}</h5>`;
-                html += eventGroup.map((event, index) => {
-                    const icon = event.title.toLowerCase().includes("birthday") ? "🎂" : "💼";
-                    const timeAgo = getTimeAgo(new Date(event.timestamp));
-                    const bgClass = event.isRead ? "bg-light" : "bg-primary-subtle";
-                    return `
-                        <div class="card mb-2 ${bgClass}" style="border-radius: 10px;">
-                            <div class="card-body d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-3" style="font-size: 1.5rem;">${icon}</span>
-                                    <div>
-                                        <strong>${event.title}</strong> - ${event.start}
-                                        <p class="text-muted mb-0" style="font-size: 0.9rem;">${timeAgo}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-primary me-2" onclick="markAsRead(${index})">
-                                        ${event.isRead ? "Mark as Unread" : "Mark as Read"}
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" onclick="dismissNotification(${index})">Dismiss</button>
-                                </div>
-                            </div>
+let html = "";
+for (const [dateLabel, eventGroup] of Object.entries(groupedEvents)) {
+    if (eventGroup.length === 0) continue; // Skip empty groups
+    html += `<h5 class="mt-4">${dateLabel}</h5>`;
+    html += eventGroup.map((event, index) => {
+        const icon = event.title.toLowerCase().includes("birthday") ? "🎂" : "💼";
+        const timeAgo = getTimeAgo(new Date(event.timestamp));
+        const bgClass = event.isRead ? "bg-light" : "bg-primary-subtle";
+        return `
+            <div class="card mb-2 ${bgClass}" style="border-radius: 10px;">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3" style="font-size: 1.5rem;">${icon}</span>
+                        <div>
+                            <strong>${event.title}</strong> - ${event.start}
+                            <p class="text-muted mb-0" style="font-size: 0.9rem;">${timeAgo}</p>
                         </div>
-                    `;
-                }).join("");
-            }
-
+                    </div>
+                    <div>
+                        <div class="dropdown">
+                            <button style="background: none; border: none; padding: 0; font-size: 1.5rem; line-height: 0.5;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #666; margin: 3px 0;"></div>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="markAsRead(${index})">${event.isRead ? "Mark as Unread" : "Mark as Read"}</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="dismissNotification(${index})">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
             notificationList.innerHTML = html;
             markAllButton.style.display = events.some(event => !event.isRead) ? "block" : "none";
+            updateNotificationBadge(); // Update badge after loading notifications
 
             // Add event listener for "Mark All as Read"
             markAllButton.onclick = () => {
                 events = events.map(event => ({ ...event, isRead: true }));
                 localStorage.setItem("events", JSON.stringify(events));
                 loadNotifications();
+                updateNotificationBadge(); // Update badge after marking all as read
             };
         }
 
@@ -95,6 +106,7 @@
             localStorage.setItem("events", JSON.stringify(events));
             loadNotifications();
             checkTodayEvents();
+            updateNotificationBadge(); // Update badge after dismissing
         }
 
         function markAsRead(index) {
@@ -102,6 +114,20 @@
             events[index].isRead = !events[index].isRead; // Toggle read/unread
             localStorage.setItem("events", JSON.stringify(events));
             loadNotifications();
+            updateNotificationBadge(); // Update badge after marking as read/unread
+        }
+
+        function updateNotificationBadge() {
+            let events = JSON.parse(localStorage.getItem("events")) || [];
+            let unreadCount = events.filter(event => !event.isRead).length;
+            let badge = document.getElementById("notification-count");
+
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = "inline-block"; // Show the badge
+            } else {
+                badge.style.display = "none"; // Hide the badge if no unread notifications
+            }
         }
 
         function groupByDate(events) {
@@ -109,17 +135,23 @@
             const yesterday = new Date(today);
             yesterday.setDate(today.getDate() - 1);
 
-            const grouped = { "Today": [], "Yesterday": [], "Earlier": [] };
+            // Only group Today and Yesterday
+            const grouped = { "Today": [], "Yesterday": [] };
 
             events.forEach(event => {
-                const eventDate = new Date(event.timestamp);
+                // Parse the event's start date (e.g., "2025-03-05")
+                const eventDate = new Date(event.start);
+                if (isNaN(eventDate.getTime())) {
+                    console.error(`Invalid date format for event start: ${event.start}`);
+                    return; // Skip invalid dates
+                }
+
                 if (isSameDay(eventDate, today)) {
                     grouped["Today"].push(event);
                 } else if (isSameDay(eventDate, yesterday)) {
                     grouped["Yesterday"].push(event);
-                } else {
-                    grouped["Earlier"].push(event);
                 }
+                // Events after today (e.g., tomorrow) are ignored
             });
 
             return grouped;
@@ -142,8 +174,11 @@
         }
 
         function checkTodayEvents() {
-            // This function can be expanded to update a notification badge
             console.log("Checking today's events...");
+            updateNotificationBadge(); // Update badge during event check
         }
+        
     </script>
+   
+
 </div>
