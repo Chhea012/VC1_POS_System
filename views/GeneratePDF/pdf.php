@@ -16,7 +16,6 @@ if (!isset($_SESSION['user'])) {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
             margin: 0;
             padding: 0;
             color: #333;

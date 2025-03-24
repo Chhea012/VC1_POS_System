@@ -62,10 +62,7 @@
               </a>
               <h3>Mak Oun Sing</h3>
             </div>
-            <!-- /Logo -->
             <h4 class="mb-2">Welcome to Mak Oun Sing 👋</h4>
-            <p class="mb-4">Please sign-in your account go to Dashboard</p>
-
             <form id="formAuthentication" class="mb-3" action="/users/authentication" method="POST">
               <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
@@ -82,9 +79,7 @@
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
                   <label class="form-label" for="password">Password</label>
-                  <a href="/forgotpassword">
-                    <small>Forgot Password?</small>
-                  </a>
+
                 </div>
                 <div class="input-group input-group-merge">
                   <input
@@ -101,6 +96,9 @@
               <div class="mb-3">
                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
               </div>
+              <a href="/forgotpassword">
+                <small>Forgot Password?</small>
+              </a>
             </form>
           </div>
         </div>

@@ -20,8 +20,16 @@ require_once "Controllers/CalendarController.php";
 require_once "Controllers/GeneratePdfController.php";
 require_once "Controllers/OrderController.php";
 require_once "Controllers/CreateOrderController.php";
+require_once "Controllers/OrderSummaryController.php";
+require_once "Controllers/OrderViewController.php";
+require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
+require_once "Controllers/ExportExcelController.php";
 
+require_once "Controllers/ExportInventoryController.php";
+
+
+// Create an instance of the Router class
 $route = new Router();
 
 // GET routes
@@ -44,11 +52,19 @@ $route->post("/profile/update", [ProfileController::class, 'update']); // Profil
 $route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
 $route->get("/chart", [ChartController::class, 'index']);
-$route->post('/category/store', [categoryController::class, 'store']);
+// category route
 $route->get("/category", [categoryController::class, 'index']);
+$route->post('/category/store', [categoryController::class, 'store']);
+$route->get('/category/edit/{category_id}', [categoryController::class, 'edit']);
+$route->post('/category/update/{category_id}', [categoryController::class, 'update']);
+$route->post('/category/delete/{category_id}', [categoryController::class, 'delete']);
 // $route->get("/food", [FoodController::class, 'index']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
+$route->get("/drink", [InventoryController::class, 'index']);
+$route->get("/food", [FoodController::class, 'index']);
+$route->get("/ice", [IceController::class, 'index']);
+// $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
@@ -83,22 +99,37 @@ $route->get("/notification", [NotificationController::class, 'index']);
 // orders
 $route->get("/orders", [OrderController::class, 'index']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/summary", [ OrderSummaryController::class, 'index']);
+$route->get("/orders/view", [ OrderViewController::class, 'index']);
+// generate ---
+
+
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
 
+//  export excel 
+$route->get("/export", [ExportExcelController::class, 'index']);
+$route->post("/export/excel", [ExportExcelController::class, 'exportToExcel']);
+
 //delete inventory drinks
 $route->get("/drink", [DrinkController::class, 'index']);
 $route->post("/drink/delete/{product_id}", [DrinkController::class, 'delete']);
+$route->get("/inventory/viewdrink/{product_id}", [DrinkController::class, 'show']);
 
 // delete food inventory
 $route->get("/food", [FoodController::class, 'index']);
+$route->get("/inventory/viewfood/{product_id}", [FoodController::class, 'show']);
 $route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
 
 
 // delete ice inventory
 $route->get("/ice", [IceController::class, 'index']);
+$route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
+$route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
+$route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
 
 $route->route();
