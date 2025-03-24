@@ -27,14 +27,14 @@ if (!isset($_SESSION['user'])) {
                     <div class="info-section">
                         <h5 class="text-primary mb-3"><i class="bi bi-receipt me-2"></i>Invoice Details</h5>
                         <p class="mb-1"><strong>Invoice No:</strong> INV-4407051</p>
-                        <p class="mb-1"><strong>Invoice Date:</strong> 14 Aug 2023</p>
+                        <p class="mb-1"><strong>Invoice Date:</strong> <?php echo date('d M Y', strtotime($order_date)); ?></p>
                     </div>
                 </div>
             </div>
 
             <!-- Order Table -->
             <div class="table-responsive">
-                <table class="table table-custom table-bordered">
+            <table class="table table-custom table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -45,28 +45,28 @@ if (!isset($_SESSION['user'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mi Note 8 Pro</td>
-                            <td>16,000</td>
-                            <td>2</td>
-                            <td>32,000</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>T-Shirt</td>
-                            <td>399</td>
-                            <td>1</td>
-                            <td>399</td>
-                        </tr>
+                        <?php
+                        $grandTotal = 0;
+                        foreach ($orderItems as $index => $item) {
+                            $totalPrice = $item['price'] * $item['quantity'];
+                            $grandTotal += $totalPrice;
+                            echo "<tr>
+                                <td>" . ($index + 1) . "</td>
+                                <td>" . htmlspecialchars($item['product_name']) . "</td>
+                                <td>" . number_format($item['price'], 2) . "</td>
+                                <td>" . $item['quantity'] . "</td>
+                                <td>" . number_format($totalPrice, 2) . "</td>
+                            </tr>";
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Grand Total and Payment Mode -->
             <div class="d-flex justify-content-between align-items-center mt-4">
-                <h5 id="grand-total"><strong>Grand Total:</strong> 32,399</h5>
-                <p class="mb-0"><strong>Payment Mode:</strong> Cash Payment</p>
+                <h5 id="grand-total"><strong>Grand Total:</strong> <?php echo number_format($grandTotal, 2); ?></h5>
+                <p class="mb-0"><strong>Payment Mode:</strong> <?php echo htmlspecialchars($payment_mode); ?></p>
             </div>
         </div>
     </div>
