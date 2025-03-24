@@ -26,7 +26,10 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 
+require_once "Controllers/ExportInventoryController.php";
 
+
+// Create an instance of the Router class
 $route = new Router();
 
 // GET routes
@@ -58,6 +61,10 @@ $route->post('/category/delete/{category_id}', [categoryController::class, 'dele
 // $route->get("/food", [FoodController::class, 'index']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
+$route->get("/drink", [InventoryController::class, 'index']);
+$route->get("/food", [FoodController::class, 'index']);
+$route->get("/ice", [IceController::class, 'index']);
+// $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
 
@@ -122,5 +129,7 @@ $route->get("/ice", [IceController::class, 'index']);
 $route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
+$route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
+$route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
 
 $route->route();
