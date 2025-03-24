@@ -171,5 +171,8 @@
             console.log("Checking today's events...");
             updateNotificationBadge(); // Update badge during event check
         }
+        
     </script>
+   
+
 </div>
