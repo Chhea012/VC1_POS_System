@@ -49,7 +49,7 @@
             }));
             localStorage.setItem("events", JSON.stringify(events));
 
-            // Group notifications by start date
+            // Group notifications by start date (Today and Yesterday only)
             const groupedEvents = groupByDate(events);
 
             let html = "";
@@ -74,7 +74,6 @@
                                     <button class="btn btn-sm btn-outline-primary me-2" onclick="markAsRead(${index})">
                                         ${event.isRead ? "Mark as Unread" : "Mark as Read"}
                                     </button>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -129,10 +128,9 @@
             const today = new Date();
             const yesterday = new Date(today);
             yesterday.setDate(today.getDate() - 1);
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
 
-            const grouped = { "Today": [], "Tomorrow": [], "Yesterday": [] };
+            // Only group Today and Yesterday
+            const grouped = { "Today": [], "Yesterday": [] };
 
             events.forEach(event => {
                 // Parse the event's start date (e.g., "2025-03-05")
@@ -145,20 +143,14 @@
                 if (isSameDay(eventDate, today)) {
                     grouped["Today"].push(event);
                 } else if (isSameDay(eventDate, yesterday)) {
-                    grouped["Tomorrow"].push(event);
-                } else if (eventDate < yesterday) {
                     grouped["Yesterday"].push(event);
                 }
-                // Note: Events after today are not grouped in this example.
-                // If you want to handle future events (e.g., "Tomorrow"), you can add another category.
-               
-
+                // Events after today (e.g., tomorrow) are ignored
             });
 
             return grouped;
         }
 
-    
         function isSameDay(date1, date2) {
             return date1.toDateString() === date2.toDateString();
         }
