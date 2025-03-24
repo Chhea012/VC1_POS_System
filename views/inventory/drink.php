@@ -282,7 +282,6 @@ document.getElementById('exportButton').addEventListener('click', function() {
             doc.setTextColor(50, 50, 50);
             doc.text(`Total Inventory Value: $${totalAmount.toFixed(2)}`, 20, finalY + 16);
             doc.text(`Items with Low Stock: ${lowStockCount}`, 20, finalY + 23);
-
             // Save the PDF
             doc.save(`mak_oun_sing_report_${new Date().toISOString().slice(0,10)}.pdf`);
         });
