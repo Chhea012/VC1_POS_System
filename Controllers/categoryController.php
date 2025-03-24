@@ -36,7 +36,7 @@ class categoryController extends BaseController
                         $this->redirect('/category');
                     }
                     if ($result) {
-                        $_SESSION['success_message'] = "category added successfully!";
+                        $_SESSION['success_message'] = "Category added successfully!";
                         header("Location: /category");
                         exit;
                     } else {
@@ -73,7 +73,7 @@ class categoryController extends BaseController
         
         if ($result) {
             header("Location: /category");
-            $_SESSION['success_message'] = "Edit category Name successfully!";
+            $_SESSION['success_message'] = "Edit Category Name successfully!";
             exit;
         } else {
             throw new Exception("Error updating category.");
