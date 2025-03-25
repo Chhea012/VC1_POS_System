@@ -48,10 +48,13 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item text-danger" href="#" onclick="deleteOrder(<?php echo $order['order_id']; ?>)">
-                                                        <i class="bi bi-trash"></i> Delete Order
-                                                    </a>
-                                                </li>
+                                                <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
+                                                    <i class="bi bi-trash me-2"></i>Delete Order
+                                                </a>
+                                                <form id="delete-form-<?php echo $order['order_id'] ?>" action="/orders/delete/<?php echo $order['order_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -63,7 +66,43 @@
             </div>
     </div>
 </div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+    <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastText">
+                Success message here
+            </div>
 
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+  <!-- message alert edit and delete -->
+  <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var toastElement = document.getElementById("toastMessage");
+                var toastText = document.getElementById("toastText");
+
+                <?php if (isset($_SESSION['success_message'])): ?>
+                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                    toastElement.classList.add("bg-success");
+                    <?php unset($_SESSION['success_message']); ?>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                    toastElement.classList.add("bg-danger");
+                    <?php unset($_SESSION['error_message']); ?>
+                <?php endif; ?>
+
+                var toast = new bootstrap.Toast(toastElement, {
+                    delay: 1000 // Set delay to 1000ms (1 second)
+                });
+                toast.show();
+            });
+        </script>
+    <?php endif; ?>
 <!-- View Order Modal -->
 <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -80,41 +119,43 @@
                 </div>
                 <!-- Order Items Details -->
                 <div class="order-items mt-4">
-                    <h3 class="section-title mb-3" style="color: #007bff;">Order Items Details</h3>
-                    <div class="table-responsive">
-                        <table class="table order-items-table table-bordered" style="border-collapse: collapse;">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($orderItems as $item): ?>
-                                    <tr class="hover-row">
-                                        <td><?= $item['product_name']; ?></td>
-                                        <td><?= number_format($item['price'], 2); ?></td>
-                                        <td><?= $item['quantity']; ?></td>
-                                        <td><?= number_format($item['total_price'], 2); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+    <h3 class="section-title mb-3" style="color: #007bff;">Order Items Details</h3>
+    <div class="table-responsive">
+        <table class="table order-items-table table-bordered" style="border-collapse: collapse;">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($orderItems) && is_array($orderItems)): ?>
+                    <?php foreach ($orderItems as $item): ?>
+                        <tr class="hover-row">
+                            <td><?= htmlspecialchars($item['product_name'] ?? 'N/A'); ?></td>
+                            <td><?= number_format($item['price'] ?? 0, 2); ?></td>
+                            <td><?= $item['quantity'] ?? 0; ?></td>
+                            <td><?= number_format(($item['total_price'] ?? ($item['price'] * $item['quantity'] ?? 0)), 2); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4" class="text-center">No items found for this order.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
-                    <div class="mt-3 text-end">
-                        <h5 class="grand-total" style="font-weight: bold; color: #ff5733;">
-                            <strong>Grand Total:</strong> $<?= number_format($order['total_amount'], 2); ?>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="mt-3 text-end">
+        <h5 class="grand-total" style="font-weight: bold; color: #ff5733;">
+            <strong>Grand Total:</strong> $
+            <?= number_format($order['total_amount'] ?? 0, 2); ?>
+        </h5>
     </div>
 </div>
-
 
 <!-- Add custom CSS -->
 <style>
@@ -159,12 +200,7 @@
         alert(`Viewing order with ID: ${orderId}`);
         // Redirect to a detailed order page or open a modal
     }
-
-    // Example: Delete order functionality
-    function deleteOrder(orderId) {
-        if (confirm(`Are you sure you want to delete order with ID: ${orderId}?`)) {
-            alert(`Order with ID: ${orderId} deleted`);
-            // Perform deletion logic here (e.g., remove the row from the table)
-        }
+    function confirmDelete(orderId) {
+        document.getElementById('delete-form-' + orderId).submit();
     }
 </script>
