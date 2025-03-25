@@ -40,15 +40,17 @@ class OrderModel {
 
     public function getOrderItems($orderId) {
         $query = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.price, 
-                     oi.total_price, p.product_name
-              FROM order_items oi
-              JOIN products p ON oi.product_id = p.product_id";
+                         oi.total_price, p.product_name
+                  FROM order_items oi
+                  JOIN products p ON oi.product_id = p.product_id
+                  WHERE oi.order_id = :order_id";
+    
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
         $stmt->execute();
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
 }
 ?>
 

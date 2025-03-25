@@ -10,11 +10,28 @@ class OrderController extends BaseController {
     }
 
     public function index() {
-        // Fetch orders from the database
+        
         $orders = $this->orderModel->getAllOrders();
 
-        // Pass the orders data to the view
         $this->view('orders/order_list', ['orders' => $orders]);
     }
+    public function show($orderId) {
+        // Fetch order details
+        $order = $this->orderModel->getOrderById($orderId);
+    
+        // Fetch order items
+        $orderItems = $this->orderModel->getOrderItems($orderId);
+    
+        if (!$order) {
+            die("Order not found."); // Better to use a proper error handling method
+        }
+    
+        // Pass data to the view
+        $this->view('orders/order_view', [
+            'order' => $order,
+            'orderItems' => $orderItems
+        ]);
+    }
+    
  
 }

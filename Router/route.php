@@ -63,8 +63,6 @@ $route->get("/ice", [IceController::class, 'index']);
 // $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
 $route->post('/category/store', [categoryController::class, 'store']);
 
-
-
 // -product route -
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
@@ -76,8 +74,6 @@ $route->get("/products/edit/{product_id}", [productController::class, 'edit']);
 $route->post("/products/update/{product_id}", [productController::class, 'update']);
 $route->post("/products/updateQuantity", [productController::class, 'updateQuantity']);
 $route->post("/products/delete/{product_id}", [productController::class, 'delete']);
-
-
 //route user
 $route->get("/users", [UserController::class, 'index']);
 $route->get("/users/create", [UserController::class, 'create']);
@@ -94,8 +90,9 @@ $route->get("/notification", [NotificationController::class, 'index']);
 
 // order 
 $route->get("/orders", [OrderController::class, 'index']);  
-$route->get("/orders/view/{orderId}", [OrderController::class, 'show']); 
+$route->get("/orders/view/{orderId}", [OrderController::class, 'show']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
+$route->get("/orders/create/QR", [CreateOrderController::class, 'qrcode']);
 $route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); // Changed from saveOrder
 $route->get("/orders/summary", [CreateOrderController::class, 'summary']);  // Show order summary
 ;  
