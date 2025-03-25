@@ -11,7 +11,6 @@ if (!isset($_SESSION['user'])) {
     <div class="summary-card" id="receipt-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="header-title">Order Summary</h2>
-            <a href="/orders/create" class="back-link btn btn-primary"><i class="bi bi-arrow-left me-1"></i> Back to create order</a>
         </div>
         <div class="container py-5">
             <!-- Company Info -->
