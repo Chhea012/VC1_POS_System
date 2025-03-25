@@ -95,6 +95,7 @@ $route->get("/notification", [NotificationController::class, 'index']);
 // order 
 $route->get("/orders", [OrderController::class, 'index']);  
 $route->get("/orders/view/{orderId}", [OrderController::class, 'show']); 
+$route->post("/orders/delete/{orderId}", [OrderController::class, 'delete']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
 $route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); // Changed from saveOrder
 $route->get("/orders/summary", [CreateOrderController::class, 'summary']);  // Show order summary

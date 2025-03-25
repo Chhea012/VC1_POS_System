@@ -16,5 +16,34 @@ class OrderController extends BaseController {
         // Pass the orders data to the view
         $this->view('orders/order_list', ['orders' => $orders]);
     }
+     // Fetch and display details of a specific order
+     public function show($orderId) {
+        $order = $this->orderModel->getOrderById($orderId);
+        $orderItems = $this->orderModel->getOrderItemsByOrderId($orderId);
+    
+        if (!$order) {
+            echo "Order not found!";
+            return;
+        }
+    
+        $this->view('orders/order_detail', [
+            'order' => $order,
+            'orderItems' => $orderItems
+        ]);
+    }
+    // Delete a product
+    public function delete($orderId)
+    {
+        // Perform the deletion
+        $this->orderModel->delete($orderId);
+        
+        // Set a success message
+        $_SESSION['success_message'] = "Order deleted successfully!";
+        
+        // Redirect to the product list page
+        header("Location: /orders");
+        exit;
+    }
+
  
 }
