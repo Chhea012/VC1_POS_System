@@ -75,15 +75,12 @@ class OrderModel {
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-<<<<<<< HEAD
-=======
      //  delete product
      public function delete($orderId) {
         $sql = "DELETE FROM orders WHERE order_id = :order_id";
         $stmt = $this->db->prepare($sql); 
         $stmt->execute(['order_id' => $orderId]); 
     
->>>>>>> 940848d3e3c6fbc4bbdce2e192f3f240375aa55c
 }
 }
 ?>
