@@ -1,10 +1,10 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
 if (!isset($_SESSION['user'])) {
-    header("Location: /");
-    exit();
+  header("Location: /");
+  exit();
 }
 ?>
 <div id="notification-container"></div>
@@ -62,10 +62,10 @@ if (!isset($_SESSION['user'])) {
     <table id="weatherTable" border="1" class="table table-striped table-bordered table-hover text-center">
       <thead class="table-dark">
         <tr>
-          <th>Date</th>
-          <th>Day</th>
-          <th>Weather</th>
-          <th>Temperature (°C)</th>
+          <th style="color: white;">Date</th>
+          <th style="color: white;">Day</th>
+          <th style="color: white;">Weather</th>
+          <th style="color: white;">Temperature (°C)</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -79,9 +79,9 @@ if (!isset($_SESSION['user'])) {
     <table id="salesTable" border="1" class="table table-striped table-bordered table-hover text-center">
       <thead class="table-dark">
         <tr>
-          <th>Weather</th>
-          <th>Sales Category</th>
-          <th>Amount to Sell (kg)</th>
+          <th style="color: white;">Weather</th>
+          <th style="color: white;">Sales Category</th>
+          <th style="color: white;">Amount to Sell (kg)</th>
         </tr>
       </thead>
       <tbody id="salesTableBody"></tbody>
@@ -147,13 +147,25 @@ if (!isset($_SESSION['user'])) {
 
       const today = forecastDays[0];
       hourlyData = today.hour.map(hour => ({
-        time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+        time: new Date(hour.time).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        }),
         weather: simplifyWeather(hour.condition.text),
         temp: hour.temp_c,
         rainChance: hour.chance_of_rain
       }));
-      sunriseTime = new Date(today.astro.sunrise).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-      sunsetTime = new Date(today.astro.sunset).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+      sunriseTime = new Date(today.astro.sunrise).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      sunsetTime = new Date(today.astro.sunset).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
 
       renderWeatherChart();
       renderSalesChart();
@@ -176,13 +188,29 @@ if (!isset($_SESSION['user'])) {
       type: 'bar',
       data: {
         labels: weatherLabels,
-        datasets: [{ label: 'Temperature (°C)', data: temperatures, backgroundColor: weatherColors, borderWidth: 1 }]
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: temperatures,
+          backgroundColor: weatherColors,
+          borderWidth: 1
+        }]
       },
       options: {
         responsive: true,
         scales: {
-          y: { beginAtZero: true, title: { display: true, text: 'Temperature (°C)' } },
-          x: { title: { display: true, text: 'Day of Week' } }
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Temperature (°C)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Day of Week'
+            }
+          }
         }
       }
     });
@@ -197,13 +225,30 @@ if (!isset($_SESSION['user'])) {
       type: 'bar',
       data: {
         labels: weatherLabels,
-        datasets: [{ label: 'Ice Dessert Sales (kg)', data: salesData, backgroundColor: salesColors, borderWidth: 1 }]
+        datasets: [{
+          label: 'Ice Dessert Sales (kg)',
+          data: salesData,
+          backgroundColor: salesColors,
+          borderWidth: 1
+        }]
       },
       options: {
         responsive: true,
         scales: {
-          y: { beginAtZero: true, max: 10, title: { display: true, text: 'Kilograms (kg)' } },
-          x: { title: { display: true, text: 'Day of Week' } }
+          y: {
+            beginAtZero: true,
+            max: 10,
+            title: {
+              display: true,
+              text: 'Kilograms (kg)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Day of Week'
+            }
+          }
         }
       }
     });
@@ -234,15 +279,61 @@ if (!isset($_SESSION['user'])) {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { title: { display: true, text: 'Time', color: '#fff' }, ticks: { color: '#fff' } },
-          y: { title: { display: true, text: 'Temperature (°C)', color: '#fff' }, beginAtZero: false, ticks: { color: '#fff' } }
+          x: {
+            title: {
+              display: true,
+              text: 'Time',
+              color: '#fff'
+            },
+            ticks: {
+              color: '#fff'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Temperature (°C)',
+              color: '#fff'
+            },
+            beginAtZero: false,
+            ticks: {
+              color: '#fff'
+            }
+          }
         },
         plugins: {
-          legend: { labels: { color: '#fff' } },
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          },
           annotation: {
-            annotations: [
-              { type: 'line', xMin: sunriseTime, xMax: sunriseTime, borderColor: 'rgba(255, 255, 0, 0.7)', borderWidth: 2, label: { content: 'Sunrise', enabled: true, position: 'top', color: '#fff' } },
-              { type: 'line', xMin: sunsetTime, xMax: sunsetTime, borderColor: 'rgba(255, 165, 0, 0.7)', borderWidth: 2, label: { content: 'Sunset', enabled: true, position: 'top', color: '#fff' } }
+            annotations: [{
+                type: 'line',
+                xMin: sunriseTime,
+                xMax: sunriseTime,
+                borderColor: 'rgba(255, 255, 0, 0.7)',
+                borderWidth: 2,
+                label: {
+                  content: 'Sunrise',
+                  enabled: true,
+                  position: 'top',
+                  color: '#fff'
+                }
+              },
+              {
+                type: 'line',
+                xMin: sunsetTime,
+                xMax: sunsetTime,
+                borderColor: 'rgba(255, 165, 0, 0.7)',
+                borderWidth: 2,
+                label: {
+                  content: 'Sunset',
+                  enabled: true,
+                  position: 'top',
+                  color: '#fff'
+                }
+              }
             ]
           },
           tooltip: {
@@ -352,7 +443,7 @@ if (!isset($_SESSION['user'])) {
         const prevDay = getDayOfWeek(forecastDays[i - 1].date);
         const currDay = getDayOfWeek(forecastDays[i].date);
         const changeText = `${prevDay}, ${forecastDays[i - 1].date}: ${prevWeather} ➡️ ${currDay}, ${forecastDays[i].date}: ${currWeather}`;
-        
+
         telegramMessage += `⚠️ Weather change detected:\n${changeText}\n`;
         modalContent += `<p>${changeText}</p>`;
         showInAppNotification(`Weather Change: ${changeText}`);
@@ -377,8 +468,13 @@ if (!isset($_SESSION['user'])) {
     try {
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CHAT_ID,
+          text: message
+        })
       });
       const result = await response.json();
       if (!result.ok) throw new Error(`Telegram API error: ${result.description}`);
@@ -421,7 +517,12 @@ if (!isset($_SESSION['user'])) {
 
   // Get color for weather bars
   function getWeatherColor(condition) {
-    return { "Sunny": "#FFD700", "Cloudy": "#B0C4DE", "Rainy": "#4682B4", "Stormy": "#708090" }[condition] || "#D3D3D3";
+    return {
+      "Sunny": "#FFD700",
+      "Cloudy": "#B0C4DE",
+      "Rainy": "#4682B4",
+      "Stormy": "#708090"
+    } [condition] || "#D3D3D3";
   }
 
   // Simplify weather condition text
@@ -444,7 +545,24 @@ if (!isset($_SESSION['user'])) {
   window.onload = fetchWeatherForecast;
 </script>
 <style>
-  .editable-input { width: 60px; text-align: center; }
-  #notification-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
-  .notification { background-color: #007bff; color: white; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  .editable-input {
+    width: 60px;
+    text-align: center;
+  }
+
+  #notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+
+  .notification {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
 </style>

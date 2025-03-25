@@ -21,9 +21,6 @@ if (!isset($_SESSION['user'])) {
                 <li class="nav-item">
                     <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/setting_security"><i class="bx bx-lock-alt me-1"></i> Setting Security</a>
-                </li>
             </ul>
             <div class="card mb-4">
                 <div class="card-body">

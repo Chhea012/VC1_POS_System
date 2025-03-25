@@ -19,7 +19,7 @@ if (! isset($_SESSION['user'])) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <div class="text-muted small">IN-STORE SALES</div>
-                            <div class="text-primary fs-4 fw-bold">$<?php echo $salesData['in_store']['amount'] ?></div>
+                            <div class="text-primary fs-4 fw-bold">$30</div>
                             <div class="small">
                                 <?php echo $salesData['in_store']['orders'] ?> orders
                                 <span class="ms-2 badge bg-success-subtle text-success">
@@ -38,7 +38,7 @@ if (! isset($_SESSION['user'])) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <div class="text-muted small">WEBSITE SALES</div>
-                            <div class="fs-4 fw-bold">$<?php echo $salesData['website']['amount'] ?></div>
+                            <div class="fs-4 fw-bold">$20</div>
                             <div class="small">
                                 <?php echo $salesData['website']['orders'] ?> orders
                                 <span class="ms-2 badge bg-success-subtle text-success">
@@ -57,7 +57,7 @@ if (! isset($_SESSION['user'])) {
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <div class="text-muted small">AFFILIATE</div>
-                            <div class="text-primary fs-4 fw-bold">$<?php echo $salesData['affiliate']['amount'] ?></div>
+                            <div class="text-primary fs-4 fw-bold">$30</div>
                             <div class="small">
                                 <?php echo $salesData['affiliate']['orders'] ?> orders
                                 <span class="ms-2 badge bg-danger-subtle text-danger">
@@ -175,6 +175,7 @@ if (! isset($_SESSION['user'])) {
                         <thead class="table-light">
                             <tr>
                                 <th width="40px">
+                                    #
                                 </th>
                                 <th>PRODUCT</th>
                                 <th>CATEGORY</th>
@@ -188,11 +189,7 @@ if (! isset($_SESSION['user'])) {
                         <tbody>
                             <?php foreach ($products as $product): ?>
                                 <tr>
-                                    <td>
-                                        <div class="form-check">
-                                        <a class="plus-btn" href="/products/view/<?php echo $product['product_id'] ?>"></li><i class="bi bi-plus"></i>
-                                        </div></a>
-                                    </td>
+                                <td class="text-center row-number"></td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="me-2 text-primary">
@@ -372,6 +369,11 @@ if (! isset($_SESSION['user'])) {
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.row-number').forEach((cell, index) => {
+        cell.textContent = index + 1;
+    });
+});
         function confirmDelete(product_id) {
             document.getElementById('delete-form-' + product_id).submit();
         }
