@@ -72,8 +72,8 @@ if (!isset($_SESSION['user'])) {
     </div>
     <!-- Action Buttons -->
     <div class="d-flex justify-content-end gap-3 mt-4">
-        <a href="/orders" class="btn btn-primary"><i class="bi bi-floppy-fill me-2"></i>Save</a>
-        <button type="button" id="print-btn" class="btn btn-primary"><i class="bi bi-printer-fill me-2"></i>Print</button>
-        <button type="button" id="download-btn" class="btn btn-primary"><i class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download PDF</button>
+        <a href="javascript:history.back()" class="btn btn btn-outline-secondary">CANCEL</a>
+        <button type="button" id="print-btn" class="btn btn-primary"><i class="bi bi-printer-fill me-2"></i>Receipt</button>
+        <a href="/orders/create/QR" class="btn btn-primary"onclick="return placeOrder()">Pay Money</a>
     </div>
 </div>
