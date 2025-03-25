@@ -36,12 +36,12 @@ $roles = $roles ?? [];
         <table class="table table-hover align-middle table-striped border rounded shadow-sm">
             <thead class="table-dark text-light">
                 <tr>
-                    <th>Profile</th>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Phone</th>
-                    <th>Action</th>
+                    <th style="color: white;">Profile</th>
+                    <th style="color: white;">User Name</th>
+                    <th style="color: white;">Email</th>
+                    <th style="color: white;">Role</th>
+                    <th style="color: white;">Phone</th>
+                    <th style="color: white;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,8 +74,8 @@ $roles = $roles ?? [];
                                         </li>
                                         <?php if (strtolower($user['role_name']) !== 'admin'): ?>
                                             <li>
-                                                <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" 
-                                                    data-user-id="<?= $user['user_id'] ?>" 
+                                                <button class="dropdown-item text-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    data-user-id="<?= $user['user_id'] ?>"
                                                     data-user-name="<?= htmlspecialchars($user['user_name']) ?>">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </button>
