@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../Models/generatePdf.php';
+require_once __DIR__ . '/../Models/GeneratePdf.php';
 
 use Dompdf\Dompdf;
 

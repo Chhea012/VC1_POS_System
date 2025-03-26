@@ -59,11 +59,7 @@ class OrderModel {
                   FROM order_items oi
                   JOIN products p ON oi.product_id = p.product_id
                   WHERE oi.order_id = :order_id";
-<<<<<<< HEAD
         
-=======
-    
->>>>>>> bdece91c5c6ffbd336aaccc86d864b3b2e19684f
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
         $stmt->execute();

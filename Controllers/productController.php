@@ -1,5 +1,5 @@
 <?php
-require_once 'Models/productModel.php';
+require_once 'Models/ProductModel.php';
 
 class productController extends BaseController
 {
