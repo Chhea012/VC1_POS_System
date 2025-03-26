@@ -94,9 +94,9 @@ $route->get("/orders/view/{orderId}", [OrderController::class, 'show']);
 $route->post("/orders/delete/{orderId}", [OrderController::class, 'delete']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
 $route->get("/orders/create/QR", [CreateOrderController::class, 'qrcode']);
-$route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); // Changed from saveOrder
-$route->get("/orders/summary", [CreateOrderController::class, 'summary']);  // Show order summary
-;  
+$route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); 
+$route->get("/orders/summary", [CreateOrderController::class, 'summary']); 
+
 
 $route->get("/orders/view", [ OrderViewController::class, '']);
 

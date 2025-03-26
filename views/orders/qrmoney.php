@@ -16,10 +16,7 @@ if (!isset($_SESSION['user'])) {
         </div>
         <div class="d-flex justify-content-center gap-2">
             <a href="javascript:history.back()" class="btn btn-outline-secondary">CANCEL</a>
-            <form id="orderForm" action="/orders/saveOrder" method="POST">
-                <input type="hidden" name="orderItems" id="orderItems">
-                <button type="submit" class="btn btn-warning" >ACCEPTED</button>
-            </form>
+            <a href="javascript:history.back()" class="btn btn-warning">ACCEPTED</a>
         </div>
     </div>
 </div>
