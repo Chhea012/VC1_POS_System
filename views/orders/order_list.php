@@ -43,7 +43,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a class="dropdown-item text-primary"   data-bs-toggle="modal" data-bs-target="#viewOrderModal">
+                                                    <a class="dropdown-item text-primary" href="/orders/view/<?php echo $order['order_id'] ?>" data-bs-toggle="modal" data-bs-target="#viewOrderModal">
                                                         <i class="bi bi-eye"></i> View Details
                                                     </a>
                                                 </li>
@@ -119,43 +119,42 @@
                 </div>
                 <!-- Order Items Details -->
                 <div class="order-items mt-4">
-    <h3 class="section-title mb-3" style="color: #007bff;">Order Items Details</h3>
-    <div class="table-responsive">
-        <table class="table order-items-table table-bordered" style="border-collapse: collapse;">
-            <thead class="table-dark">
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($orderItems) && is_array($orderItems)): ?>
-                    <?php foreach ($orderItems as $item): ?>
-                        <tr class="hover-row">
-                            <td><?= htmlspecialchars($item['product_name'] ?? 'N/A'); ?></td>
-                            <td><?= number_format($item['price'] ?? 0, 2); ?></td>
-                            <td><?= $item['quantity'] ?? 0; ?></td>
-                            <td><?= number_format(($item['total_price'] ?? ($item['price'] * $item['quantity'] ?? 0)), 2); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4" class="text-center">No items found for this order.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-3 text-end">
-        <h5 class="grand-total" style="font-weight: bold; color: #ff5733;">
-            <strong>Grand Total:</strong> $
-            <?= number_format($order['total_amount'] ?? 0, 2); ?>
-        </h5>
-    </div>
-</div>
+                    <h3 class="section-title mb-3" style="color: #007bff;">Order Items Details</h3>
+                    <div class="table-responsive">
+                        <table class="table order-items-table table-bordered" style="border-collapse: collapse;">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($orderItems) && is_array($orderItems)): ?>
+                                    <?php foreach ($orderItems as $item): ?>
+                                        <tr class="hover-row">
+                                            <td><?= htmlspecialchars($item['product_name'] ?? 'N/A'); ?></td>
+                                            <td><?= number_format($item['price'] ?? 0, 2); ?></td>
+                                            <td><?= $item['quantity'] ?? 0; ?></td>
+                                            <td><?= number_format(($item['total_price'] ?? ($item['price'] * $item['quantity'] ?? 0)), 2); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center">No items found for this order.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <h5 class="grand-total" style="font-weight: bold; color: #ff5733;">
+                            <strong>Grand Total:</strong> $
+                            <?= number_format($order['total_amount'] ?? 0, 2); ?>
+                        </h5>
+                    </div>
+                </div>
 
 <!-- Add custom CSS -->
 <style>

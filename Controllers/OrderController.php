@@ -14,23 +14,18 @@ class OrderController extends BaseController {
         $orders = $this->orderModel->getAllOrders();
 
         // Pass the orders data to the view
-        $this->view('orders/order_list', ['orders' => $orders]);
+        $this->view('orders/order_list', [
+            'orders' => $orders,
+    ]);
     }
-     // Fetch and display details of a specific order
-     public function show($orderId) {
-        $order = $this->orderModel->getOrderById($orderId);
-        $orderItems = $this->orderModel->getOrderItemsByOrderId($orderId);
-    
-        if (!$order) {
-            echo "Order not found!";
-            return;
-        }
-    
-        $this->view('orders/order_detail', [
+    public function show($orderId) {
+        $order = $this->orderModel->getOrderById();  
+        
+        $this->view('orders/order_list', [
             'order' => $order,
-            'orderItems' => $orderItems
+            'orderItems' => $orderItems // Ensure this is being passed
         ]);
-    }
+    }    
     // Delete a product
     public function delete($orderId)
     {
