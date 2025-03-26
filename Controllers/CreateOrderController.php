@@ -12,7 +12,13 @@ class CreateOrderController extends BaseController {
     public function index() {
         $selectProduct = $this->createOrderModel->selectProductName();
         $this->view('orders/create_order', ['selectProduct' => $selectProduct]);
+       
     }
+        public function qrcode() {
+
+            $this->view('orders/qrmoney');
+        }
+    
 
     public function placeOrder() {
         $input = $_POST;
@@ -84,6 +90,4 @@ class CreateOrderController extends BaseController {
         }
     }
     
-    
 }
-?>

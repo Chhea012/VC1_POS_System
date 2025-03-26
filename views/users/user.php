@@ -217,13 +217,14 @@ $roles = $roles ?? [];
                         </div>
                         <div class="mb-3">
                             <label for="create_profile_image" class="form-label">Profile Image</label>
-                            <div id="image-upload-box" class="border rounded-2xl p-4 d-flex align-items-center justify-content-center" style="cursor: pointer; border: 2px dashed #6c757d; text-align: center;">
-                                <input type="file" id="create_profile_image" name="profile_image" accept="image/*" class="d-none" onchange="previewImage(event)">
-                                <div id="upload-placeholder" class="text-muted">
+                            <!-- Edit Modal Image Upload Box (similar structure to create) -->
+                            <div class="border rounded-2xl p-4 d-flex align-items-center justify-content-center" style="cursor: pointer; border: 2px dashed #6c757d; text-align: center;">
+                                <input type="file" id="edit_profile_image" name="profile_image" accept="image/*" class="d-none">
+                                <div id="edit-upload-placeholder" class="text-muted">
                                     <i class="bx bx-upload" style="font-size: 3rem;"></i>
                                     <p>Click or drag an image to upload</p>
                                 </div>
-                                <img id="create_image_preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 200px; display: none;" class="rounded">
+                                <img id="edit_image_preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 200px; display: none;" class="rounded">
                             </div>
                         </div>
                         <div class="d-flex gap-2">
@@ -296,46 +297,109 @@ $roles = $roles ?? [];
 
         imageInput.addEventListener('change', previewImage);
 
-        // Edit Modal Handler
-        const editModal = document.getElementById('editUserModal');
-        editModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const userId = button.getAttribute('data-user-id');
-            const userName = button.getAttribute('data-user-name');
-            const email = button.getAttribute('data-email');
-            const roleId = button.getAttribute('data-role-id');
-            const phoneNumber = button.getAttribute('data-phone-number');
-            const profileImage = button.getAttribute('data-profile-image');
+imageUploadBox.addEventListener('click', () => imageInput.click());
+imageUploadBox.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    imageUploadBox.style.borderColor = '#0d6efd';
+});
+imageUploadBox.addEventListener('dragleave', () => {
+    imageUploadBox.style.borderColor = '#6c757d';
+});
+imageUploadBox.addEventListener('drop', (e) => {
+    e.preventDefault();
+    imageUploadBox.style.borderColor = '#6c757d';
+    if (e.dataTransfer.files.length) {
+        imageInput.files = e.dataTransfer.files;
+        previewImage({ target: imageInput });
+    }
+});
+// Preview image function
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file && file.type.match('image.*')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            uploadPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+imageInput.addEventListener('change', previewImage);
+// Edit Modal Handler
+const editModal = document.getElementById('editUserModal');
+if (editModal) {
+    editModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const userId = button.getAttribute('data-user-id');
+        const userName = button.getAttribute('data-user-name');
+        const email = button.getAttribute('data-email');
+        const roleId = button.getAttribute('data-role-id');
+        const phoneNumber = button.getAttribute('data-phone-number');
+        const profileImage = button.getAttribute('data-profile-image');
 
-            document.getElementById('edit_user_id').value = userId;
-            document.getElementById('edit_user_name').value = userName;
-            document.getElementById('edit_email').value = email;
-            document.getElementById('edit_role_id').value = roleId;
-            document.getElementById('edit_phone_number').value = phoneNumber || '';
+        // Set form values
+        document.getElementById('edit_user_id').value = userId;
+        document.getElementById('edit_user_name').value = userName;
+        document.getElementById('edit_email').value = email;
+        document.getElementById('edit_role_id').value = roleId;
+        document.getElementById('edit_phone_number').value = phoneNumber || '';
 
-            const editPreview = document.getElementById('edit_image_preview');
-            if (profileImage) {
-                editPreview.src = profileImage;
-                editPreview.style.display = 'block';
-            } else {
-                editPreview.style.display = 'none';
-            }
-        });
+        // Handle image preview
+        const editPreview = document.getElementById('edit_image_preview');
+        const editPlaceholder = document.getElementById('edit-upload-placeholder');
+        const editUploadBox = editPreview.closest('.border'); // Get the parent upload box
 
-        // Edit Image Preview Handler
-        document.getElementById('edit_profile_image').addEventListener('change', function(e) {
-            const preview = document.getElementById('edit_image_preview');
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    preview.src = event.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+        // Reset file input
+        document.getElementById('edit_profile_image').value = '';
+        
+        if (profileImage && profileImage !== 'null') {
+            editPreview.src = profileImage;
+            editPreview.style.display = 'block';
+            if (editPlaceholder) editPlaceholder.style.display = 'none';
+        } else {
+            editPreview.style.display = 'none';
+            if (editPlaceholder) editPlaceholder.style.display = 'block';
+        }
+
+        // Add click handler for edit modal's upload box
+        if (editUploadBox) {
+            editUploadBox.addEventListener('click', () => {
+                document.getElementById('edit_profile_image').click();
+            });
+        }
+    });
+
+    // Edit Image Preview Handler
+    document.getElementById('edit_profile_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('edit_image_preview');
+        const placeholder = document.getElementById('edit-upload-placeholder');
+        const file = e.target.files[0];
+        
+        if (file && file.type.match('image.*')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // If no file selected or invalid file type, check if there's an existing image
+            const button = document.querySelector('[data-bs-toggle="modal"][data-user-id="' + document.getElementById('edit_user_id').value + '"]');
+            const existingImage = button ? button.getAttribute('data-profile-image') : null;
+            
+            if (existingImage && existingImage !== 'null') {
+                preview.src = existingImage;
+                preview.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
             } else {
                 preview.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'block';
             }
-        });
+        }
+    });
+}
     });
 </script>

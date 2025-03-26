@@ -68,7 +68,7 @@ if (!isset($_SESSION['user'])) {
                     </select>
                 </div>
             </div>
-            <form id="orderForm" action="/orders/saveOrder" method="POST">
+                <form id="orderForm" action="/orders/saveOrder" method="POST">
                 <input type="hidden" name="orderItems" id="orderItems">
                 <button type="submit" class="btn btn-warning mt-3" onclick="return placeOrder()">Proceed to Place Order</button>
             </form>
