@@ -273,3 +273,198 @@ h1 {
     .pagination .page-item.disabled .page-link {
         cursor: not-allowed;
     }
+
+
+
+/* drink show ppular */
+/* Creative Card Styling */
+.drink-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.drink-card:hover {
+    transform: translateY(-15px) rotate(2deg);
+    box-shadow: 0 15px 30px rgba(0, 123, 255, 0.2);
+}
+.drink-img-wrapper {
+    position: relative;
+    padding: 20px;
+    background: linear-gradient(45deg, #e0eafc 0%, #cfdef3 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+}
+.drink-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease;
+}
+.drink-card:hover .drink-img {
+    transform: scale(1.15) rotate(-5deg);
+}
+.stock-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 20px;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: rotate(10deg);
+    transition: transform 0.3s ease;
+}
+.drink-card:hover .stock-badge {
+    transform: rotate(0deg);
+}
+.card-body {
+    padding: 20px;
+    position: relative;
+}
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.price {
+    color: #007bff;
+    font-weight: 600;
+    background: rgba(0, 123, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+.drink-btn {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.drink-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: #007bff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
+}
+.drink-btn:hover::before {
+    width: 200%;
+    height: 200%;
+}
+.drink-btn:hover {
+    color: #fff;
+    border-color: #007bff;
+}
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: rgba(0, 123, 255, 0.7);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+}
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    background-color: rgba(0, 123, 255, 1);
+}
+@media (max-width: 768px) {
+    .drink-img {
+        width: 100px;
+        height: 100px;
+    }
+    .card-title {
+        font-size: 1rem;
+    }
+}
+
+
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #00b4ff 100%);
+    transition: all 0.3s ease;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #28a745 0%, #34d058 100%);
+    transition: all 0.3s ease;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
+    transition: all 0.3s ease;
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+.z-1 {
+    z-index: 1;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+.header-title span {
+    position: relative;
+    display: inline-block;
+}
+
+.header-title span:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+
+.low-stock-alert {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+      transform: translateX(100%);
+      opacity: 0;
+  }
+  to {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+/* Ensure Animate.css is included */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');

@@ -3,72 +3,155 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 // Authentication check
 if (!isset($_SESSION['user'])) {
     header("Location: /");
     exit();
 }
-
-// Include model
 require_once "Models/drinkModel.php";
-
 // Ensure $products is defined
 $products = $products ?? [];
 ?>
+<div class="container-xxl flex-grow-1 py-4">
+    <!-- Creative Slideshow Section -->
+    <h5 class="mb-3">The Popular Items:</h5>
+    <div class="mb-4 position-relative">
+        <div id="drinkCarousel" class="carousel slide shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <?php 
+                $totalSlides = ceil(count($products) / 4);
+                for ($i = 0; $i < $totalSlides; $i++): ?>
+                    <button type="button" 
+                            data-bs-target="#drinkCarousel" 
+                            data-bs-slide-to="<?= $i ?>" 
+                            class="<?= $i === 0 ? 'active' : '' ?>" 
+                            aria-label="Slide <?= $i + 1 ?>"></button>
+                <?php endfor; ?>
+            </div>
+            <div class="carousel-inner">
+                <?php if (empty($products)): ?>
+                    <div class="carousel-item active">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 500px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                            <div class="text-center p-4">
+                                <h3 class="text-muted">No products available yet</h3>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php 
+                    $chunkedProducts = array_chunk($products, 4);
+                    foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
+                        <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
+                            <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
+                                <?php foreach ($slideProducts as $product): ?>
+                                    <div class="col-md-3">
+                                        <div class="card drink-card h-100 shadow-sm border-0">
+                                            <div class="drink-img-wrapper text-center position-relative">
+                                                <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>" 
+                                                     class="drink-img img-fluid" 
+                                                     style="max-height: 200px; object-fit: cover;"
+                                                     alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
+                                                <span class="stock-badge position-absolute top-0 end-0 m-2 <?= ($product['quantity'] ?? 0) < 5 ? 'bg-danger' : 'bg-success' ?> text-white px-2 py-1 rounded">
+                                                    <?= ($product['quantity'] ?? 0) < 5 ? 'Low' : 'In Stock' ?>
+                                                </span>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title mb-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></h5>
+                                                <p class="card-text mb-4">
+                                                    <span class="price fw-bold">$<?= number_format($product['price'] ?? 0, 2) ?></span>
+                                                    <span class="mx-2">•</span>
+                                                    <span><?= $product['quantity'] ?? 0 ?> left</span>
+                                                </p>
+                                                <a href="/inventory/viewdrink/<?= $product['product_id'] ?? '' ?>" 
+                                                   class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <?php if (!empty($products)): ?>
+                <button class="carousel-control-prev" type="button" data-bs-target="#drinkCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#drinkCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            <?php endif; ?>
+        </div>
+    </div>
 
-<div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Popular Items Section -->
-    <h5 class="mb-3">Popular Items:</h5>
-    <div class="row text-center">
-        <?php 
-        $popular_products = array_filter($products, function($product) {
-            return isset($product['price'], $product['quantity']) && 
-                   ($product['price'] * $product['quantity'] >= 20);
-        });
-        
-        if (empty($popular_products)) {
-            echo "<p class='text-center text-muted'>No popular items yet.</p>";
-        } else {
-            foreach ($popular_products as $product) {
-        ?>
-                <div class="col-md-3">
-                    <div class="card p-4 shadow-sm">
-                        <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>" 
-                             class="w-100" 
-                             alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
-                        <div class="mt-2">⭐⭐⭐⭐⭐</div>
-                        <p class="mt-2"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></p>
+    <!-- Quick Stats Section -->
+    <div class="mb-4 position-relative" style="background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
+        <h5 class="header-title fw-bold mb-4 text-center text-uppercase pt-4">
+            <span class="text-primary">Quick</span> 
+            <span class="text-secondary">Stats</span>
+        </h5>
+        <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-boxes" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-boxes fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Total Products</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1"><?= count($products) ?></p>
                     </div>
                 </div>
-        <?php 
-            }
-        }
-        ?>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #28a745, #1d7a35);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-currency-dollar" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-currency-dollar fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Total Value</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1">
+                            $<?= number_format(array_sum(array_map(fn($p) => ($p['price'] ?? 0) * ($p['quantity'] ?? 0), $products)), 2) ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-exclamation-triangle" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-exclamation-triangle fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Low Stock Items</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1"><?= count(array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5)) ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Transactions Section -->
-    <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h5 class="mt-3 mb-0">Drinks Transactions:</h5>
-        <button id="exportButton" class="btn btn-primary">
-            <i class="bi bi-file-earmark-pdf me-2"></i>Export to PDF
-        </button>
+    <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+        <h5 class="mb-0">Drinks Transactions:</h5>
     </div>
-
-    <div class="card mb-4 shadow-sm">
+    <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="40px">#</th>
-                            <th>PRODUCT</th>
-                            <th>CATEGORY</th>
-                            <th>STOCK</th>
-                            <th>PRICE</th>
-                            <th>QTY</th>
-                            <th>AMOUNT</th>
-                            <th>ACTION</th>
+                            <th scope="col" style="width: 40px;">#</th>
+                            <th scope="col">PRODUCT</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">STOCK</th>
+                            <th scope="col">PRICE</th>
+                            <th scope="col">QTY</th>
+                            <th scope="col">AMOUNT</th>
+                            <th scope="col">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,7 +161,8 @@ $products = $products ?? [];
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>" 
-                                             class="card-img-top w-px-50" 
+                                             class="rounded-circle" 
+                                             style="width: 40px; height: 40px; object-fit: cover;" 
                                              alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
                                         <span class="ms-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></span>
                                     </div>
@@ -90,29 +174,28 @@ $products = $products ?? [];
                                     </span>
                                 </td>
                                 <td>
-                                    <span style="color: <?= ($product['quantity'] ?? 0) < 5 ? 'red' : 'green' ?>;">
+                                    <span class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'success' ?>">
                                         <?= ($product['quantity'] ?? 0) < 5 ? 'Low stock' : 'High stock' ?>
                                     </span>
                                 </td>
                                 <td>$<?= number_format($product['price'] ?? 0, 2) ?></td>
-                                <td style="color: <?= ($product['quantity'] ?? 0) < 5 ? 'red' : 'inherit' ?>">
+                                <td class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'body' ?>">
                                     <?= $product['quantity'] ?? 'N/A' ?>
                                 </td>
                                 <td>$<?= number_format(($product['price'] ?? 0) * ($product['quantity'] ?? 0), 2) ?></td>
                                 <td>
                                     <div class="dropdown">
-                                        <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" 
-                                                   href="/inventory/viewdrink/<?= $product['product_id'] ?? '' ?>">
+                                                <a class="dropdown-item" href="/inventory/viewdrink/<?= $product['product_id'] ?? '' ?>">
                                                     <i class="bi bi-eye me-2"></i>View
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" 
-                                                   href="#" 
-                                                   onclick="confirmDelete(<?= $product['product_id'] ?? 0 ?>)">
+                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?? 0 ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
                                                 <form id="delete-form-<?= $product['product_id'] ?? '' ?>" 
@@ -132,147 +215,45 @@ $products = $products ?? [];
             </div>
         </div>
     </div>
+
+    <!-- Creative Low Stock Alert -->
+    <?php
+    $low_stock_items = array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5);
+    if (!empty($low_stock_items)): ?>
+        <div class="low-stock-alert position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="card shadow-lg border-0 rounded-3 overflow-hidden animate__animated animate__bounceInRight" 
+                 style="max-width: 350px; background: linear-gradient(135deg, #fff3e0, #ffebee);">
+                <div class="card-header bg-danger d-flex align-items-center p-3">
+                    <i class="bi bi-exclamation-octagon fs-3 me-2 text-white animate__animated animate__pulse animate__infinite"></i>
+                    <h5 class="mb-0 fw-bold text-white">Low Stock Warning!</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.parentElement.parentElement.parentElement.style.display='none';" aria-label="Close"></button>
+                </div>
+                <div class="card-body p-3">
+                    <p class="text-muted mb-3">The following items need attention:</p>
+                    <ul class="list-group list-group-flush">
+                        <?php foreach ($low_stock_items as $item): ?>
+                            <li class="list-group-item d-flex align-items-center p-2 animate__animated animate__fadeInUp" style="animation-delay: <?= (array_search($item, $low_stock_items) * 0.1) ?>s;">
+                                <i class="bi bi-box-seam text-warning me-2"></i>
+                                <span class="flex-grow-1"><?= htmlspecialchars($item['product_name'] ?? 'Unknown') ?></span>
+                                <span class="badge bg-danger rounded-pill"><?= $item['quantity'] ?? 0 ?> left</span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <div class="card-footer bg-light text-center p-2">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="this.parentElement.parentElement.parentElement.style.display='none';">
+                        Dismiss
+                    </button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
 
-<!-- JavaScript Libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-
 <script>
-const { jsPDF } = window.jspdf;
-
 function confirmDelete(productId) {
     if (productId && confirm('Are you sure you want to delete this product?')) {
         document.getElementById(`delete-form-${productId}`).submit();
     }
 }
-
-function loadImageAsBase64(url) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = 'Anonymous';
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            canvas.getContext('2d').drawImage(img, 0, 0);
-            resolve(canvas.toDataURL('image/png'));
-        };
-        img.onerror = () => resolve(null);
-        img.src = url;
-    });
-}
-
-document.getElementById('exportButton').addEventListener('click', async () => {
-    try {
-        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        const products = <?php echo json_encode($products) ?: '[]'; ?>;
-
-        if (!Array.isArray(products) || !products.length) {
-            alert('No products available to export!');
-            return;
-        }
-
-        // Header
-        doc.setFillColor(66, 139, 202);
-        doc.rect(0, 0, 210, 40, 'F');
-        doc.setFillColor(100, 181, 246);
-        doc.triangle(0, 0, 210, 0, 105, 40, 'F');
-
-        const logoUrl = '/views/assets/modules/img/logo/logo.png';
-        const logoBase64 = await loadImageAsBase64(logoUrl);
-        if (logoBase64) {
-            doc.addImage(logoBase64, 'PNG', 15, 5, 30, 30);
-        }
-
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(24);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Mak Oun Sing Shop', 50, 20);
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
-        doc.text(`Generated: ${new Date().toLocaleString()}`, 50, 30);
-        doc.setDrawColor(255, 204, 0);
-        doc.setLineWidth(0.5);
-        doc.line(15, 35, 195, 35);
-
-        // Table
-        doc.autoTable({
-            startY: 45,
-            head: [['#', 'Product', 'Category', 'Stock', 'Price', 'Qty', 'Amount']],
-            body: products.map((p, i) => [
-                i + 1,
-                p.product_name || 'N/A',
-                p.category_name || 'N/A',
-                (p.quantity ?? 0) < 5 ? 'Low stock' : 'High stock',
-                `$${Number(p.price || 0).toFixed(2)}`,
-                p.quantity ?? 'N/A',
-                `$${Number((p.price || 0) * (p.quantity || 0)).toFixed(2)}`
-            ]),
-            theme: 'grid',
-            styles: { fontSize: 10, cellPadding: 3 },
-            headStyles: { fillColor: [66, 139, 202], textColor: [255, 255, 255] },
-            didParseCell: (data) => {
-                if (data.column.index === 3) {
-                    data.cell.styles.textColor = data.cell.text[0] === 'Low stock' ? [220, 53, 69] : [40, 167, 69];
-                }
-            },
-            didDrawPage: (data) => {
-                const pageHeight = doc.internal.pageSize.height;
-                doc.setFillColor(240, 248, 255);
-                doc.rect(0, pageHeight - 25, 210, 25, 'F');
-                doc.setFontSize(9);
-                doc.setTextColor(66, 139, 202);
-                doc.text(`Page ${doc.internal.getNumberOfPages()}`, 185, pageHeight - 15);
-                doc.text('© 2025 Drink Management System', 15, pageHeight - 15);
-            }
-        });
-
-        // Summary
-        const finalY = doc.lastAutoTable.finalY + 10;
-        const totalAmount = products.reduce((sum, p) => sum + ((p.price || 0) * (p.quantity || 0)), 0);
-        const lowStockCount = products.filter(p => (p.quantity ?? 0) < 5).length;
-
-        doc.setFontSize(14);
-        doc.setTextColor(66, 139, 202);
-        doc.text('Quick Summary', 20, finalY + 8);
-        doc.setFontSize(10);
-        doc.setTextColor(50, 50, 50);
-        doc.text(`Total Inventory Value: $${totalAmount.toFixed(2)}`, 20, finalY + 16);
-        doc.text(`Items with Low Stock: ${lowStockCount}`, 20, finalY + 23);
-
-        doc.save(`mak_oun_sing_report_${new Date().toISOString().slice(0,10)}.pdf`);
-    } catch (error) {
-        console.error('PDF Export Error:', error);
-        alert('Error generating PDF. Please try again.');
-    }
-});
 </script>
-
-<!-- Low Stock Alert -->
-<?php
-$low_stock_items = array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5);
-if (!empty($low_stock_items)): ?>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="lowStockToast" class="toast" role="alert">
-            <div class="toast-header">
-                <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-                <strong class="me-auto">Low Stock Alert</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">
-                <ul class="list-unstyled mb-0">
-                    <?php foreach ($low_stock_items as $item): ?>
-                        <li><?= htmlspecialchars($item['product_name'] ?? 'Unknown') ?> (<?= $item['quantity'] ?? 0 ?> units)</li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            new bootstrap.Toast(document.getElementById('lowStockToast'), { delay: 5000 }).show();
-        });
-    </script>
-<?php endif; ?>
