@@ -6,104 +6,107 @@ class CreateOrderModel {
 
     public function __construct() {
         $database = new Database();
-        $this->db = $database->getConnection(); // Get the PDO instance
+        $this->db = $database->getConnection();
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     public function selectProductName() {
-        $query = "SELECT product_id, product_name, price FROM products";
-        $stmt = $this->db->query($query); // Now $this->db is PDO, so query() works directly
+        $query = "SELECT product_id, product_name, price, quantity FROM products";
+        $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPaymentModeOptions() {
+        $query = "SHOW COLUMNS FROM orders LIKE 'payment_mode'";
+        $stmt = $this->db->query($query);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        preg_match("/^enum\((.*)\)$/", $row['Type'], $matches);
+        $enumValues = str_getcsv($matches[1], ',', "'");
+        return $enumValues; // Returns ['Cash Payment', 'Card Payment']
     }
 
     public function saveOrder($orderData) {
         if (!is_array($orderData)) {
             throw new Exception('orderData must be an array, received: ' . gettype($orderData));
         }
-
-        // Use PDO directly
+    
+        if ($this->db->inTransaction()) {
+            $this->db->rollBack();
+            error_log("Warning: Cleared existing transaction in saveOrder");
+        }
+    
         $this->db->beginTransaction();
-        
+    
         try {
-            // Validate input data
+            // Check for missing keys
             if (!isset($orderData['user_id']) || !isset($orderData['total_amount']) || !isset($orderData['items'])) {
-                throw new Exception('Missing required order data');
+                throw new Exception('Missing required order data (user_id, total_amount, or items)');
             }
-            
+    
             if (!is_array($orderData['items']) || empty($orderData['items'])) {
                 throw new Exception('Order must contain at least one item');
             }
-
-            // Insert order
+    
+            // Validate payment_mode if set, otherwise use default
+            $paymentMode = $orderData['payment_mode'] ?? 'Cash Payment'; // Default to Cash Payment
+            $validPaymentModes = $this->getPaymentModeOptions();
+            if (!in_array($paymentMode, $validPaymentModes)) {
+                throw new Exception('Invalid payment mode: ' . $paymentMode);
+            }
+    
+            // Insert the order
             $query = "INSERT INTO orders (
                 user_id, 
                 total_amount,
                 order_date,
-                status
+                payment_mode
             ) VALUES (
                 :user_id, 
                 :total_amount,
                 NOW(),
-                'Pending'
+                :payment_mode
             )";
-            
+    
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':user_id', $orderData['user_id'], PDO::PARAM_INT);
             $stmt->bindParam(':total_amount', $orderData['total_amount'], PDO::PARAM_STR);
+            $stmt->bindParam(':payment_mode', $paymentMode, PDO::PARAM_STR);
             $stmt->execute();
-            
+    
+            // Get the last inserted order ID
             $orderId = $this->db->lastInsertId();
-            
-            // Prepare order items insert
-            $query = "INSERT INTO order_items (
-                order_id, 
-                product_id, 
-                quantity, 
-                price, 
-                total_price
-            ) VALUES (
-                :order_id, 
-                :product_id, 
-                :quantity, 
-                :price, 
-                :total_price
-            )";
-            
-            $stmt = $this->db->prepare($query);
-            
-            $calculatedTotal = 0;
-            
+    
+            if (!$orderId) {
+                throw new Exception('No order ID returned from saveOrder');
+            }
+    
+            // Insert order items
+            $itemQuery = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (:order_id, :product_id, :quantity, :price)";
+            $itemStmt = $this->db->prepare($itemQuery);
+    
             foreach ($orderData['items'] as $item) {
-                if (!isset($item['product_id']) || !isset($item['quantity']) || !isset($item['price'])) {
-                    throw new Exception('Invalid item data');
+                if (!isset($item['product_id'], $item['quantity'], $item['price'])) {
+                    throw new Exception('Missing item details (product_id, quantity, price)');
                 }
-                
-                $productId = $item['product_id'];
-                $quantity = $item['quantity'];
-                $price = $item['price'];
-                $totalPrice = $price * $quantity;
-                $calculatedTotal += $totalPrice;
-                
-                $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
-                $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
-                $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-                $stmt->bindParam(':price', $price, PDO::PARAM_STR);
-                $stmt->bindParam(':total_price', $totalPrice, PDO::PARAM_STR);
-                $stmt->execute();
+                $itemStmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+                $itemStmt->bindParam(':product_id', $item['product_id'], PDO::PARAM_INT);
+                $itemStmt->bindParam(':quantity', $item['quantity'], PDO::PARAM_INT);
+                $itemStmt->bindParam(':price', $item['price'], PDO::PARAM_STR);
+                $itemStmt->execute();
             }
-            
-            // Verify total_amount
-            if (round($calculatedTotal, 2) !== round((float)$orderData['total_amount'], 2)) {
-                throw new Exception('Total amount mismatch');
-            }
-            
+    
+            // Commit the transaction
             $this->db->commit();
             return $orderId;
-            
+    
         } catch (Exception $e) {
-            $this->db->rollBack();
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
             throw new Exception('Failed to save order: ' . $e->getMessage());
         }
     }
+    
     
     public function getOrderSummary($orderId) {
         $query = "SELECT oi.order_item_id, oi.product_id, p.product_name, oi.quantity, oi.price, oi.total_price
