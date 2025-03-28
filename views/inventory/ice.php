@@ -7,45 +7,138 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 require_once "Models/iceModel.php";
+// Ensure $products is defined
+$products = $products ?? [];
 ?>
-
 <div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Popular Items Slideshow -->
     <h5 class="mb-3">The Popular Items:</h5>
-    <div class="row text-center">
-        <?php
-        $popular_items = [];
-        foreach ($products as $product) {
-            $amount = isset($product['price'], $product['quantity']) ? ($product['price'] * $product['quantity']) : 0;
-            if ($amount > 20) {
-                $popular_items[] = $product;
-            }
-        }
+    <div class="mb-4 position-relative">
+        <div id="popularCarousel" class="carousel slide shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <?php
+                $popular_products = array_filter($products, function ($product) {
+                    return isset($product['price'], $product['quantity']) && ($product['price'] * $product['quantity']) >= 20;
+                });
+                $totalSlides = ceil(count($popular_products) / 4);
+                for ($i = 0; $i < $totalSlides; $i++): ?>
+                    <button type="button"
+                            data-bs-target="#popularCarousel"
+                            data-bs-slide-to="<?= $i ?>"
+                            class="<?= $i === 0 ? 'active' : '' ?>"
+                            aria-label="Slide <?= $i + 1 ?>"></button>
+                <?php endfor; ?>
+            </div>
+            <div class="carousel-inner">
+                <?php if (empty($popular_products)): ?>
+                    <div class="carousel-item active">
+                        <div class="d-flex align-items-center justify-content-center" style="height: 450px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+                            <div class="text-center p-4">
+                                <h3 class="text-muted">No popular items available yet</h3>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php
+                    $chunkedProducts = array_chunk($popular_products, 4);
+                    foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
+                        <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
+                            <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
+                                <?php foreach ($slideProducts as $product): ?>
+                                    <div class="col-md-3">
+                                        <div class="card drink-card h-100 shadow-sm border-0">
+                                            <div class="drink-img-wrapper text-center position-relative">
+                                                <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>"
+                                                     class="drink-img img-fluid"
+                                                     style="max-height: 200px; object-fit: cover;"
+                                                     alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
+                                                <span class="stock-badge position-absolute top-0 end-0 m-2 <?= ($product['quantity'] ?? 0) < 5 ? 'bg-danger' : 'bg-success' ?> text-white px-2 py-1 rounded">
+                                                    <?= ($product['quantity'] ?? 0) < 5 ? 'Low' : 'In Stock' ?>
+                                                </span>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title mb-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></h5>
+                                                <p class="card-text mb-4">
+                                                    <span class="price fw-bold">$<?= number_format($product['price'] ?? 0, 2) ?></span>
+                                                    <span class="mx-2">•</span>
+                                                    <span><?= $product['quantity'] ?? 0 ?> left</span>
+                                                </p>
+                                                <a href="/inventory/viewice/<?= $product['product_id'] ?? '' ?>"
+                                                   class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+            <?php if (!empty($popular_products)): ?>
+                <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            <?php endif; ?>
+        </div>
+    </div>
 
-        if (!empty($popular_items)) {
-            foreach ($popular_items as $product): ?>
-                <div class="col-md-3">
-                    <div class="card p-4 shadow-sm">
-                        <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-100" alt="Popular IceDessert">
-                        <div class="mt-2">⭐⭐⭐⭐⭐</div>
-                        <p class="mt-2"><?= htmlspecialchars($product['product_name']) ?></p>
+    <!-- Quick Stats Section -->
+    <div class="mb-4 position-relative" style="background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
+        <h5 class="header-title fw-bold mb-4 text-center text-uppercase pt-4">
+            <span class="text-primary">Quick</span>
+            <span class="text-secondary">Stats</span>
+        </h5>
+        <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-boxes" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-boxes fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Total Products</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1"><?= count($products) ?></p>
                     </div>
                 </div>
-            <?php endforeach;
-        } else {
-            echo "<p class='text-center text-muted'>No popular items yet.</p>";
-        }
-        ?>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #28a745, #1d7a35);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-currency-dollar" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-currency-dollar fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Total Value</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1">
+                            $<?= number_format(array_sum(array_map(fn($p) => ($p['price'] ?? 0) * ($p['quantity'] ?? 0), $products)), 2) ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
+                    <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
+                        <div class="position-absolute top-0 end-0 opacity-25">
+                            <i class="bi bi-exclamation-triangle" style="font-size: 4rem;"></i>
+                        </div>
+                        <i class="bi bi-exclamation-triangle fs-2 position-relative z-1"></i>
+                        <h6 class="mt-3 mb-1 fw-bold text-uppercase">Low Stock Items</h6>
+                        <p class="fw-bold fs-3 mb-0 position-relative z-1"><?= count(array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5)) ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Export Button -->
+    <!-- Transactions Section -->
     <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h5 class="mt-3 mb-0">Drinks Transactions:</h5>
-        <button id="exportButton" class="btn btn-primary">
-            <i class="bi bi-file-earmark-pdf me-2"></i>Export to PDF
-        </button>
+        <h5 class="mt-3 mb-0">Ice Transactions:</h5>
     </div>
-
-    <!-- Products Table -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -63,43 +156,53 @@ require_once "Models/iceModel.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($products as $product): ?>
+                        <?php foreach ($products as $index => $product): ?>
                             <tr>
-                                <td class="text-center row-number"></td>
+                                <td class="text-center"><?= $index + 1 ?></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="<?= htmlspecialchars('views/products/' . $product['image']) ?>" class="w-px-50" alt="Product Image">
-                                        <span class="ms-3"><?= htmlspecialchars($product['product_name']) ?></span>
+                                        <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>"
+                                             class="rounded-circle"
+                                             style="width: 40px; height: 40px; object-fit: cover;"
+                                             alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
+                                        <span class="ms-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></span>
                                     </div>
                                 </td>
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill">
                                         <i class="bi bi-cup-hot me-1"></i>
-                                        <?= htmlspecialchars($product['category_name']) ?>
+                                        <?= htmlspecialchars($product['category_name'] ?? 'Uncategorized') ?>
                                     </span>
                                 </td>
                                 <td>
-                                    <span style="color: <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
-                                        <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
+                                    <span class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'success' ?>">
+                                        <?= ($product['quantity'] ?? 0) < 5 ? 'Low stock' : 'High stock' ?>
                                     </span>
                                 </td>
-                                <td>$<?= isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
-                                <td <?= isset($product['quantity']) && $product['quantity'] < 5 ? 'style="color: red;"' : '' ?>>
-                                    <?= isset($product['quantity']) ? $product['quantity'] : 'N/A' ?>
+                                <td>$<?= number_format($product['price'] ?? 0, 2) ?></td>
+                                <td class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'body' ?>">
+                                    <?= $product['quantity'] ?? 'N/A' ?>
                                 </td>
-                                <td>$<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?></td>
+                                <td>$<?= number_format(($product['price'] ?? 0) * ($product['quantity'] ?? 0), 2) ?></td>
                                 <td>
                                     <div class="dropdown">
-                                        <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="/inventory/viewice/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a>
+                                                <a class="dropdown-item" href="/inventory/viewice/<?= $product['product_id'] ?? '' ?>">
+                                                    <i class="bi bi-eye me-2"></i>View
+                                                </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?>)">
+                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?? 0 ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
-                                                <form id="delete-form-<?= $product['product_id'] ?>" action="/ice/delete/<?= $product['product_id'] ?>" method="POST" style="display:none;">
+                                                <form id="delete-form-<?= $product['product_id'] ?? '' ?>" 
+                                                      action="/ice/delete/<?= $product['product_id'] ?? '' ?>" 
+                                                      method="POST" 
+                                                      style="display:none;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                 </form>
                                             </li>
@@ -113,234 +216,45 @@ require_once "Models/iceModel.php";
             </div>
         </div>
     </div>
-</div>
 
-<!-- Add jsPDF and autoTable libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-
-<script>
-const { jsPDF } = window.jspdf;
-
-function confirmDelete(product_id) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        document.getElementById('delete-form-' + product_id).submit();
-    }
-}
-
-// Function to load image as base64
-function loadImageAsBase64(url, callback) {
-    const img = new Image();
-    img.crossOrigin = 'Anonymous'; // Handle CORS if needed
-    img.onload = function() {
-        const canvas = document.createElement('canvas');
-        canvas.width = this.width;
-        canvas.height = this.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(this, 0, 0);
-        const dataURL = canvas.toDataURL('image/png');
-        callback(dataURL);
-    };
-    img.onerror = function() {
-        console.error('Failed to load image:', url);
-        callback(null);
-    };
-    img.src = url;
-}
-
-// PDF Export functionality
-document.getElementById('exportButton').addEventListener('click', function() {
-    try {
-        const doc = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
-        const products = <?php echo json_encode($products) ?: '[]'; ?>;
-
-        // Validate products array
-        if (!Array.isArray(products) || products.length === 0) {
-            alert('No products available to export!');
-            return;
-        }
-
-        // Creative Header
-        doc.setFillColor(66, 139, 202); // Blue gradient base
-        doc.rect(0, 0, 210, 40, 'F');
-        doc.setFillColor(100, 181, 246); // Lighter overlay
-        doc.triangle(0, 0, 210, 0, 105, 40, 'F'); // Gradient triangle
-
-        // Load and add the logo
-        const logoUrl = '/views/assets/modules/img/logo/logo.png'; // Adjust path as needed
-        loadImageAsBase64(logoUrl, function(base64Image) {
-            if (base64Image) {
-                try {
-                    doc.addImage(base64Image, 'PNG', 15, 5, 30, 30);
-                } catch (imgError) {
-                    console.error('Error adding image to PDF:', imgError);
-                }
-            } else {
-                console.warn('Image could not be loaded. Proceeding without logo.');
-            }
-
-            // Add title and other header elements
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(24);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Mak Oun Sing Shop', 50, 20);
-            doc.setFontSize(11);
-            doc.setFont('helvetica', 'normal');
-            doc.text(`Generated: ${new Date().toLocaleString()}`, 50, 30);
-
-            // Decorative elements
-            doc.setDrawColor(255, 204, 0); // Yellow line
-            doc.setLineWidth(0.5);
-            doc.line(15, 35, 195, 35);
-
-            // Table headers
-            const headers = ['#', 'Product', 'Category', 'Stock', 'Price', 'Qty', 'Amount'];
-            let rows = [];
-
-            // Prepare data rows
-            products.forEach((product, index) => {
-                rows.push([
-                    index + 1,
-                    product.product_name || 'N/A',
-                    product.category_name || 'N/A',
-                    (product.quantity !== undefined && product.quantity < 5) ? 'Low stock' : 'High stock',
-                    '$' + (product.price ? parseFloat(product.price).toFixed(2) : '0.00'),
-                    product.quantity !== undefined ? product.quantity : 'N/A',
-                    '$' + (product.price && product.quantity !== undefined ? 
-                        (product.price * product.quantity).toFixed(2) : '0.00')
-                ]);
-            });
-
-            // Generate creative table
-            doc.autoTable({
-                startY: 45,
-                head: [headers],
-                body: rows,
-                theme: 'grid',
-                styles: {
-                    fontSize: 10,
-                    cellPadding: 3,
-                    textColor: [50, 50, 50],
-                    lineColor: [200, 200, 200],
-                    lineWidth: 0.1
-                },
-                headStyles: {
-                    fillColor: [66, 139, 202],
-                    textColor: [255, 255, 255],
-                    fontSize: 11,
-                    fontStyle: 'bold'
-                },
-                alternateRowStyles: {
-                    fillColor: [245, 248, 250]
-                },
-                columnStyles: {
-                    0: { cellWidth: 10, halign: 'center' },
-                    1: { cellWidth: 50 },
-                    2: { cellWidth: 30 },
-                    3: { cellWidth: 25, halign: 'center' },
-                    4: { cellWidth: 20, halign: 'right' },
-                    5: { cellWidth: 15, halign: 'center' },
-                    6: { cellWidth: 25, halign: 'right' }
-                },
-                didParseCell: function(data) {
-                    if (data.column.index === 3) {
-                        data.cell.styles.textColor = 
-                            data.cell.text[0] === 'Low stock' ? [220, 53, 69] : [40, 167, 69];
-                        data.cell.styles.fontStyle = 
-                            data.cell.text[0] === 'Low stock' ? 'bold' : 'normal';
-                    }
-                },
-                didDrawPage: function(data) {
-                    const pageHeight = doc.internal.pageSize.height;
-                    const pageWidth = doc.internal.pageSize.width;
-
-                    // Creative Footer
-                    doc.setFillColor(240, 248, 255); // Light blue background
-                    doc.rect(0, pageHeight - 25, pageWidth, 25, 'F');
-                    doc.setFontSize(9);
-                    doc.setTextColor(66, 139, 202);
-                    doc.text(`Page ${doc.internal.getNumberOfPages()}`, pageWidth - 25, pageHeight - 15);
-                    doc.text('© 2025 Drink Management System', 15, pageHeight - 15);
-
-                    // Footer decoration
-                    doc.setDrawColor(255, 204, 0);
-                    doc.setLineWidth(0.3);
-                    doc.circle(195, pageHeight - 20, 3, 'S');
-                }
-            });
-
-            // Summary Section
-            const finalY = doc.lastAutoTable.finalY + 10;
-            doc.setFillColor(240, 240, 240);
-            doc.rect(15, finalY, 180, 25, 'F');
-            doc.setFontSize(14);
-            doc.setTextColor(66, 139, 202);
-            doc.text('Quick Summary', 20, finalY + 8);
-
-            const totalAmount = products.reduce((sum, p) => 
-                sum + (p.price * p.quantity || 0), 0);
-            const lowStockCount = products.filter(p => p.quantity < 5).length;
-
-            doc.setFontSize(10);
-            doc.setTextColor(50, 50, 50);
-            doc.text(`Total Inventory Value: $${totalAmount.toFixed(2)}`, 20, finalY + 16);
-            doc.text(`Items with Low Stock: ${lowStockCount}`, 20, finalY + 23);
-
-            // Save the PDF
-            doc.save(`mak_oun_sing_ice_report_${new Date().toISOString().slice(0,10)}.pdf`);
-        });
-    } catch (error) {
-        console.error('PDF Export Error:', error);
-        alert('Error generating PDF: ' + error.message);
-    }
-});
-
-// Row numbering
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.row-number').forEach((cell, index) => {
-        cell.textContent = index + 1;
-    });
-});
-</script>
-
-<!-- Low Stock Alert -->
-<?php
-$low_stock_items = [];
-foreach ($products as $product) {
-    if (isset($product['quantity']) && $product['quantity'] < 5) {
-        $low_stock_items[] = htmlspecialchars($product['product_name']) . " (" . $product['quantity'] . " units)";
-    }
-}
-?>
-
-<?php if (!empty($low_stock_items)): ?>
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="lowStockToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-            <strong class="me-auto">Low Stock Alert</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    <!-- Creative Low Stock Alert -->
+    <?php
+    $low_stock_items = array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5);
+    if (!empty($low_stock_items)): ?>
+        <div class="low-stock-alert position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+            <div class="card shadow-lg border-0 rounded-3 overflow-hidden animate__animated animate__bounceInRight" 
+                 style="max-width: 350px; background: linear-gradient(135deg, #fff3e0, #ffebee);">
+                <div class="card-header bg-danger d-flex align-items-center p-3">
+                    <i class="bi bi-exclamation-octagon fs-3 me-2 text-white animate__animated animate__pulse animate__infinite"></i>
+                    <h5 class="mb-0 fw-bold text-white">Low Stock Warning!</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.parentElement.parentElement.parentElement.style.display='none';" aria-label="Close"></button>
+                </div>
+                <div class="card-body p-3">
+                    <p class="text-muted mb-3">The following items need attention:</p>
+                    <ul class="list-group list-group-flush">
+                        <?php foreach ($low_stock_items as $item): ?>
+                            <li class="list-group-item d-flex align-items-center p-2 animate__animated animate__fadeInUp" style="animation-delay: <?= (array_search($item, $low_stock_items) * 0.1) ?>s;">
+                                <i class="bi bi-box-seam text-warning me-2"></i>
+                                <span class="flex-grow-1"><?= htmlspecialchars($item['product_name'] ?? 'Unknown') ?></span>
+                                <span class="badge bg-danger rounded-pill"><?= $item['quantity'] ?? 0 ?> left</span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <div class="card-footer bg-light text-center p-2">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="this.parentElement.parentElement.parentElement.style.display='none';">
+                        Dismiss
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="toast-body">
-            <ul class="list-unstyled mb-0">
-                <?php foreach ($low_stock_items as $item): ?>
-                    <li><?php echo $item; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </div>
+    <?php endif; ?>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var lowStockToast = new bootstrap.Toast(document.getElementById('lowStockToast'), {
-            delay: 5000 
-        });
-        lowStockToast.show();
-    });
+function confirmDelete(productId) {
+    if (productId && confirm('Are you sure you want to delete this product?')) {
+        document.getElementById(`delete-form-${productId}`).submit();
+    }
+}
 </script>
-<?php endif; ?>
