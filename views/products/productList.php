@@ -75,6 +75,24 @@ if (! isset($_SESSION['user'])) {
     </div>
 
     <!-- Filters -->
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?php echo $_SESSION['success'];
+                                            unset($_SESSION['success']); ?></div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger"><?php echo $_SESSION['error'];
+                                        unset($_SESSION['error']); ?></div>
+    <?php endif; ?>
+
+    <form action="/products/productList" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="excel_file" class="form-label">Upload Excel File</label>
+            <input type="file" class="form-control" name="excel_file" required>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Import</button>
+    </form>
+
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <h5 class="mb-3">Filter</h5>
@@ -101,7 +119,7 @@ if (! isset($_SESSION['user'])) {
                         </ul>
                     </div>
                 </div>
-                <!-- stock  -->
+                <!-- Stock Filter -->
                 <div class="col-md-4 w-50">
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
@@ -146,9 +164,9 @@ if (! isset($_SESSION['user'])) {
                                 </form>
                             </li>
                             <li>
-                               <form method="POST" action="/export/excel" class="d-inline">
+                                <form method="POST" action="/export/excel" class="d-inline">
                                     <button type="submit" class="dropdown-item" id="exportExcel">Export Excel</button>
-                               </form>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -166,270 +184,268 @@ if (! isset($_SESSION['user'])) {
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Products Table -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
+    <!-- Products Table -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="40px">#</th>
+                            <th>PRODUCT</th>
+                            <th>CATEGORY</th>
+                            <th>STOCK</th>
+                            <th>PRICE</th>
+                            <th>QTY</th>
+                            <th>Total-Price</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($products as $product): ?>
                             <tr>
-                                <th width="40px">
-                                    #
-                                </th>
-                                <th>PRODUCT</th>
-                                <th>CATEGORY</th>
-                                <th>STOCK</th>
-                                <th>PRICE</th>
-                                <th>QTY</th>
-                                <th>Total-Price</th>
-                                <th>ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($products as $product): ?>
-                                <tr>
                                 <td class="text-center row-number"></td>
-                                    <td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-2 text-primary">
+                                        </div>
                                         <div class="d-flex align-items-center">
-                                            <div class="me-2 text-primary">
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" class="card-img-top w-px-50" alt="Product Image">
-                                                <span class="ms-3"><?php echo htmlspecialchars($product['product_name']) ?></span>
-                                            </div>
+                                            <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" class="card-img-top w-px-50" alt="Product Image">
+                                            <span class="ms-3"><?php echo htmlspecialchars($product['product_name']) ?></span>
                                         </div>
-                                    </td>
+                                    </div>
+                                </td>
 
-                                    <td>
-                                        <span class="badge bg-primary-subtle text-primary rounded-pill">
-                                            <i class="bi bi-cup-hot me-1"></i>
-                                            <?php echo $product['category_name'] ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span style="color: <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
-                                            <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
-                                        </span>
-                                    </td>
-                                    <td>$<?php echo isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
-                                    <td><?php echo isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
-                                    <td>
-                                        $<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="/products/view/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
-                                                <li>
-                                                    <a class="dropdown-item" href="/products/edit/<?php echo $product['product_id'] ?>">
-                                                        <i class="bi bi-pencil me-2"></i>Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['product_id'] ?>)">
-                                                        <i class="bi bi-trash me-2"></i>Delete
-                                                    </a>
-                                                    <form id="delete-form-<?php echo $product['product_id'] ?>" action="/products/delete/<?php echo $product['product_id'] ?>" method="POST" style="display:none;">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill">
+                                        <i class="bi bi-cup-hot me-1"></i>
+                                        <?php echo $product['category_name'] ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="color: <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
+                                        <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
+                                    </span>
+                                </td>
+                                <td>$<?php echo isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
+                                <td><?php echo isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
+                                <td>
+                                    $<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/products/view/<?php echo $product['product_id'] ?>"><i class="bi bi-eye me-2"></i>View</a></li>
+                                            <li>
+                                                <a class="dropdown-item" href="/products/edit/<?php echo $product['product_id'] ?>">
+                                                    <i class="bi bi-pencil me-2"></i>Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['product_id'] ?>)">
+                                                    <i class="bi bi-trash me-2"></i>Delete
+                                                </a>
+                                                <form id="delete-form-<?php echo $product['product_id'] ?>" action="/products/delete/<?php echo $product['product_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php echo ($currentPage <= 1) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?php echo $currentPage - 1 ?>&items=<?php echo $itemsPerPage ?>">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <li class="page-item <?php echo ($i === $currentPage) ? 'active' : '' ?>">
+                    <a class="page-link" href="?page=<?php echo $i ?>&items=<?php echo $itemsPerPage ?>"><?php echo $i ?></a>
+                </li>
+            <?php endfor; ?>
+            <li class="page-item <?php echo ($currentPage >= $totalPages) ? 'disabled' : '' ?>">
+                <a class="page-link" href="?page=<?php echo $currentPage + 1 ?>&items=<?php echo $itemsPerPage ?>">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- update quantity product -->
+<div class="modal fade" id="updateQuantityModal" tabindex="-1" aria-labelledby="updateQuantityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateQuantityModalLabel">Update Product Quantity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="updateQuantityForm" method="POST" action="/products/updateQuantity">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <select name="product_id" class="form-select" id="productSelect" required>
+                            <option value="" selected disabled>Choose product</option>
+                            <?php foreach ($products as $product): ?>
+                                <option value="<?php echo htmlspecialchars($product['product_id']); ?>"
+                                    data-quantity="<?php echo htmlspecialchars($product['quantity']); ?>">
+                                    <?php echo htmlspecialchars($product['product_name']); ?>
+                                </option>
                             <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="currentQuantity" class="form-label">Current Quantity</label>
+                        <input type="number" id="currentQuantity" class="form-control"
+                            placeholder="Select a product" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newQuantity" class="form-label">New Quantity</label>
+                        <input type="number" name="new_quantity" id="newQuantity" class="form-control"
+                            placeholder="Enter new quantity" min="0" required>
+                    </div>
+                </form>
             </div>
-        </div>
 
-        <!-- Pagination -->
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?php echo ($currentPage <= 1) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?php echo $currentPage - 1 ?>&items=<?php echo $itemsPerPage ?>">
-                        <i class="bi bi-chevron-left"></i>
-                    </a>
-                </li>
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <li class="page-item <?php echo ($i === $currentPage) ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?php echo $i ?>&items=<?php echo $itemsPerPage ?>"><?php echo $i ?></a>
-                    </li>
-                <?php endfor; ?>
-                <li class="page-item <?php echo ($currentPage >= $totalPages) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?php echo $currentPage + 1 ?>&items=<?php echo $itemsPerPage ?>">
-                        <i class="bi bi-chevron-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- update quantity product -->
-    <div class="modal fade" id="updateQuantityModal" tabindex="-1" aria-labelledby="updateQuantityModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateQuantityModalLabel">Update Product Quantity</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="updateQuantityForm" method="POST" action="/products/updateQuantity">
-                        <div class="mb-3">
-                            <label for="productName" class="form-label">Product Name</label>
-                            <select name="product_id" class="form-select" id="productSelect" required>
-                                <option value="" selected disabled>Choose product</option>
-                                <?php foreach ($products as $product): ?>
-                                    <option value="<?php echo htmlspecialchars($product['product_id']); ?>"
-                                        data-quantity="<?php echo htmlspecialchars($product['quantity']); ?>">
-                                        <?php echo htmlspecialchars($product['product_name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="currentQuantity" class="form-label">Current Quantity</label>
-                            <input type="number" id="currentQuantity" class="form-control"
-                                placeholder="Select a product" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newQuantity" class="form-label">New Quantity</label>
-                            <input type="number" name="new_quantity" id="newQuantity" class="form-control"
-                                placeholder="Enter new quantity" min="0" required>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="updateQuantityForm" class="btn btn-primary">Update Quantity</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="updateQuantityForm" class="btn btn-primary">Update Quantity</button>
             </div>
         </div>
     </div>
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
-        <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastText">
-                    Success message here
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+    <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastText">
+                Success message here
             </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
+</div>
 
-    <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var toastElement = document.getElementById("toastMessage");
-                var toastText = document.getElementById("toastText");
-
-                <?php if (isset($_SESSION['success_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
-                    toastElement.classList.add("bg-success");
-                    <?php unset($_SESSION['success_message']); ?>
-                <?php endif; ?>
-
-                <?php if (isset($_SESSION['error_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
-                    toastElement.classList.add("bg-danger");
-                    <?php unset($_SESSION['error_message']); ?>
-                <?php endif; ?>
-
-                var toast = new bootstrap.Toast(toastElement, {
-                    delay: 1000 // Set delay to 1000ms (1 second)
-                });
-                toast.show();
-            });
-        </script>
-    <?php endif; ?>
-
-
+<?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const productSelect = document.getElementById("productSelect");
-            const currentQuantityInput = document.getElementById("currentQuantity");
+            var toastElement = document.getElementById("toastMessage");
+            var toastText = document.getElementById("toastText");
 
-            productSelect.addEventListener("change", function() {
-                const selectedOption = productSelect.options[productSelect.selectedIndex];
-                const quantity = selectedOption.getAttribute("data-quantity");
+            <?php if (isset($_SESSION['success_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                toastElement.classList.add("bg-success");
+                <?php unset($_SESSION['success_message']); ?>
+            <?php endif; ?>
 
-                if (quantity !== null) {
-                    currentQuantityInput.value = quantity;
-                } else {
-                    currentQuantityInput.value = "";
-                }
+            <?php if (isset($_SESSION['error_message'])): ?>
+                toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                toastElement.classList.add("bg-danger");
+                <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
+
+            var toast = new bootstrap.Toast(toastElement, {
+                delay: 1000 // Set delay to 1000ms (1 second)
             });
+            toast.show();
         });
     </script>
+<?php endif; ?>
 
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.row-number').forEach((cell, index) => {
-        cell.textContent = index + 1;
-    });
-});
-        function confirmDelete(product_id) {
-            document.getElementById('delete-form-' + product_id).submit();
-        }
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const productSelect = document.getElementById("productSelect");
+        const currentQuantityInput = document.getElementById("currentQuantity");
 
-        document.getElementById('barcode').addEventListener('blur', function() {
-            const barcode = this.value;
-            const errorElement = document.getElementById('barcode-error');
+        productSelect.addEventListener("change", function() {
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const quantity = selectedOption.getAttribute("data-quantity");
 
-            if (barcode) {
-                fetch(`/products/check-barcode?barcode=${barcode}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.exists) {
-                            errorElement.textContent = 'This barcode already exists!';
-                            document.getElementById('barcode').classList.add('is-invalid');
-                        } else {
-                            errorElement.textContent = '';
-                            document.getElementById('barcode').classList.remove('is-invalid');
-                        }
-                    })
-                    .catch(() => {
-                        errorElement.textContent = 'Error checking barcode.';
-                    });
+            if (quantity !== null) {
+                currentQuantityInput.value = quantity;
+            } else {
+                currentQuantityInput.value = "";
             }
         });
-    </script>
-    <style>
-        
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll('.row-number').forEach((cell, index) => {
+            cell.textContent = index + 1;
+        });
+    });
+
+    function confirmDelete(product_id) {
+        document.getElementById('delete-form-' + product_id).submit();
+    }
+
+    document.getElementById('barcode').addEventListener('blur', function() {
+        const barcode = this.value;
+        const errorElement = document.getElementById('barcode-error');
+
+        if (barcode) {
+            fetch(`/products/check-barcode?barcode=${barcode}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        errorElement.textContent = 'This barcode already exists!';
+                        document.getElementById('barcode').classList.add('is-invalid');
+                    } else {
+                        errorElement.textContent = '';
+                        document.getElementById('barcode').classList.remove('is-invalid');
+                    }
+                })
+                .catch(() => {
+                    errorElement.textContent = 'Error checking barcode.';
+                });
+        }
+    });
+</script>
+<style>
     .plus-btn {
-    width: 18px;
-    height: 18px;
-    background: #696cff;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 
-        0 3px 5px rgba(0, 0, 0, 0.2), 
-        0 0 10px rgba(108, 99, 255, 0.4),
-        inset 0 1px 2px rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease-in-out;
-    position: relative;
-}
+        width: 18px;
+        height: 18px;
+        background: #696cff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        box-shadow:
+            0 3px 5px rgba(0, 0, 0, 0.2),
+            0 0 10px rgba(108, 99, 255, 0.4),
+            inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease-in-out;
+        position: relative;
+    }
 
-.plus-btn:hover {
-    background: linear-gradient(135deg, #5a54e0, #4038c9);
-    box-shadow: 
-        0 5px 10px rgba(0, 0, 0, 0.3), 
-        0 0 15px rgba(108, 99, 255, 0.6);
-    transform: scale(1.15) rotate(5deg);
-}
-
+    .plus-btn:hover {
+        background: linear-gradient(135deg, #5a54e0, #4038c9);
+        box-shadow:
+            0 5px 10px rgba(0, 0, 0, 0.3),
+            0 0 15px rgba(108, 99, 255, 0.6);
+        transform: scale(1.15) rotate(5deg);
+    }
 </style>
