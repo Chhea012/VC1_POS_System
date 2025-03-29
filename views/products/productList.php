@@ -400,36 +400,3 @@ if (! isset($_SESSION['user'])) {
             }
         });
     </script>
-    <style>
-        
-    .plus-btn {
-    width: 18px;
-    height: 18px;
-    background: #696cff;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 
-        0 3px 5px rgba(0, 0, 0, 0.2), 
-        0 0 10px rgba(108, 99, 255, 0.4),
-        inset 0 1px 2px rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease-in-out;
-    position: relative;
-}
-
-.plus-btn:hover {
-    background: linear-gradient(135deg, #5a54e0, #4038c9);
-    box-shadow: 
-        0 5px 10px rgba(0, 0, 0, 0.3), 
-        0 0 15px rgba(108, 99, 255, 0.6);
-    transform: scale(1.15) rotate(5deg);
-}
-
-</style>
