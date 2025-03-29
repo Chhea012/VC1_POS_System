@@ -43,9 +43,14 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a class="dropdown-item text-primary" href="/orders/view/<?php echo $order['order_id'] ?>" data-bs-toggle="modal" data-bs-target="#viewOrderModal">
-                                                        <i class="bi bi-eye"></i> View Details
-                                                    </a>
+                                                <a class="dropdown-item text-primary view-order" 
+                                                    href="javascript:void(0);" 
+                                                    data-order-id="<?php echo $order['order_id']; ?>"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#viewOrderModal">
+                                                    <i class="bi bi-eye"></i> View Details
+                                                </a>
+
                                                 </li>
                                                 <li>
                                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
@@ -155,6 +160,10 @@
                         </h5>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add custom CSS -->
 <style>
@@ -181,9 +190,8 @@
         border-radius: 10px;
     }
 </style>
-
-
 <script>
+    
     // Example: Add search functionality
     document.getElementById('searchInput').addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -203,3 +211,5 @@
         document.getElementById('delete-form-' + orderId).submit();
     }
 </script>
+
+

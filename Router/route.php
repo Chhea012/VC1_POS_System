@@ -92,6 +92,7 @@ $route->get("/notification", [NotificationController::class, 'index']);
 $route->get("/orders", [OrderController::class, 'index']);  
 $route->get("/orders/view/{orderId}", [OrderController::class, 'show']); 
 $route->post("/orders/delete/{orderId}", [OrderController::class, 'delete']);
+$route->get("/orders/detail/{orderId}", [OrderController::class, 'detail']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
 $route->get("/orders/create/QR", [CreateOrderController::class, 'qrcode']);
 $route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); 
