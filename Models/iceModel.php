@@ -85,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 }
-
 // --- New Code to Display Drink Category After Adding ---
 
 // Determine which category to display
