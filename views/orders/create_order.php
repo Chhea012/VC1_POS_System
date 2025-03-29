@@ -30,7 +30,7 @@ if (!isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-bold">Quantity</label>
-                    <input type="number" id="quantity" class="form-control" value="1" min="1">
+                    <input type="number" id="quantity" class="form-control" value="0" min="0">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button class="btn btn-primary w-100" onclick="addItem()">Add Item</button>
@@ -61,10 +61,13 @@ if (!isset($_SESSION['user'])) {
             <h4 class="">Payment Details</h4>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Select Payment Mode</label>
                     <select class="form-select" id="payment-mode" name="paymentMode">
-                        <option value="Cash Payment">Cash Payment</option>
-                        <option value="Card Payment">Card Payment</option>
+                        <option value="">Select Payment Mode</option>
+                        <?php foreach ($data['paymentModes'] as $mode): ?>
+                            <option value="<?php echo htmlspecialchars($mode); ?>">
+                                <?php echo htmlspecialchars($mode); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -76,7 +79,7 @@ if (!isset($_SESSION['user'])) {
     </div>
 
     <script>
-        let idCounter = 1;
+        let idCounter = 0;
 
         function addItem() {
             const productSelect = document.getElementById('product');
@@ -107,9 +110,9 @@ if (!isset($_SESSION['user'])) {
             row.innerHTML = `
                 <td>${idCounter++}</td>
                 <td>${productName}</td>
-                <td>$${price.toFixed(2)} ${discount > 0 ? '(' + discount + '% off)' : ''}</td>
-                <td><input type="number" value="${quantity}" min="1" class="form-control w-50 mx-auto" onchange="updateTotal(this)"></td>
-                <td class="total-price">$${totalPrice.toFixed(2)}</td>
+                <td>$${price.toFixed(1)} ${discount > 0 ? '(' + discount + '% off)' : ''}</td>
+                <td><input type="number" value="${quantity}" min="0" class="form-control w-50 mx-auto" onchange="updateTotal(this)"></td>
+                <td class="total-price">$${totalPrice.toFixed(1)}</td>
                 <td><button class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
             `;
             row.dataset.discount = discount;
