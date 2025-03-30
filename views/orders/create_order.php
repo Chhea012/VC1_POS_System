@@ -8,6 +8,15 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 <div class="container-xxl flex-grow-1 container-p-y">
+<?php if (isset($_SESSION['error_orders'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error_orders']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error_orders']); ?>
+<?php endif; ?>
+
+
     <div class="mt-2">
         <div class="card shadow-sm p-4">
             <h2 class="">Create Order</h2>
