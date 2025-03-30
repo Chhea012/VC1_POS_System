@@ -257,3 +257,9 @@ function confirmDelete(productId) {
     }
 }
 </script>
+
+
+
+
+
+
