@@ -83,8 +83,6 @@ class categoryController extends BaseController
         echo "<script>alert('" . $e->getMessage() . "');</script>";
     }
 }
-    
-
 public function delete($category_id)
 {
     // Perform the deletion

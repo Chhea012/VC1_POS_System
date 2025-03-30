@@ -165,7 +165,6 @@ class ProductManager
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
-
         //  delete product
         public function delete($product_id) {
             $sql = "DELETE FROM products WHERE product_id = :product_id";
