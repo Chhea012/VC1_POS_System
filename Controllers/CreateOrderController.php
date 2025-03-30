@@ -11,52 +11,16 @@ class CreateOrderController extends BaseController {
 
     public function index() {
         $selectProduct = $this->createOrderModel->selectProductName();
-        $this->view('orders/create_order', ['selectProduct' => $selectProduct]);
-       
+        $paymentModes = ['Cash Payment', 'Card Payment']; // Hardcoded
+        $this->view('orders/create_order', [
+            'selectProduct' => $selectProduct,
+            'paymentModes' => $paymentModes
+        ]);
     }
         public function qrcode() {
 
             $this->view('orders/qrmoney');
         }
-    
-
-    public function placeOrder() {
-        $input = $_POST;
-
-        if (empty($input) || !isset($input['orderItems'])) {
-            die('No order data received');
-        }
-
-        // Parse the JSON from orderItems
-        $orderDetails = json_decode($input['orderItems'], true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            die('Invalid order data format');
-        }
-
-        // Calculate total_amount from items
-        $totalAmount = array_sum(array_column($orderDetails['items'], 'totalPrice'));
-
-        // Structure orderData for the model
-        $orderData = [
-            'user_id' => $_SESSION['user']['user_id'] ?? null, // Assuming user_id is in session
-            'total_amount' => $totalAmount,
-            'items' => array_map(function ($item) {
-                return [
-                    'product_id' => $this->getProductIdByName($item['productName']), // Map productName to product_id
-                    'quantity' => $item['quantity'],
-                    'price' => $item['originalPrice'] // Use original price before discount
-                ];
-            }, $orderDetails['items'])
-        ];
-
-        try {
-            $orderId = $this->createOrderModel->saveOrder($orderData);
-            header("Location: /orders/summary?order_id=" . $orderId); // Redirect to summary
-            exit;
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
 
     // Helper method to map product name to ID
     private function getProductIdByName($productName) {
@@ -68,25 +32,86 @@ class CreateOrderController extends BaseController {
         }
         throw new Exception("Product not found: " . $productName);
     }
-
     public function summary() {
-        if (isset($_GET['order_id'])) {
+        if (isset($_GET['order_id']) && !empty($_GET['order_id'])) {
             $orderId = $_GET['order_id'];
-            
-            // Fetch order details, including payment_mode and order_date
             $orderDetails = $this->createOrderModel->getOrderSummary($orderId);
-            
-            // Fetch the order including order_date and payment_mode
             $order = $this->createOrderModel->getOrderById($orderId);
-            
-            // Pass order items, payment_mode, and order_date to the view
             $this->view('orders/order_summary', [
                 'orderItems' => $orderDetails,
                 'payment_mode' => $order['payment_mode'],
-                'order_date' => $order['order_date'] // Pass the order date
+                'order_date' => $order['order_date']
             ]);
         } else {
-            echo "Order ID is missing.";
+            echo "Order ID is missing or invalid.";
+        }
+    }
+    public function placeOrder() {
+        if (!isset($_SESSION['user']['user_id']) || empty($_SESSION['user']['user_id'])) {
+            die('Error: User must be logged in to place an order');
+        }
+    
+        $input = $_POST;
+    
+        if (empty($input) || !isset($input['orderItems'])) {
+            die('No order data received');
+        }
+    
+        $orderDetails = json_decode($input['orderItems'], true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            die('Invalid order data format');
+        }
+    
+        // Check stock availability
+        foreach ($orderDetails['items'] as $item) {
+            $productId = $this->getProductIdByName($item['productName']);
+            $quantity = $item['quantity'];
+    
+            // Check if product is in stock
+            if (!$this->createOrderModel->checkProductStock($productId, $quantity)) {
+                $_SESSION['error_orders'] = "Error: Product {$item['productName']} is out of stock or has insufficient stock!";
+                header("Location: /orders/create"); 
+                exit;
+            }
+            
+        }
+    
+        $totalAmount = array_sum(array_column($orderDetails['items'], 'totalPrice'));
+    
+        $orderData = [
+            'user_id' => $_SESSION['user']['user_id'],
+            'total_amount' => $totalAmount,
+            'payment_mode' => $orderDetails['paymentMode'] ?? null,
+            'items' => array_map(function ($item) {
+                return [
+                    'product_id' => $this->getProductIdByName($item['productName']),
+                    'quantity' => $item['quantity'],
+                    'price' => $item['originalPrice']
+                ];
+            }, $orderDetails['items'])
+        ];
+    
+        // Validate required fields
+        $missingFields = [];
+        if (empty($orderData['user_id'])) $missingFields[] = 'user_id';
+        if (empty($orderData['total_amount'])) $missingFields[] = 'total_amount';
+        if (empty($orderData['items'])) $missingFields[] = 'items';
+        if (empty($orderData['payment_mode'])) $missingFields[] = 'payment_mode';
+    
+        if (!empty($missingFields)) {
+            die('Error: Missing required fields - ' . implode(', ', $missingFields));
+        }
+    
+        try {
+            $orderId = $this->createOrderModel->saveOrder($orderData);
+            if (!$orderId) {
+                die('Error: No order ID returned from saveOrder');
+            }
+            echo "Redirecting with order ID: " . $orderId . "<br>";
+            header("Location: /orders/summary?order_id=" . $orderId);
+            exit;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
     }
     

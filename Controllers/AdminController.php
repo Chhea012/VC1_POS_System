@@ -32,15 +32,54 @@ class AdminController extends BaseController {
         // Store the new totals in the database
         $this->adminHome->storeTotalMoney($totalMoney['grand_total']);
         $this->adminHome->storeTotalStock($totalStock['total']);
+    
+        // Fetch the latest order
+        $latestOrder = $this->adminHome->getLatestOrder();
+        $totalOrderedQuantity = $this->adminHome->getTotalOrderedQuantity()['total_ordered_quantity'] ?? 0;
 
-        // Pass the necessary data to the view
+        $latestMoneyOrder = $this->adminHome->getLatestMoneyOrder();
+        $totalMoneyOrder = $this->adminHome->getTotalMoneyOrder()['total_Money'] ?? 0;
+
+        // Get the previous total money (if any)
+        $previousTotalMoney = $this->adminHome->getPreviousTotalMoney()['total_money'] ?? 0;
+        
+        // Calculate the sales increment: the difference between current and previous total
+        $salesIncrement = $totalMoneyOrder - $previousTotalMoney;
+        
+        // Optionally, update the money history if the new total is different
+        if ($totalMoneyOrder != $previousTotalMoney) {
+            $this->adminHome->storeTotalMoney($totalMoneyOrder);
+        }
+        $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
+
+        // If no orders exist, set default data
+        if (empty($categoriesOrderedToday)) {
+            $categoriesOrderedToday = [
+                ['category_name' => 'No Orders', 'total_orders' => 1]
+            ];
+        }
+
+        // Get the order increase percentage
+        $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
+        $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
+        $totalOrders = $this->adminHome->getTotalOrders();
+
+        // Pass the data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
+            'totalOrders' => $totalOrders,
             'highStockProducts' => $highStockProducts,
             'totalStock' => $totalStock,
             'totalMoney' => $totalMoney,
             'increment' => $increment,
-            'addedStock' => $addedStock
+            'addedStock' => $addedStock,
+            'latestOrder' => $latestOrder,
+            'totalOrderedQuantity' => $totalOrderedQuantity,
+            'latestMoneyOrder' => $latestMoneyOrder,
+            'totalMoneyOrder' => $totalMoneyOrder,
+            'salesIncrement'  => $salesIncrement,
+            'orderIncrease' => $orderIncrease,  
+            'categoriesOrderedToday' => $categoriesOrderedToday
         ]);
     }
 }

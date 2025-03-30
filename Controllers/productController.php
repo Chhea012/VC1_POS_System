@@ -201,7 +201,6 @@ class productController extends BaseController
             echo json_encode(["error" => "Product not found"]);
         }
     }
-
     public function updateQuantity()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {

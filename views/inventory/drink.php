@@ -19,7 +19,9 @@ $products = $products ?? [];
         <div id="drinkCarousel" class="carousel slide shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <?php 
-                $totalSlides = ceil(count($products) / 4);
+                // Filter out low stock items for slideshow
+                $carouselProducts = array_filter($products, fn($p) => ($p['quantity'] ?? 0) >= 5);
+                $totalSlides = ceil(count($carouselProducts) / 4);
                 for ($i = 0; $i < $totalSlides; $i++): ?>
                     <button type="button" 
                             data-bs-target="#drinkCarousel" 
@@ -29,17 +31,17 @@ $products = $products ?? [];
                 <?php endfor; ?>
             </div>
             <div class="carousel-inner">
-                <?php if (empty($products)): ?>
+                <?php if (empty($carouselProducts)): ?>
                     <div class="carousel-item active">
                         <div class="d-flex align-items-center justify-content-center" style="height: 500px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
                             <div class="text-center p-4">
-                                <h3 class="text-muted">No products available yet</h3>
+                                <h3 class="text-muted">No products with sufficient stock available</h3>
                             </div>
                         </div>
                     </div>
                 <?php else: ?>
                     <?php 
-                    $chunkedProducts = array_chunk($products, 4);
+                    $chunkedProducts = array_chunk($carouselProducts, 4);
                     foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
                         <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
                             <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
@@ -51,8 +53,8 @@ $products = $products ?? [];
                                                      class="drink-img img-fluid" 
                                                      style="max-height: 200px; object-fit: cover;"
                                                      alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
-                                                <span class="stock-badge position-absolute top-0 end-0 m-2 <?= ($product['quantity'] ?? 0) < 5 ? 'bg-danger' : 'bg-success' ?> text-white px-2 py-1 rounded">
-                                                    <?= ($product['quantity'] ?? 0) < 5 ? 'Low' : 'In Stock' ?>
+                                                <span class="stock-badge position-absolute top-0 end-0 m-2 bg-success text-white px-2 py-1 rounded">
+                                                    In Stock
                                                 </span>
                                             </div>
                                             <div class="card-body text-center">
@@ -73,7 +75,7 @@ $products = $products ?? [];
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-            <?php if (!empty($products)): ?>
+            <?php if (!empty($carouselProducts)): ?>
                 <button class="carousel-control-prev" type="button" data-bs-target="#drinkCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -92,7 +94,7 @@ $products = $products ?? [];
             <span class="text-primary">Quick</span> 
             <span class="text-secondary">Stats</span>
         </h5>
-        <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
+        <div class="row g-4 justify-content-center align-items-center px‍‍‍‍px-4 pb-4">
             <div class="col-md-4">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
@@ -201,6 +203,7 @@ $products = $products ?? [];
                                                 <form id="delete-form-<?= $product['product_id'] ?? '' ?>" 
                                                       action="/drink/delete/<?= $product['product_id'] ?? '' ?>" 
                                                       method="POST" 
+   
                                                       style="display:none;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                 </form>
@@ -219,6 +222,11 @@ $products = $products ?? [];
     <!-- Creative Low Stock Alert -->
     <?php
     $low_stock_items = array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5);
+    // Check if a specific product is requested via query parameter
+    $requested_product = isset($_GET['product']) ? urldecode($_GET['product']) : null;
+    if ($requested_product) {
+        $low_stock_items = array_filter($low_stock_items, fn($p) => $p['product_name'] === $requested_product);
+    }
     if (!empty($low_stock_items)): ?>
         <div class="low-stock-alert position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
             <div class="card shadow-lg border-0 rounded-3 overflow-hidden animate__animated animate__bounceInRight" 
@@ -256,10 +264,33 @@ function confirmDelete(productId) {
         document.getElementById(`delete-form-${productId}`).submit();
     }
 }
+
+// Send low stock items to localStorage for notifications
+document.addEventListener("DOMContentLoaded", function () {
+    const lowStockItems = <?php echo json_encode($low_stock_items); ?>;
+    
+    if (Object.keys(lowStockItems).length > 0) {
+        // Prepare notifications for low stock
+        const notifications = Object.values(lowStockItems).map(item => ({
+            title: `Low Stock Alert: ${item.product_name}`,
+            start: new Date().toISOString().split('T')[0], // Today's date
+            isRead: false,
+            timestamp: new Date().toISOString(),
+            quantity: item.quantity
+        }));
+
+        // Get existing events from localStorage
+        let existingEvents = JSON.parse(localStorage.getItem("events")) || [];
+        
+        // Add new low stock notifications if they don't already exist
+        notifications.forEach(newEvent => {
+            if (!existingEvents.some(event => event.title === newEvent.title)) {
+                existingEvents.push(newEvent);
+            }
+        });
+
+        // Save updated events to localStorage
+        localStorage.setItem("events", JSON.stringify(existingEvents));
+    }
+});
 </script>
-
-
-
-
-
-

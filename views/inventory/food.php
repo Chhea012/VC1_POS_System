@@ -257,11 +257,34 @@ function confirmDelete(productId) {
         document.getElementById(`delete-form-${productId}`).submit();
     }
 }
+
+// Send low stock items to localStorage for notifications
+document.addEventListener("DOMContentLoaded", function () {
+    const lowStockItems = <?php echo json_encode($low_stock_items); ?>;
+    
+    if (Object.keys(lowStockItems).length > 0) {
+        // Prepare notifications for low stock
+        const notifications = Object.values(lowStockItems).map(item => ({
+            title: `Low Stock Alert: ${item.product_name}`,
+            start: new Date().toISOString().split('T')[0], // Today's date
+            isRead: false,
+            timestamp: new Date().toISOString(),
+            quantity: item.quantity,
+            product_id: item.product_id || '' // Include product_id for reference
+        }));
+
+        // Get existing events from localStorage
+        let existingEvents = JSON.parse(localStorage.getItem("events")) || [];
+        
+        // Add new low stock notifications if they don’t already exist
+        notifications.forEach(newEvent => {
+            if (!existingEvents.some(event => event.title === newEvent.title)) {
+                existingEvents.push(newEvent);
+            }
+        });
+
+        // Save updated events to localStorage
+        localStorage.setItem("events", JSON.stringify(existingEvents));
+    }
+});
 </script>
-
-
-
-
-
-
-
