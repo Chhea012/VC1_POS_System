@@ -129,5 +129,20 @@ class CreateOrderModel {
         return $stmt->fetch(PDO::FETCH_ASSOC); // Fetch the order details including order_date
     }
     
+    public function checkProductStock($productId, $quantity) {
+        $query = "SELECT quantity FROM products WHERE product_id = :product_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($product && $product['quantity'] >= $quantity) {
+            return true; // Sufficient stock
+        }
+    
+        return false; // Insufficient stock
+    }
+    
 }
 ?>

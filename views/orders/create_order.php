@@ -43,7 +43,7 @@ if (!isset($_SESSION['user'])) {
             <table class="table table-striped table-hover text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -77,9 +77,8 @@ if (!isset($_SESSION['user'])) {
             </form>
         </div>
     </div>
-
     <script>
-        let idCounter = 0;
+        let idCounter = 1;
 
         function addItem() {
             const productSelect = document.getElementById('product');

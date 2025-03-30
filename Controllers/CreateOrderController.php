@@ -62,6 +62,18 @@ class CreateOrderController extends BaseController {
             die('Invalid order data format');
         }
     
+        // Check stock availability
+        foreach ($orderDetails['items'] as $item) {
+            $productId = $this->getProductIdByName($item['productName']);
+            $quantity = $item['quantity'];
+    
+            // Check if product is in stock
+            if (!$this->createOrderModel->checkProductStock($productId, $quantity)) {
+                echo "Error: Product '{$item['productName']}' is out of stock or has insufficient stock!";
+                return;
+            }
+        }
+    
         $totalAmount = array_sum(array_column($orderDetails['items'], 'totalPrice'));
     
         $orderData = [
