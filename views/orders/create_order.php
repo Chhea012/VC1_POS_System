@@ -8,6 +8,15 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 <div class="container-xxl flex-grow-1 container-p-y">
+<?php if (isset($_SESSION['error_orders'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error_orders']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error_orders']); ?>
+<?php endif; ?>
+
+
     <div class="mt-2">
         <div class="card shadow-sm p-4">
             <h2 class="">Create Order</h2>
@@ -30,7 +39,7 @@ if (!isset($_SESSION['user'])) {
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-bold">Quantity</label>
-                    <input type="number" id="quantity" class="form-control" value="1" min="1">
+                    <input type="number" id="quantity" class="form-control" value="0" min="0">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <button class="btn btn-primary w-100" onclick="addItem()">Add Item</button>
@@ -43,7 +52,7 @@ if (!isset($_SESSION['user'])) {
             <table class="table table-striped table-hover text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -61,10 +70,13 @@ if (!isset($_SESSION['user'])) {
             <h4 class="">Payment Details</h4>
             <div class="row">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Select Payment Mode</label>
                     <select class="form-select" id="payment-mode" name="paymentMode">
-                        <option value="Cash Payment">Cash Payment</option>
-                        <option value="Card Payment">Card Payment</option>
+                        <option value="">Select Payment Mode</option>
+                        <?php foreach ($data['paymentModes'] as $mode): ?>
+                            <option value="<?php echo htmlspecialchars($mode); ?>">
+                                <?php echo htmlspecialchars($mode); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -74,7 +86,6 @@ if (!isset($_SESSION['user'])) {
             </form>
         </div>
     </div>
-
     <script>
         let idCounter = 1;
 
@@ -107,9 +118,9 @@ if (!isset($_SESSION['user'])) {
             row.innerHTML = `
                 <td>${idCounter++}</td>
                 <td>${productName}</td>
-                <td>$${price.toFixed(2)} ${discount > 0 ? '(' + discount + '% off)' : ''}</td>
-                <td><input type="number" value="${quantity}" min="1" class="form-control w-50 mx-auto" onchange="updateTotal(this)"></td>
-                <td class="total-price">$${totalPrice.toFixed(2)}</td>
+                <td>$${price.toFixed(1)} ${discount > 0 ? '(' + discount + '% off)' : ''}</td>
+                <td><input type="number" value="${quantity}" min="0" class="form-control w-50 mx-auto" onchange="updateTotal(this)"></td>
+                <td class="total-price">$${totalPrice.toFixed(1)}</td>
                 <td><button class="btn btn-danger btn-sm" onclick="removeItem(this)">Remove</button></td>
             `;
             row.dataset.discount = discount;

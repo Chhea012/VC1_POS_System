@@ -41,7 +41,7 @@
                                 </ul>
                             </li>
                      <!-- Notification Bell -->
-                     <a class="nav-link" href="./notification" id="notificationDropdown" role="button" aria-expanded="false" style="position: relative;">
+                     <a class="nav-link" href="/notification" id="notificationDropdown" role="button" aria-expanded="false" style="position: relative;">
                         <i class="bx bx-bell bx-sm"></i>
                         <span id="notification-count" class="badge"
                             style="position: absolute; top: -5px; right: -5px; background: red; color: white; padding: 5px; border-radius: 50%; display: none;">

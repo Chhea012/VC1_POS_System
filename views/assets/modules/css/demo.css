@@ -2,11 +2,12 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-.card{
+.card {
   /* width: 100%; */
   /* height: 100%; */
   padding: 20px;
 }
+
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;
@@ -22,17 +23,20 @@
   letter-spacing: -0.5px;
   text-transform: lowercase;
 }
+
 .flag-icon {
   width: 24px;
   height: 18px;
   margin-right: 10px;
   border-radius: 4px;
 }
+
 /* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
 /* Detached navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
   padding-top: 76px !important;
 }
+
 /* Default navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
   padding-top: 64px !important;
@@ -42,18 +46,23 @@
 .content-wrapper .navbar {
   z-index: auto;
 }
-input{
+
+input {
   outline: #676AFF;
 }
-.mb-2{
+
+.mb-2 {
   color: rgba(0, 0, 0, 0.756);
 }
-.mb-1{
+
+.mb-1 {
   color: rgba(0, 0, 0, 0.756);
 }
-h3{
+
+h3 {
   color: rgba(0, 0, 0, 0.795);
 }
+
 .app-brand-logo img {
   width: 65px;
   height: 65px;
@@ -61,17 +70,20 @@ h3{
   border-radius: 360px;
   margin-left: 50px;
 }
-.app-title{
+
+.app-title {
   font-size: 20px;
   font-weight: bold;
   color: #676AFF;
   margin-left: 20%;
 }
-#WarmWeather{
+
+#WarmWeather {
   color: rgba(129, 129, 129, 0.032);
   width: 30px;
 }
-.container  {
+
+.container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -82,36 +94,44 @@ h3{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   gap: 20px;
 }
+
 .chart-container-1 {
   width: 60%;
   height: 460px;
 }
 
-.chart-container, .two{
+.chart-container,
+.two {
   width: 100%;
   height: 460px;
 }
-.chart-container, .one{
+
+.chart-container,
+.one {
   width: 100%;
   height: 460px;
   display: flex;
   flex-direction: row;
 }
+
 .table-hover tbody tr:hover {
   background-color: #f8f9fa;
   transition: 0.3s;
 }
+
 .table-container {
   margin-top: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   /* overflow: hidden; */
 }
+
 h1 {
   /* text-align: center; */
   margin-bottom: 30px;
   color: #333;
 }
+
 #hoverTitle {
   position: absolute;
   padding: 8px;
@@ -121,45 +141,50 @@ h1 {
   border-radius: 5px;
   display: none;
 }
+
 @media (max-width: 768px) {
   .hide-mobile {
-      display: none;
+    display: none;
   }
 }
+
 /*
 * Content
 ******************************************************************************/
 
-.demo-blocks > * {
+.demo-blocks>* {
   display: block !important;
 }
 
-.demo-inline-spacing > * {
+.demo-inline-spacing>* {
   margin: 1rem 0.375rem 0 0 !important;
 }
 
 /* ? .demo-vertical-spacing class is used to have vertical margins between elements. To remove margin-top from the first-child, use .demo-only-element class with .demo-vertical-spacing class. For example, we have used this class in forms-input-groups.html file. */
-.demo-vertical-spacing > * {
+.demo-vertical-spacing>* {
   margin-top: 1rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing.demo-only-element > :first-child {
+
+.demo-vertical-spacing.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
-.demo-vertical-spacing-lg > * {
+.demo-vertical-spacing-lg>* {
   margin-top: 1.875rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing-lg.demo-only-element > :first-child {
+
+.demo-vertical-spacing-lg.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
-.demo-vertical-spacing-xl > * {
+.demo-vertical-spacing-xl>* {
   margin-top: 5rem !important;
   margin-bottom: 0 !important;
 }
-.demo-vertical-spacing-xl.demo-only-element > :first-child {
+
+.demo-vertical-spacing-xl.demo-only-element> :first-child {
   margin-top: 0 !important;
 }
 
@@ -190,9 +215,11 @@ h1 {
   flex-direction: column;
   margin-top: 1rem;
 }
+
 .layout-demo-placeholder img {
   width: 900px;
 }
+
 .layout-demo-info {
   text-align: center;
   margin-top: 1rem;
@@ -201,253 +228,273 @@ h1 {
 
 /* Add this to your CSS file */
 .menu-item {
-    position: relative;
-    transition: all 0.2s ease;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .menu-link {
-    display: flex;
-    align-items: center;
-    padding: 8px 15px;
-    color: #697a8d;
-    text-decoration: none;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  color: #697a8d;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .menu-sub {
-    display: none;
-    list-style: none;
-    padding-left: 20px;
-    margin: 0;
+  display: none;
+  list-style: none;
+  padding-left: 20px;
+  margin: 0;
 }
 
-.menu-item.active > .menu-link {
-    color: #696cff;
-    background-color: rgba(105, 108, 255, 0.1);
-    font-weight: 500;
+.menu-item.active>.menu-link {
+  color: #696cff;
+  background-color: rgba(105, 108, 255, 0.1);
+  font-weight: 500;
 }
 
-.menu-item.active > .menu-sub {
-    display: block;
+.menu-item.active>.menu-sub {
+  display: block;
 }
 
 .menu-toggle::after {
-    content: '\25BC'; /* Down arrow */
-    margin-left: auto;
-    font-size: 10px;
-    transition: transform 0.2s ease;
+  content: '\25BC';
+  /* Down arrow */
+  margin-left: auto;
+  font-size: 10px;
+  transition: transform 0.2s ease;
 }
 
-.menu-item.open > .menu-toggle::after {
-    transform: rotate(180deg);
+.menu-item.open>.menu-toggle::after {
+  transform: rotate(180deg);
 }
 
 .menu-icon {
-    margin-right: 10px;
-    font-size: 18px;
+  margin-right: 10px;
+  font-size: 18px;
 }
 
 /* Hover effects */
 .menu-link:hover {
-    color: #696cff;
-    background-color: rgba(105, 108, 255, 0.05);
+  color: #696cff;
+  background-color: rgba(105, 108, 255, 0.05);
 }
 
 
-    /* Custom styles */
- 
+/* Custom styles */
 
-    .card {
-        border-radius: 12px;
-        border: none;
-    }
 
-    .text-primary {
-        color: #6366f1 !important;
-    }
+.card {
+  border-radius: 12px;
+  border: none;
+}
 
-    .bg-primary-subtle {
-        background-color: #e0e7ff !important;
-    }
+.text-primary {
+  color: #6366f1 !important;
+}
 
-    .pagination .page-item.disabled .page-link {
-        cursor: not-allowed;
-    }
+.bg-primary-subtle {
+  background-color: #e0e7ff !important;
+}
+
+.pagination .page-item.disabled .page-link {
+  cursor: not-allowed;
+}
 
 
 
 /* drink show ppular */
 /* Creative Card Styling */
 .drink-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: none;
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .drink-card:hover {
-    transform: translateY(-15px) rotate(2deg);
-    box-shadow: 0 15px 30px rgba(0, 123, 255, 0.2);
+  transform: translateY(-15px) rotate(2deg);
+  box-shadow: 0 15px 30px rgba(0, 123, 255, 0.2);
 }
+
 .drink-img-wrapper {
-    position: relative;
-    padding: 20px;
-    background: linear-gradient(45deg, #e0eafc 0%, #cfdef3 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+  position: relative;
+  padding: 20px;
+  background: linear-gradient(45deg, #e0eafc 0%, #cfdef3 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
 }
+
 .drink-img {
-    width: 130px;
-    height: 130px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.4s ease;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease;
 }
+
 .drink-card:hover .drink-img {
-    transform: scale(1.15) rotate(-5deg);
+  transform: scale(1.15) rotate(-5deg);
 }
+
 .stock-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 20px;
-    color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transform: rotate(10deg);
-    transition: transform 0.3s ease;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 20px;
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: rotate(10deg);
+  transition: transform 0.3s ease;
 }
+
 .drink-card:hover .stock-badge {
-    transform: rotate(0deg);
+  transform: rotate(0deg);
 }
+
 .card-body {
-    padding: 20px;
-    position: relative;
+  padding: 20px;
+  position: relative;
 }
+
 .card-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .card-text {
-    font-size: 0.9rem;
-    color: #6c757d;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
+
 .price {
-    color: #007bff;
-    font-weight: 600;
-    background: rgba(0, 123, 255, 0.1);
-    padding: 2px 8px;
-    border-radius: 10px;
+  color: #007bff;
+  font-weight: 600;
+  background: rgba(0, 123, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
 }
+
 .drink-btn {
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-    transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
+
 .drink-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: #007bff;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
-    z-index: -1;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: #007bff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  z-index: -1;
 }
+
 .drink-btn:hover::before {
-    width: 200%;
-    height: 200%;
+  width: 200%;
+  height: 200%;
 }
+
 .drink-btn:hover {
-    color: #fff;
-    border-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
 }
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: rgba(0, 123, 255, 0.7);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    transition: background-color 0.3s ease;
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 123, 255, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s ease;
 }
+
 .carousel-control-prev:hover .carousel-control-prev-icon,
 .carousel-control-next:hover .carousel-control-next-icon {
-    background-color: rgba(0, 123, 255, 1);
+  background-color: rgba(0, 123, 255, 1);
 }
+
 @media (max-width: 768px) {
-    .drink-img {
-        width: 100px;
-        height: 100px;
-    }
-    .card-title {
-        font-size: 1rem;
-    }
+  .drink-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
 }
 
 
 
 .bg-gradient-primary {
-    background: linear-gradient(135deg, #007bff 0%, #00b4ff 100%);
-    transition: all 0.3s ease;
+  background: linear-gradient(135deg, #007bff 0%, #00b4ff 100%);
+  transition: all 0.3s ease;
 }
 
 .bg-gradient-success {
-    background: linear-gradient(135deg, #28a745 0%, #34d058 100%);
-    transition: all 0.3s ease;
+  background: linear-gradient(135deg, #28a745 0%, #34d058 100%);
+  transition: all 0.3s ease;
 }
 
 .bg-gradient-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
-    transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
+  transition: all 0.3s ease;
 }
 
 .hover-scale {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .hover-scale:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
 }
 
 .z-1 {
-    z-index: 1;
+  z-index: 1;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
 }
 
 .header-title span {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .header-title span:after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease-out;
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
 }
 
 
@@ -457,14 +504,47 @@ h1 {
 
 @keyframes slideIn {
   from {
-      transform: translateX(100%);
-      opacity: 0;
+    transform: translateX(100%);
+    opacity: 0;
   }
+
   to {
-      transform: translateX(0);
-      opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
 /* Ensure Animate.css is included */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+
+.plus-btn {
+  width: 18px;
+  height: 18px;
+  background: #696cff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  box-shadow:
+    0 3px 5px rgba(0, 0, 0, 0.2),
+    0 0 10px rgba(108, 99, 255, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.plus-btn:hover {
+  background: linear-gradient(135deg, #5a54e0, #4038c9);
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(108, 99, 255, 0.6);
+  transform: scale(1.15) rotate(5deg);
+}
+

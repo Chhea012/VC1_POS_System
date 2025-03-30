@@ -104,7 +104,6 @@ class CategoryModel
     
 
 }
-
 class ProductModel
 {
     public function getAllProducts()

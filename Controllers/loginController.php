@@ -1,6 +1,4 @@
 <?php
-
-
 class LoginController extends BaseController {
     function login() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
