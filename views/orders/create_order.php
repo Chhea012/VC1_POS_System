@@ -85,7 +85,7 @@ if (!isset($_SESSION['user'])) {
                 <button type="submit" class="btn btn-warning mt-3" onclick="return placeOrder()">Proceed to Place Order</button>
             </form>
         </div>
-    </div>
+    </div>  
     <script>
         let idCounter = 1;
 
