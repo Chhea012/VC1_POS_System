@@ -24,7 +24,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Product</label>
                     <select id="product" class="form-select">
-                <option value="">-- Select Product --</option>
+                <option value="">Select Product</option>
                 <?php foreach ($selectProduct as $product): ?>
                     <option value="<?php echo htmlspecialchars($product['product_name']); ?>" 
                             data-price="<?php echo htmlspecialchars($product['price']); ?>">
