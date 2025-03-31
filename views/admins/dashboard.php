@@ -1,18 +1,18 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    if (! isset($_SESSION['user'])) {
-        header("Location: /");
-        exit();
-    }
-    
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (! isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+
 ?>
 <!-- Content wrapper -->
 <div class="content-wrapper">
     <!-- Content -->
     <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="row g-4">
+        <div class="row g-4">
             <!-- Welcome Card (Full Width Hero) -->
             <div class="col-lg-12 order-0 mt-4">
                 <div class="card p-4 bg-light">
@@ -20,9 +20,9 @@
                         <div class="col-sm-8">
                             <div class="card-body">
                                 <h2 class="card-title text-primary fw-bold fs-3">WELCOME! 🎉🚀</h2>
-                                <p class="mb-4 fs-5">Boom! You've smashed it with  <span class="fw-bold text-success">
-    <?= $orderIncrease ?>% more orders</span>
-                                today. Check your orders now!</p>
+                                <p class="mb-4 fs-5">Boom! You've smashed it with <span class="fw-bold text-success">
+                                        <?= $orderIncrease ?>% more orders</span>
+                                    today. Check your orders now!</p>
                                 <a href="/orders" class="btn btn-primary fs-6">View Orders</a>
                             </div>
                         </div>
@@ -74,8 +74,8 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
                                 </div>
                             </div>
                         </div>
@@ -83,14 +83,14 @@
                         <h1 class="card-title mb-2 text-success"><?= $addedStock ?></h1>
                         <?php if ($addedStock >= 0): ?>
                             <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?>  🌟
+                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?> 🌟
                             </small>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
 
-            <!-- Total Stock Card --> 
+            <!-- Total Stock Card -->
             <div class="col-lg-4  order-1 mt-4">
                 <div class="card p-2 border-warning">
                     <div class="card-body">
@@ -130,35 +130,35 @@
                     </div>
                 </div>
             </div>
-                            
-<!-- money get from order -->
-<div class="col-lg-4 order-1 mt-4">
-    <div class="card p-2 border-primary">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-                <div class="avatar flex-shrink-0">
-                    <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Chart Success" class="rounded" width="50" height="50">
-                </div>
-                <div class="dropdown">
-                    <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bx bx-dots-vertical-rounded fs-4"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+
+            <!-- money get from order -->
+            <div class="col-lg-4 order-1 mt-4">
+                <div class="card p-2 border-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="avatar flex-shrink-0">
+                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Chart Success" class="rounded" width="50" height="50">
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
+                        <h1 class="card-title mb-2 text-primary"><?php echo number_format($totalMoneyOrder, 2); ?>$</h1>
+                        <?php if (isset($salesIncrement) >= 0): ?>
+                            <small class="text-success fs-6">
+                                <i class="bx bx-up-arrow-alt"></i> +8.00 $🔥
+                            </small>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-            <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
-            <h1 class="card-title mb-2 text-primary"><?php echo number_format($totalMoneyOrder, 2); ?>$</h1>
-            <?php if (isset($salesIncrement) >= 0): ?>
-                <small class="text-success fs-6">
-                    <i class="bx bx-up-arrow-alt"></i> +8.00 $🔥
-                </small>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
             <!-- Expenses​  Card -->
             <div class="col-lg-4 order-1">
                 <div class="card p-2 border-info">
@@ -172,11 +172,11 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
+                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Expenses 💰</span>
                         <h1 class="card-title mb-2 text-info">10.00 $</h1>
                         <small class="text-danger fs-6"><i class="bx bx-down-arrow-alt"></i> -2.42 $ 💸</small>
@@ -195,20 +195,20 @@
                                     <i class="bx bx-dots-vertical-rounded fs-5"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
-                                <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
+                                    <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Total Money 💰</span>
                         <h1 class="card-title mb-2 text-info"><?php echo number_format($totalMoney['grand_total'], 2); ?>$</h1>
-                            <!-- Display increment only if it's a positive value -->
-                            <?php if ($increment >= 0): ?>
-                                    <small class="text-success fs-6">
-                                        <i class="bx bx-up-arrow-alt"></i> 
-                                        + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
-                                    </small>
-                            <?php endif; ?>
+                        <!-- Display increment only if it's a positive value -->
+                        <?php if ($increment >= 0): ?>
+                            <small class="text-success fs-6">
+                                <i class="bx bx-up-arrow-alt"></i>
+                                + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
+                            </small>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -217,41 +217,41 @@
         <div class="row mt-2">
             <!-- Order Statistics -->
             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-    <div class="card h-100">
-        <div class="card-header d-flex align-items-center justify-content-between pb-0">
-            <div class="card-title mb-0">
-                <h5 class="m-0 me-2">Order Statistics</h5>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex flex-column align-items-center gap-1">
-                    <h2 class="mb-2"><?= array_sum(array_column($categoriesOrderedToday, 'total_orders')) ?></h2>
-                    <span>Total Orders</span>
-                </div>
-                <div id="orderStatisticsChart">
-                </div>
-            </div>
-            <ul class="p-0 m-0">
-                <?php foreach ($categoriesOrderedToday as $category): ?>
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-primary">
-                                <i class="bx bx-category"></i>
-                            </span>
+                <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-title mb-0">
+                            <h5 class="m-0 me-2">Order Statistics</h5>
                         </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
-                                <small class="text-muted"><?= $category['total_orders'] ?> orders</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex flex-column align-items-center gap-1">
+                                <h2 class="mb-2"><?= array_sum(array_column($categoriesOrderedToday, 'total_orders')) ?></h2>
+                                <span>Total Orders</span>
+                            </div>
+                            <div id="orderStatisticsChart">
                             </div>
                         </div>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    </div>
-</div>
+                        <ul class="p-0 m-0">
+                            <?php foreach ($categoriesOrderedToday as $category): ?>
+                                <li class="d-flex mb-4 pb-1">
+                                    <div class="avatar flex-shrink-0 me-3">
+                                        <span class="avatar-initial rounded bg-label-primary">
+                                            <i class="bx bx-category"></i>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
+                                            <small class="text-muted"><?= $category['total_orders'] ?> orders</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
 
             <!--/ Order Statistics -->
@@ -261,7 +261,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center  text-white rounded-top">
                         <ul class="nav nav-pills" role="tablist">
                             <li class="nav-item">
-                                <button type="button" class="nav-link active btn btn-outline-info mx-1" role="tab" data-bs-toggle="tab" style="background-color: #;"
+                                <button type="button" class="nav-link active btn btn-outline-info mx-1" role="tab" data-bs-toggle="tab"
                                     data-bs-target="#low-stock" aria-controls="low-stock" aria-selected="true">
                                     <i class="bx bx-down-arrow-circle"></i> Low Stock
                                 </button>
@@ -276,51 +276,51 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="tab-content">
-                      <!-- Low Stock Tab -->
-                        <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
-                            <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                                <?php foreach ($lowStockProducts as $product): ?>
-                                    <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 shadow-sm border rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" 
-                                                class="rounded-circle" 
-                                                style="width: 40px; height: 50px;" 
-                                                alt="Product Image" />
-                                            <div class="ms-3">
-                                                <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
-                                                <small class="text-muted">Stock: <span class="fw-semibold text-danger"><?php echo $product['quantity'] ?></span></small>
+                            <!-- Low Stock Tab -->
+                            <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
+                                <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                                    <?php foreach ($lowStockProducts as $product): ?>
+                                        <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 shadow-sm border rounded">
+                                            <div class="d-flex align-items-center">
+                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
+                                                    class="rounded-circle"
+                                                    style="width: 40px; height: 50px;"
+                                                    alt="Product Image" />
+                                                <div class="ms-3">
+                                                    <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
+                                                    <small class="text-muted">Stock: <span class="fw-semibold text-danger"><?php echo $product['quantity'] ?></span></small>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <a href="/products" class="btn btn-sm btn-warning px-3 fw-semibold">Restore</a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                        <!-- High Stock Tab -->
-                        <div class="tab-pane fade m-1" id="high-stock" role="tabpanel">
-                            <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-                                <?php foreach ($highStockProducts as $product): ?>
-                                    <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 mx- shadow-sm border rounded">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>" 
-                                                class="rounded-circle" 
-                                                style="width: 40px; height: 50px;"  
-                                                alt="Product Image" />
-                                            <div class="ms-3">
-                                                <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
-                                                <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
+                                            <a href="/products" class="btn btn-sm btn-warning px-3 fw-semibold">Restore</a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                            <!-- High Stock Tab -->
+                            <div class="tab-pane fade m-1" id="high-stock" role="tabpanel">
+                                <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                                    <?php foreach ($highStockProducts as $product): ?>
+                                        <li class="list-group-item d-flex align-items-center justify-content-between p-3 mb-3 mx- shadow-sm border rounded">
+                                            <div class="d-flex align-items-center">
+                                                <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
+                                                    class="rounded-circle"
+                                                    style="width: 40px; height: 50px;"
+                                                    alt="Product Image" />
+                                                <div class="ms-3">
+                                                    <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
+                                                    <small class="text-muted">Stock: <span class="fw-semibold text-success"><?php echo $product['quantity'] ?></span></small>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                                            <a href="/products" class="btn btn-sm btn-success px-3 fw-semibold">Manage</a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-           <!-- Grapic Sale -->
+            <!-- Grapic Sale -->
             <div class="col-md-6 col-lg-4 order-2 mb-4">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
@@ -382,53 +382,51 @@
 </div>
 
 <script>
-    
-document.getElementById('today').addEventListener('click', function() {
-    fetchTotalMoney('today');
-});
+    document.getElementById('today').addEventListener('click', function() {
+        fetchTotalMoney('today');
+    });
 
-document.getElementById('tomorrow').addEventListener('click', function() {
-    fetchTotalMoney('tomorrow');
-});
+    document.getElementById('tomorrow').addEventListener('click', function() {
+        fetchTotalMoney('tomorrow');
+    });
 
-function fetchTotalMoney(date) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'path_to_your_controller_method', true); // Replace with actual path, e.g., '/admin/getIncomeByDate'
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-    xhr.onload = function() {
-        if (xhr.status === 1000) {
-            var data = JSON.parse(xhr.responseText);
-            if (data.error) {
-                alert(data.error);
-            } else {
-                document.getElementById('totalMoney').innerText = data.grand_total + '$';
+    function fetchTotalMoney(date) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'path_to_your_controller_method', true); // Replace with actual path, e.g., '/admin/getIncomeByDate'
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function() {
+            if (xhr.status === 1000) {
+                var data = JSON.parse(xhr.responseText);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('totalMoney').innerText = data.grand_total + '$';
+                }
             }
-        }
-    };
-    
-    xhr.send('date=' + date);
-}
+        };
 
+        xhr.send('date=' + date);
+    }
 </script>
 
 <style>
     /* Custom scrollbar */
-.list-group-flush::-webkit-scrollbar {
-    width: 8px;
-}
+    .list-group-flush::-webkit-scrollbar {
+        width: 8px;
+    }
 
-.list-group-flush::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
+    .list-group-flush::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
 
-.list-group-flush::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
+    .list-group-flush::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
 
-.list-group-flush::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
+    .list-group-flush::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 </style>
