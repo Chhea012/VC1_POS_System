@@ -8,6 +8,15 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 <div class="container-xxl flex-grow-1 container-p-y">
+<?php if (isset($_SESSION['error_orders'])): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= $_SESSION['error_orders']; ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php unset($_SESSION['error_orders']); ?>
+<?php endif; ?>
+
+
     <div class="mt-2">
         <div class="card shadow-sm p-4">
             <h2 class="">Create Order</h2>
@@ -15,7 +24,7 @@ if (!isset($_SESSION['user'])) {
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Product</label>
                     <select id="product" class="form-select">
-                <option value="">-- Select Product --</option>
+                <option value="">Select Product</option>
                 <?php foreach ($selectProduct as $product): ?>
                     <option value="<?php echo htmlspecialchars($product['product_name']); ?>" 
                             data-price="<?php echo htmlspecialchars($product['price']); ?>">

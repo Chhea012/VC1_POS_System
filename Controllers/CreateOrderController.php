@@ -69,9 +69,11 @@ class CreateOrderController extends BaseController {
     
             // Check if product is in stock
             if (!$this->createOrderModel->checkProductStock($productId, $quantity)) {
-                echo "Error: Product '{$item['productName']}' is out of stock or has insufficient stock!";
-                return;
+                $_SESSION['error_orders'] = "Error: Product {$item['productName']} is out of stock or has insufficient stock!";
+                header("Location: /orders/create"); 
+                exit;
             }
+            
         }
     
         $totalAmount = array_sum(array_column($orderDetails['items'], 'totalPrice'));
