@@ -1,11 +1,11 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (! isset($_SESSION['user'])) {
-    header("Location: /");
-    exit();
-}
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (! isset($_SESSION['user'])) {
+        header("Location: /");
+        exit();
+    }
 
 ?>
 <!-- Content wrapper -->
@@ -21,7 +21,7 @@ if (! isset($_SESSION['user'])) {
                             <div class="card-body">
                                 <h2 class="card-title text-primary fw-bold fs-3">WELCOME! 🎉🚀</h2>
                                 <p class="mb-4 fs-5">Boom! You've smashed it with <span class="fw-bold text-success">
-                                        <?= $orderIncrease ?>% more orders</span>
+                                        <?php echo $orderIncrease?>% more orders</span>
                                     today. Check your orders now!</p>
                                 <a href="/orders" class="btn btn-primary fs-6">View Orders</a>
                             </div>
@@ -53,7 +53,7 @@ if (! isset($_SESSION['user'])) {
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
                         <h1 class="card-title mb-2 text-primary">
-                            <?= htmlspecialchars($totalOrderedQuantity) ?>
+                            <?php echo htmlspecialchars($totalOrderedQuantity)?>
                         </h1>
                         <small class="text-success fs-6">
                             <i class="bx bx-up-arrow-alt"></i> +8 🔥
@@ -80,10 +80,10 @@ if (! isset($_SESSION['user'])) {
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Default Products 🛒</span>
-                        <h1 class="card-title mb-2 text-success"><?= $addedStock ?></h1>
+                        <h1 class="card-title mb-2 text-success"><?php echo $addedStock?></h1>
                         <?php if ($addedStock >= 0): ?>
                             <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?> 🌟
+                                <i class="bx bx-up-arrow-alt"></i> +<?php echo $addedStock?> 🌟
                             </small>
                         <?php endif; ?>
                     </div>
@@ -111,7 +111,7 @@ if (! isset($_SESSION['user'])) {
                         <h1 class="card-title mb-2 text-warning"><?php echo htmlspecialchars($totalStock['total'], ENT_QUOTES, 'UTF-8'); ?></h1>
                         <?php if ($addedStock >= 0): ?>
                             <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +<?= $addedStock ?> ⚡
+                                <i class="bx bx-up-arrow-alt"></i> +<?php echo $addedStock?> ⚡
                             </small>
                         <?php endif; ?>
                     </div>
@@ -206,7 +206,7 @@ if (! isset($_SESSION['user'])) {
                         <?php if ($increment >= 0): ?>
                             <small class="text-success fs-6">
                                 <i class="bx bx-up-arrow-alt"></i>
-                                + <?php echo number_format($increment ?? 0, 2); ?> $ 💸
+                                +                                  <?php echo number_format($increment ?? 0, 2); ?> $ 💸
                             </small>
                         <?php endif; ?>
                     </div>
@@ -217,42 +217,41 @@ if (! isset($_SESSION['user'])) {
         <div class="row mt-2">
             <!-- Order Statistics -->
             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                        <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">Order Statistics</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex flex-column align-items-center gap-1">
-                                <h2 class="mb-2"><?= array_sum(array_column($categoriesOrderedToday, 'total_orders')) ?></h2>
-                                <span>Total Orders</span>
-                            </div>
-                            <div id="orderStatisticsChart">
-                            </div>
-                        </div>
-                        <ul class="p-0 m-0">
+                <div class="card h-100 shadow-lg border-0">
+                    <div class="card-header text-white d-flex align-items-center justify-content-between pb-0 rounded-top">
+                        <h5 class="m-0 me-2">📊 Order Statistics</h5>
+                     </div>
+                <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="text-center">
+                    <h2 class="mb-1 text-primary fw-bold"><?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders'))?></h2>
+                    <span class="text-muted">Total Orders</span>
+                </div>
+                <div id="orderStatisticsChart" style="min-width: 130px;"></div>
+            </div>
+
+                        <!-- Categories List -->
+                        <ul class="list-group list-group-flush mt-4">
                             <?php foreach ($categoriesOrderedToday as $category): ?>
-                                <li class="d-flex mb-4 pb-1">
-                                    <div class="avatar flex-shrink-0 me-3">
-                                        <span class="avatar-initial rounded bg-label-primary">
-                                            <i class="bx bx-category"></i>
-                                        </span>
-                                    </div>
-                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                        <div class="me-2">
-                                            <h6 class="mb-0"><?= htmlspecialchars($category['category_name']) ?></h6>
-                                            <small class="text-muted"><?= $category['total_orders'] ?> orders</small>
+                                <li class="list-group-item d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar flex-shrink-0 me-3">
+                                            <span class="avatar-initial rounded-circle bg-light p-2 shadow-sm">
+                                                <i class="bx bx-category fs-5 text-primary"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0"><?php echo htmlspecialchars($category['category_name'])?></h6>
+                                            <small class="text-muted"><?php echo $category['total_orders']?> orders</small>
                                         </div>
                                     </div>
+                                    <span class="badge bg-primary rounded-pill px-3 py-2"><?php echo $category['total_orders']?></span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
             </div>
-
 
             <!--/ Order Statistics -->
             <!-- Product Stock -->
@@ -324,7 +323,7 @@ if (! isset($_SESSION['user'])) {
             <div class="col-md-6 col-lg-4 order-2 mb-4">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="card-title m-0 me-2">Graphic Sales</h5>
+                        <h5>Graphic Sales</h5>
                         <div class="dropdown">
                             <button
                                 class="btn p-0"
@@ -352,10 +351,6 @@ if (! isset($_SESSION['user'])) {
                                     <small class="text-muted d-block">Total Balance</small>
                                     <div class="d-flex align-items-center">
                                         <h6 class="mb-0 me-1">$19.10</h6>
-                                        <small class="text-success fw-semibold">
-                                            <i class="bx bx-chevron-up"></i>
-                                            22.9%
-                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -370,7 +365,7 @@ if (! isset($_SESSION['user'])) {
                                 </div>
                                 <div>
                                     <p class="mb-n1 mt-1">Expenses This Week</p>
-                                    <small class="text-muted">$23 less than last week</small>
+                                    <small class="text-muted">less than last week</small>
                                 </div>
                             </div>
                         </div>
@@ -382,6 +377,71 @@ if (! isset($_SESSION['user'])) {
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    var labels =<?php echo json_encode(array_column($categoriesOrderedToday, 'category_name')); ?>;
+    var series =<?php echo json_encode(array_map('intval', array_column($categoriesOrderedToday, 'total_orders'))); ?>;
+
+    var chartOrderStatistics = document.querySelector('#orderStatisticsChart');
+    var orderChartConfig = {
+        chart: {
+            height: 165,
+            width: 130,
+            type: 'donut'
+        },
+        labels: labels,
+        series: series,
+              colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
+        stroke: {
+            width: 3,
+            colors: ['#fff']
+        },
+        dataLabels: {
+            enabled: false,
+            formatter: function (val) {
+                return parseInt(val);
+            }
+        },
+        legend: {
+            show: false
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '75%',
+                    labels: {
+                        show: true,
+                        value: {
+                            fontSize: '1.5rem',
+                            color: '#000',
+                            offsetY: -15,
+                            formatter: function (val) {
+                                return parseInt(val);
+                            }
+                        },
+                        name: {
+                            offsetY: 20,
+                            fontFamily: 'Public Sans'
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            formatter: function () {
+                                return '<?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders'))?>';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    if (chartOrderStatistics) {
+        var statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
+        statisticsChart.render();
+    }
+});
+
     document.getElementById('today').addEventListener('click', function() {
         fetchTotalMoney('today');
     });
@@ -408,6 +468,7 @@ if (! isset($_SESSION['user'])) {
 
         xhr.send('date=' + date);
     }
+    
 </script>
 
 <style>
