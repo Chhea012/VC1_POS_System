@@ -61,6 +61,7 @@ class productController extends BaseController
                 $quantity         = (int) $_POST['quantity'];
                 $description      = ! empty($_POST['description']) ? trim($_POST['description']) : null;
                 $base_price       = (float) $_POST['base_price'];
+                $cost_price       = (float) $_POST['cost_price'];
                 $discounted_price = isset($_POST['discounted_price']) ? (float) $_POST['discounted_price'] : 0;
                 $in_stock         = 1; // Default to 1 since all your products are in stock
 
@@ -80,7 +81,7 @@ class productController extends BaseController
 
                 $result = $this->productManager->storeNewProduct(
                     $title, $category_id, $barcode, $quantity,
-                    $description, $base_price, $discounted_price,
+                    $description, $base_price,$cost_price, $discounted_price,
                     $in_stock, $db_image_path
                 );
 
@@ -127,6 +128,7 @@ class productController extends BaseController
             $quantity         = (int) $_POST['quantity'];
             $description      = trim($_POST['description']);
             $base_price       = (float) $_POST['base_price'];
+            $cost_price       = (float) $_POST['cost_price'];
             $discounted_price = isset($_POST['discounted_price']) ? (float) $_POST['discounted_price'] : null;
             $in_stock         = isset($_POST['in_stock']) ? 1 : 0;
             $db_image_path    = $_POST['existing_image'] ?? "uploads/default.png";
@@ -147,7 +149,7 @@ class productController extends BaseController
             // Use $product_id instead of $id
             if ($this->productManager->updateProduct(
                 $product_id, $title, $category_id, $barcode, $quantity,
-                $description, $base_price, $discounted_price,
+                $description,$cost_price, $base_price, $discounted_price,
                 $in_stock, $db_image_path
             )) {
                 header("Location: /products");
@@ -179,7 +181,7 @@ class productController extends BaseController
     
     public function show($id)
     {
-        $product = $this->productManager->getProductById($id);
+        $product = $this->productManager->view($id);
 
         if (! $product) {
             header("Location: /products");
@@ -201,7 +203,6 @@ class productController extends BaseController
             echo json_encode(["error" => "Product not found"]);
         }
     }
-
     public function updateQuantity()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {

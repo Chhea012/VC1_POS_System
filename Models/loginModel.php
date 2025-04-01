@@ -1,6 +1,5 @@
 <?php
 require_once 'Database/Database.php';
-
 class RegisterModel {
     private $db;
 

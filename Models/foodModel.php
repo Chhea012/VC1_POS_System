@@ -1,6 +1,5 @@
 <?php
 require_once 'Database/Database.php';
-
 $db = new Database();
 $conn = $db->getConnection();
 
@@ -134,7 +133,6 @@ if (isset($_GET['product_id'])) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>

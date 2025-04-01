@@ -3,8 +3,6 @@ require_once './Database/Database.php';
 
 $db = new Database();
 $conn = $db->getConnection();
-
-
 class GeneratePdf
 {
     private $conn;

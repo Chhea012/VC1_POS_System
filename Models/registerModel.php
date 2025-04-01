@@ -71,7 +71,6 @@ class RegisterModel {
                     error_log("Failed to delete image file: $imagePath");
                 }
             }
-
             return true;
         } catch (PDOException $e) {
             error_log("SQL Error (deleteUser): " . $e->getMessage());
