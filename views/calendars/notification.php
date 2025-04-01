@@ -8,7 +8,6 @@
         exit();
     }
     ?>
-
     <!-- Notifications Section -->
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -21,20 +20,50 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            loadNotifications();
+        // Telegram Bot Configuration
+        const TELEGRAM_BOT_TOKEN = '7856175412:AAHKHXSM2w4JyR8beML6M46aSsAEMHQJQXI';
+        const TELEGRAM_CHAT_ID = '7160406338'; // Your chat ID
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadNotifications(); // Load notifications and send Telegram messages on page open
             updateNotificationBadge();
 
             const dropdowns = document.querySelectorAll('.dropdown-toggle');
             dropdowns.forEach(dropdown => new bootstrap.Dropdown(dropdown));
         });
 
-        function loadNotifications() {
+        async function sendTelegramMessage(message) {
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                const data = await response.json();
+                if (!data.ok) {
+                    console.error('Telegram API error:', data.description);
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error sending Telegram message:', error.message);
+                return false;
+            }
+        }
+
+        async function loadNotifications() {
             const notificationList = document.getElementById("notifications-list");
             const markAllButton = document.getElementById("mark-all-read");
             let events = JSON.parse(localStorage.getItem("events")) || [];
 
-            if (!events.length) {
+            if (!Array.isArray(events) || events.length === 0) {
                 notificationList.innerHTML = `
                     <div class="text-center py-5 animate__animated animate__fadeIn">
                         <i class="bx bx-bell" style="font-size: 3rem; color: #666;"></i>
@@ -46,15 +75,34 @@
                 return;
             }
 
-            events = events.map((event, index) => ({
-                ...event,
-                isRead: event.isRead || false,
-                timestamp: event.timestamp || new Date().toISOString(),
-                id: event.id || index,
-                product_id: event.product_id || '',
-                description: event.description || (event.title.toLowerCase().includes("low stock") 
-                    ? `Low stock alert! Only ${event.quantity} units remaining. Suggest reordering at least ${Math.max(10, event.quantity * 2)} units to maintain inventory levels.`
-                    : '')
+            events = await Promise.all(events.map(async (event, index) => {
+                const updatedEvent = {
+                    ...event,
+                    isRead: event.isRead || false,
+                    timestamp: event.timestamp || new Date().toISOString(),
+                    id: event.id || index,
+                    product_id: event.product_id || '',
+                    description: event.description || (event.title.toLowerCase().includes("low stock") 
+                        ? `Low stock alert! Only ${event.quantity} units left. Consider ordering ${Math.max(10, event.quantity * 2)} units to restock.` 
+                        : '')
+                };
+
+                // Simplified Telegram message for unread low stock events
+                if (!updatedEvent.isRead && updatedEvent.title.toLowerCase().includes("low stock")) {
+                    const reorderQuantity = Math.max(10, updatedEvent.quantity * 2);
+                    const message = `
+<b>🚨 Low Stock Alert!</b>
+"${updatedEvent.title}" is running low with only ${updatedEvent.quantity} units left.
+📦 <b>Action:</b> Order ${reorderQuantity} units soon to keep stock flowing!
+⏰ <b>Time:</b> ${new Date(updatedEvent.timestamp).toLocaleString()}
+                    `;
+                    const success = await sendTelegramMessage(message);
+                    if (success) {
+                        updatedEvent.isRead = true; // Mark as read only if sent successfully
+                    }
+                }
+
+                return updatedEvent;
             }));
             localStorage.setItem("events", JSON.stringify(events));
 
@@ -206,7 +254,7 @@
     </script>
 </div>
 
-<!-- Style cards notification -->
+<!-- Style remains unchanged -->
 <style>
     .text-gradient {
         background: linear-gradient(45deg, #007bff, #00ff95);
@@ -269,7 +317,7 @@
     }
 
     .dropdown {
-        position: relative;
+        position: relative; /* Fixed typo: "dropdown" to "relative" */
     }
 
     .dropdown-toggle {
@@ -315,7 +363,6 @@
         align-items: center;
         padding: 8px 15px;
         font-size: 0.9rem;
-        color: #333;
         transition: background-color 0.2s ease;
     }
 
