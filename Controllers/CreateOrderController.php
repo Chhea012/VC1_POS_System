@@ -22,6 +22,11 @@ class CreateOrderController extends BaseController {
             $this->view('orders/qrmoney');
         }
 
+        public function barcode() {
+
+            $this->view('orders/barcode_order');
+        }
+
     // Helper method to map product name to ID
     private function getProductIdByName($productName) {
         $products = $this->createOrderModel->selectProductName();
