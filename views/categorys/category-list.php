@@ -42,7 +42,6 @@ $existingCategories = array_map(function ($product) {
                         </ul>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#categoryModal">
                         <i class="bi bi-plus-lg me-1"></i> Add Category
@@ -90,7 +89,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'] * $product['total_quantity'], 2) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'], 2)?></td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
