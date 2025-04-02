@@ -7,6 +7,18 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 ?>
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex gap-2">
+        <a href="/orders/barcode" class="btn btn-secondary">
+            <i class="bi bi-upc"></i> Barcode Order
+        </a>
+        <a href="/orders/create" class="btn btn-primary">
+            <i class="bi bi-plus"></i> Create Order
+        </a>
+
+    </div>
+</div>
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="mt-2">
         <div class="card shadow-sm p-5">
@@ -40,16 +52,18 @@ if (!isset($_SESSION['user'])) {
             <table class="table table-striped table-hover text-center">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
-                        <th>Remove</th>
+                        <th style="color: white;">#</th>
+                        <th style="color: white;">Product Name</th>
+                        <th style="color: white;">Price</th>
+                        <th style="color: white;">Quantity</th>
+                        <th style="color: white;">Total Price</th>
+                        <th style="color: white;">Remove</th>
                     </tr>
                 </thead>
                 <tbody id="product-list">
-                    <tr><td colspan="6" class="text-muted">No Items added</td></tr>
+                    <tr>
+                        <td colspan="6" class="text-muted">No Items added</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -190,46 +204,46 @@ if (!isset($_SESSION['user'])) {
             productList.innerHTML = '<tr><td colspan="6" class="text-muted">No Items added</td></tr>';
         }
     }
+
     function placeOrder() {
-    const productList = document.getElementById('product-list');
-    const paymentMode = document.getElementById('payment-mode').value;
-    const items = [];
+        const productList = document.getElementById('product-list');
+        const paymentMode = document.getElementById('payment-mode').value;
+        const items = [];
 
-    if (productList.children.length === 0 || productList.children[0].textContent.includes("No Items added")) {
-        alert('No items in the order');
-        return false;
-    }
+        if (productList.children.length === 0 || productList.children[0].textContent.includes("No Items added")) {
+            alert('No items in the order');
+            return false;
+        }
 
-    if (!paymentMode) {
-        alert('Please select a payment mode');
-        return false;
-    }
+        if (!paymentMode) {
+            alert('Please select a payment mode');
+            return false;
+        }
 
-    // Collect order items from the table
-    Array.from(productList.children).forEach(row => {
-        // Notice we use a key 'productName' to match what PHP expects
-        const productName = row.children[1].textContent;
-        const originalPrice = parseFloat(row.dataset.originalPrice);
-        const discount = parseFloat(row.dataset.discount);
-        const quantity = parseInt(row.querySelector('input').value);
-        const totalPrice = parseFloat(row.querySelector('.total-price').textContent.replace('$', ''));
-        items.push({ 
-            productName, 
-            quantity, 
-            originalPrice, 
-            discount, 
-            totalPrice 
+        // Collect order items from the table
+        Array.from(productList.children).forEach(row => {
+            // Notice we use a key 'productName' to match what PHP expects
+            const productName = row.children[1].textContent;
+            const originalPrice = parseFloat(row.dataset.originalPrice);
+            const discount = parseFloat(row.dataset.discount);
+            const quantity = parseInt(row.querySelector('input').value);
+            const totalPrice = parseFloat(row.querySelector('.total-price').textContent.replace('$', ''));
+            items.push({
+                productName,
+                quantity,
+                originalPrice,
+                discount,
+                totalPrice
+            });
         });
-    });
 
-    // Pass a structured object with 'items' and 'paymentMode'
-    const orderData = {
-        items: items,
-        paymentMode: paymentMode
-    };
+        // Pass a structured object with 'items' and 'paymentMode'
+        const orderData = {
+            items: items,
+            paymentMode: paymentMode
+        };
 
-    document.getElementById('orderItems').value = JSON.stringify(orderData);
-    return true; // Allow form submission
-}
-
+        document.getElementById('orderItems').value = JSON.stringify(orderData);
+        return true; // Allow form submission
+    }
 </script>
