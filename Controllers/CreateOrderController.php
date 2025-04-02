@@ -24,7 +24,11 @@ class CreateOrderController extends BaseController {
 
         public function barcode() {
 
-            $this->view('orders/barcode_order');
+            $paymentModes = ['Cash Payment', 'Card Payment'];
+            $this->view('orders/barcode_order', [
+                'paymentModes' => $paymentModes
+            ]);
+
         }
 
     // Helper method to map product name to ID
@@ -66,7 +70,7 @@ class CreateOrderController extends BaseController {
         if (json_last_error() !== JSON_ERROR_NONE) {
             die('Invalid order data format');
         }
-    
+        
         // Check stock availability
         foreach ($orderDetails['items'] as $item) {
             $productId = $this->getProductIdByName($item['productName']);
@@ -118,6 +122,22 @@ class CreateOrderController extends BaseController {
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
+    }
+    public function getProductByBarcode() {
+        header('Content-Type: application/json');
+        $barcode = $_GET['barcode'] ?? '';
+        if (empty($barcode)) {
+            echo json_encode(['error' => 'No barcode provided']);
+            exit;
+        }
+    
+        try {
+            $product = $this->createOrderModel->getProductByBarcode($barcode);
+            echo json_encode($product ?: ['error' => 'Product not found']);
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'Server error: ' . $e->getMessage()]);
+        }
+        exit; // Ensure response is sent
     }
     
 }
