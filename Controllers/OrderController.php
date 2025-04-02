@@ -39,6 +39,4 @@ class OrderController extends BaseController {
         header("Location: /orders");
         exit;
     }
-
- 
 }
