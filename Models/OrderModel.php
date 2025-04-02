@@ -76,20 +76,17 @@ class OrderModel {
     }  
     // Fetch detailed information about the order
     public function getOrderDetailsById($orderId) {
-        // You can customize this query based on the information you need (e.g., status, customer details, etc.)
-        $query = "SELECT o.order_id, o.user_id, o.order_date, o.total_amount, o.payment_mode, 
-                            o.status, u.username, u.email, u.phone_number, a.shipping_address
-                    FROM orders o
-                    LEFT JOIN users u ON o.user_id = u.user_id
-                    LEFT JOIN addresses a ON o.shipping_address_id = a.address_id
-                    WHERE o.order_id = :order_id";
-
+        $query = "SELECT o.order_id, o.user_id, o.total_amount, o.order_date, o.status, 
+                          o.payment_mode, o.order_reference
+                  FROM orders o
+                  WHERE o.order_id = :order_id";
+    
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
         $stmt->execute();
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }  
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null; 
+    }
      //  delete product
      public function delete($orderId) {
         $sql = "DELETE FROM orders WHERE order_id = :order_id";

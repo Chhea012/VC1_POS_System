@@ -1,6 +1,6 @@
 
 
-<div class="container-xxl flex-grow-1 container-p-y">
+<<div class="container-xxl flex-grow-1 container-p-y">
     <div class="orders-card px-0">
         <!-- Search Bar and Create Order Button -->
         <div class="mb-4 d-flex justify-content-between align-items-center">
@@ -14,7 +14,6 @@
         </a>
     </div>
 </div>
-
         <!-- Orders Table -->
         <div class="card border-0 shadow-lg container-fluid px-4">
             <div class="card-body p-4">
@@ -56,7 +55,6 @@
                                                     data-bs-target="#viewOrderModal">
                                                     <i class="bi bi-eye"></i> View Details
                                                 </a>
-
                                                 </li>
                                                 <li>
                                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
