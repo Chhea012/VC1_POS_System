@@ -16,7 +16,7 @@ class ProductManager
 
     public function getAllpage($limit, $offset, $category_id = null, $stock_filter = null)
     {
-        $query = "SELECT p.*, c.category_name
+        $query = "SELECT p.*, p.cost_product, c.category_name
                   FROM products p
                   LEFT JOIN categories c ON p.category_id = c.category_id
                   WHERE 1=1"; // Use 1=1 to easily append conditions
@@ -51,7 +51,7 @@ class ProductManager
     // Fetch all products with category names
     public function getAllProducts()
     {
-        $query = "SELECT p.*, c.category_name
+        $query = "SELECT p.*,p.cost_product, c.category_name
                   FROM products p
                   LEFT JOIN categories c ON p.category_id = c.category_id
                   ORDER BY p.product_id DESC";
@@ -88,19 +88,19 @@ class ProductManager
     
 
     // Store a new product
-    public function storeNewProduct($title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $image)
+    public function storeNewProduct($title, $category_id, $barcode, $quantity, $description,$base_price ,$cost_price, $discounted_price, $in_stock, $image)
     {
         try {
             $sql = "INSERT INTO products (
                         product_name, category_id, barcode, quantity, description, 
-                        price, discounted_price, in_stock, image, created_at, updated_at, supplier_id
+                        cost_product, price,  discounted_price, in_stock, image, created_at, updated_at, supplier_id
                     ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL
                     )";
             
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute([
-                $title, $category_id, $barcode, $quantity, $description,
+                $title, $category_id, $barcode, $quantity, $description,$cost_price,
                 $base_price, $discounted_price, $in_stock, $image
             ]);
     
@@ -116,7 +116,7 @@ class ProductManager
     }
 
     // Update an existing product
-    public function updateProduct($id, $title, $category_id, $barcode, $quantity, $description, $base_price, $discounted_price, $in_stock, $image_path)
+    public function updateProduct($id, $title, $category_id, $barcode, $quantity, $description, $base_price,$cost_price, $discounted_price, $in_stock, $image_path)
     {
         try {
             $stmt = $this->db->prepare("
@@ -127,6 +127,7 @@ class ProductManager
                     quantity = :quantity, 
                     description = :description, 
                     price = :base_price, 
+                    cost_product = :cost_price, 
                     discounted_price = :discounted_price, 
                     in_stock = :in_stock, 
                     image = :image_path,
@@ -140,6 +141,7 @@ class ProductManager
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':description', $description);
             $stmt->bindParam(':base_price', $base_price);
+            $stmt->bindParam(':cost_price', $cost_price);
             $stmt->bindParam(':discounted_price', $discounted_price);
             $stmt->bindParam(':in_stock', $in_stock, PDO::PARAM_INT);
             $stmt->bindParam(':image_path', $image_path);
@@ -158,13 +160,18 @@ class ProductManager
     // View a product with category name
     public function view($id)
     {
-        $stmt = $this->db->prepare("SELECT p.*, c.category_name 
-                                   FROM products p
-                                   LEFT JOIN categories c ON p.category_id = c.category_id
-                                   WHERE p.product_id = ?");
+        $stmt = $this->db->prepare("
+            SELECT p.product_name, c.category_name AS category, p.price, p.description, p.cost_product, p.image, p.barcode, p.quantity, p.discounted_price
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.category_id
+            WHERE p.product_id = ?");
         $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $product;
     }
+    
+
         //  delete product
         public function delete($product_id) {
             $sql = "DELETE FROM products WHERE product_id = :product_id";

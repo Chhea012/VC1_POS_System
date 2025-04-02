@@ -180,9 +180,10 @@ if (! isset($_SESSION['user'])) {
                                 <th>PRODUCT</th>
                                 <th>CATEGORY</th>
                                 <th>STOCK</th>
+                                <th>COST</th>
                                 <th>PRICE</th>
                                 <th>QTY</th>
-                                <th>Total-Price</th>
+                                <th>Profit</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>
@@ -200,7 +201,6 @@ if (! isset($_SESSION['user'])) {
                                             </div>
                                         </div>
                                     </td>
-
                                     <td>
                                         <span class="badge bg-primary-subtle text-primary rounded-pill">
                                             <i class="bi bi-cup-hot me-1"></i>
@@ -212,11 +212,10 @@ if (! isset($_SESSION['user'])) {
                                             <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
                                         </span>
                                     </td>
+                                    <td>$<?php echo isset($product['cost_product']) ? number_format($product['cost_product'], 2) : '0.00'; ?></td>
                                     <td>$<?php echo isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
                                     <td><?php echo isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
-                                    <td>
-                                        $<?= isset($product['price'], $product['quantity']) ? number_format($product['price'] * $product['quantity'], 2) : '0.00' ?>
-                                    </td>
+                                    <td>$<?= isset($product['price'], $product['quantity'], $product['cost_product']) ? number_format(($product['price'] * $product['quantity']) - ($product['cost_product'] * $product['quantity']), 2) : '0.00' ?></td>
                                     <td>
                                         <div class="dropdown">
                                             <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>

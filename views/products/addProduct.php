@@ -98,6 +98,11 @@ if (!isset($_SESSION['user'])) {
                         <h2 class="h5 mb-4">Price</h2>
 
                         <div class="mb-3">
+                            <label class="form-label small text-secondary">Cost Price</label>
+                            <input type="number" name="cost_price" class="form-control" placeholder="Cost ..." min="0" step="0.01" required>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label small text-secondary">Base Price</label>
                             <input type="number" name="base_price" class="form-control" placeholder="Price..." min="0" step="0.01" required>
                         </div>

@@ -1,8 +1,4 @@
-/**
- * Dashboard Analytics
- */
 
-'use strict';
 
 (function () {
   let cardColor, headingColor, axisColor, shadeColor, borderColor;
@@ -12,89 +8,19 @@
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
 
-  // Order Statistics Chart
-  // --------------------------------------------------------------------
-   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
-    orderChartConfig = {
-      chart: {
-        height: 165,
-        width: 130,
-        type: 'donut'
-      },
-      labels: ['Drinks', 'IceDessert', 'Pizza', 'Noodel'],
-      series: [4, 2, 13, 0],
-      colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
-      stroke: {
-        width: 5,
-        colors: cardColor
-      },
-      dataLabels: {
-        enabled: false,
-        formatter: function (val, opt) {
-          return parseInt(val) + '%';
-        }
-      },
-      legend: {
-        show: false
-      },
-      grid: {
-        padding: {
-          top: 0,
-          bottom: 0,
-          right: 15
-        }
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '75%',
-            labels: {
-              show: true,
-              value: {
-                fontSize: '1.5rem',
-                fontFamily: 'Public Sans',
-                color: headingColor,
-                offsetY: -15,
-                formatter: function (val) {
-                  return parseInt(val) + '%';
-                }
-              },
-              name: {
-                offsetY: 20,
-                fontFamily: 'Public Sans'
-              },
-              total: {
-                show: true,
-                fontSize: '0.8125rem',
-                color: axisColor,
-                label: 'Today',
-                formatter: function (w) {
-                  return '19';
-                }
-              }
-            }
-          }
-        }
-      }
-    };
-  if (typeof chartOrderStatistics !== undefined && chartOrderStatistics !== null) {
-    const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
-    statisticsChart.render();
-  }
-
-   
   // Income Chart - Area chart
   // --------------------------------------------------------------------
   const incomeChartEl = document.querySelector('#incomeChart'),
     incomeChartConfig = {
       series: [
         {
-          data: [24, 21, 30, 22, 42, 26, 35, 29]
+          data: [24, 21, 30, 12 , 35 , 13, 19 ]
         }
       ],
       chart: {
         height: 215,
         parentHeightOffset: 0,
+        
         parentWidthOffset: 0,
         toolbar: {
           show: false
@@ -153,7 +79,7 @@
         }
       },
       xaxis: {
-        categories: ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: ['Mon','Tue', 'Wed', 'Thur','Fri', 'Sat', 'Sun'],
         axisBorder: {
           show: false
         },
