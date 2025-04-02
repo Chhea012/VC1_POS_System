@@ -24,6 +24,7 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
+require_once "Controllers/DashboardKhmerController.php";
 
 
 // Create an instance of the Router class
@@ -127,5 +128,9 @@ $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
 $route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
 $route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
+
+
+
+
 
 $route->route();

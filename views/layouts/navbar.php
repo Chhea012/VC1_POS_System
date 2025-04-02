@@ -19,6 +19,11 @@
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
+                <style>
+                    body {
+                        font-family: <?php echo $lang === 'km' ? "'Noto Sans Khmer', sans-serif" : "'Public Sans', sans-serif"; ?>;
+                    }
+                </style>
                 <li class="nav-item dropdown">
                     <!-- Globe Icon that opens the dropdown -->
                     <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
