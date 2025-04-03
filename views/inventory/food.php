@@ -9,17 +9,25 @@ if (!isset($_SESSION['user'])) {
 require_once "Models/foodModel.php";
 // Ensure $products is defined
 $products = $products ?? [];
+
+// Sort products by quantity in descending order
+usort($products, function($a, $b) {
+    return ($b['quantity'] ?? 0) <=> ($a['quantity'] ?? 0);
+});
 ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Popular Items Slideshow -->
-    <h5 class="mb-3">The Popular Items:</h5>
+    <!-- Popular Items Slideshow - Now shows only products with 15+ quantity -->
+    <?php 
+    $popular_products = array_filter($products, function ($product) {
+        return ($product['quantity'] ?? 0) >= 15;
+    });
+    
+    if (!empty($popular_products)): ?>
+    <h5 class="mb-3">Top Products In Stock:</h5>
     <div class="mb-4 position-relative">
         <div id="popularCarousel" class="carousel slide shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <?php
-                $popular_products = array_filter($products, function ($product) {
-                    return isset($product['price'], $product['quantity']) && ($product['price'] * $product['quantity']) >= 20;
-                });
                 $totalSlides = ceil(count($popular_products) / 4);
                 for ($i = 0; $i < $totalSlides; $i++): ?>
                     <button type="button"
@@ -30,68 +38,57 @@ $products = $products ?? [];
                 <?php endfor; ?>
             </div>
             <div class="carousel-inner">
-                <?php if (empty($popular_products)): ?>
-                    <div class="carousel-item active">
-                        <div class="d-flex align-items-center justify-content-center" style="height: 450px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
-                            <div class="text-center p-4">
-                                <h3 class="text-muted">No popular items available yet</h3>
-                            </div>
-                        </div>
-                    </div>
-                <?php else: ?>
-                    <?php
-                    $chunkedProducts = array_chunk($popular_products, 4);
-                    foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
-                        <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
-                            <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
-                                <?php foreach ($slideProducts as $product): ?>
-                                    <div class="col-md-3">
-                                        <div class="card drink-card h-100 shadow-sm border-0">
-                                            <div class="drink-img-wrapper text-center position-relative">
-                                                <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>"
-                                                     class="drink-img img-fluid"
-                                                     style="max-height: 200px; object-fit: cover;"
-                                                     alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
-                                                <span class="stock-badge position-absolute top-0 end-0 m-2 <?= ($product['quantity'] ?? 0) < 5 ? 'bg-danger' : 'bg-success' ?> text-white px-2 py-1 rounded">
-                                                    <?= ($product['quantity'] ?? 0) < 5 ? 'Low' : 'In Stock' ?>
-                                                </span>
-                                            </div>
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title mb-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></h5>
-                                                <p class="card-text mb-4">
-                                                    <span class="price fw-bold">$<?= number_format($product['price'] ?? 0, 2) ?></span>
-                                                    <span class="mx-2">•</span>
-                                                    <span><?= $product['quantity'] ?? 0 ?> left</span>
-                                                </p>
-                                                <a href="/inventory/viewfood/<?= $product['product_id'] ?? '' ?>"
-                                                   class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
-                                            </div>
+                <?php
+                $chunkedProducts = array_chunk($popular_products, 4);
+                foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
+                    <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
+                        <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
+                            <?php foreach ($slideProducts as $product): ?>
+                                <div class="col-md-3">
+                                    <div class="card drink-card h-100 shadow-sm border-0">
+                                        <div class="drink-img-wrapper text-center position-relative">
+                                            <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>"
+                                                 class="drink-img img-fluid"
+                                                 style="max-height: 200px; object-fit: cover;"
+                                                 alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
+                                            <span class="stock-badge position-absolute top-0 end-0 m-2 bg-success text-white px-2 py-1 rounded">
+                                                <?= $product['quantity'] ?? 0 ?> in stock
+                                            </span>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title mb-3"><?= htmlspecialchars($product['product_name'] ?? 'N/A') ?></h5>
+                                            <p class="card-text mb-4">
+                                                <span class="price fw-bold">$<?= number_format($product['price'] ?? 0, 2) ?></span>
+                                                <span class="mx-2">•</span>
+                                                <span>Rank #<?= $slideIndex * 4 + array_search($product, $slideProducts) + 1 ?></span>
+                                            </p>
+                                            <a href="/inventory/viewfood/<?= $product['product_id'] ?? '' ?>"
+                                               class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <?php if (!empty($popular_products)): ?>
-                <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            <?php endif; ?>
+            <button class="carousel-control-prev" type="button" data-bs-target="#popularCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#popularCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </div>
+    <?php endif; ?>
 
     <!-- Quick Stats Section -->
     <div class="mb-4 position-relative" style="background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
         <h5 class="header-title fw-bold mb-4 text-center text-uppercase pt-4">
             <span class="text-primary">Quick</span>
-            <span class="text-secondary">Stats</span>
+            <span class="text-secondary">Status</span>
         </h5>
         <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
             <div class="col-md-4">
@@ -137,7 +134,7 @@ $products = $products ?? [];
 
     <!-- Food Transactions Section -->
     <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h5 class="mt-3 mb-0">Food Transactions:</h5>
+        <h5 class="mt-3 mb-0">Food Inventory:</h5>
     </div>
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-0">
@@ -175,12 +172,12 @@ $products = $products ?? [];
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'success' ?>">
-                                        <?= ($product['quantity'] ?? 0) < 5 ? 'Low stock' : 'High stock' ?>
+                                    <span class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : (($product['quantity'] ?? 0) < 15 ? 'warning' : 'success') ?>">
+                                        <?= ($product['quantity'] ?? 0) < 5 ? 'Low stock' : (($product['quantity'] ?? 0) < 15 ? 'Medium stock' : 'High stock') ?>
                                     </span>
                                 </td>
                                 <td>$<?= number_format($product['price'] ?? 0, 2) ?></td>
-                                <td class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : 'body' ?>">
+                                <td class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : (($product['quantity'] ?? 0) < 15 ? 'warning' : 'body') ?>">
                                     <?= $product['quantity'] ?? 'N/A' ?>
                                 </td>
                                 <td>$<?= number_format(($product['price'] ?? 0) * ($product['quantity'] ?? 0), 2) ?></td>
@@ -276,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get existing events from localStorage
         let existingEvents = JSON.parse(localStorage.getItem("events")) || [];
         
-        // Add new low stock notifications if they don’t already exist
+        // Add new low stock notifications if they don't already exist
         notifications.forEach(newEvent => {
             if (!existingEvents.some(event => event.title === newEvent.title)) {
                 existingEvents.push(newEvent);

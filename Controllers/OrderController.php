@@ -19,26 +19,51 @@ class OrderController extends BaseController {
     ]);
     }
     public function show($orderId) {
-        $order = $this->orderModel->getOrderById();  
-        
-        $this->view('orders/order_list', [
+        $order = $this->orderModel->getOrderById($orderId);  
+        $orderItems = $this->orderModel->getOrderItemsByOrderId($orderId);
+    
+        $this->view('orders/order_details', [
             'order' => $order,
-            'orderItems' => $orderItems // Ensure this is being passed
+            'orderItems' => $orderItems
         ]);
-    }    
+    }
+       
     // Delete a product
     public function delete($orderId)
     {
-        // Perform the deletion
-        $this->orderModel->delete($orderId);
-        
-        // Set a success message
-        $_SESSION['success_message'] = "Order deleted successfully!";
-        
-        // Redirect to the product list page
+        try {
+            if ($this->orderModel->delete($orderId)) {
+                $_SESSION['success_message'] = "Order deleted successfully!";
+            }
+        } catch (Exception $e) {
+            $_SESSION['error_message'] = "Error: " . $e->getMessage();
+        }
+    
         header("Location: /orders");
         exit;
     }
+        // Fetch detailed information about the order
+    public function detail($orderId) {
+        $orderDetails = $this->orderModel->getOrderDetailsById($orderId);
+        $orderItems = $this->orderModel->getOrderItemsByOrderId($orderId);
 
- 
+        // Calculate the grand total
+        $grandTotal = 0;
+        foreach ($orderItems as $item) {
+            $grandTotal += $item['total_price'];
+        }
+
+        // Return as JSON
+        echo json_encode([
+            'order_date' => date('d M Y', strtotime($orderDetails['order_date'])),
+            'payment_mode' => ucfirst($orderDetails['payment_mode']),
+            'order_items' => $orderItems,
+            'grand_total' => number_format($grandTotal, 2)
+        ]);
+        exit;
+    }
+
+    
+    
 }
+

@@ -1,14 +1,5 @@
 
-
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="orders-card px-0">
-        <!-- Search Bar and Create Order Button -->
-        <div class="mb-4 d-flex justify-content-between align-items-center">
-            <input type="text" class="form-control w-75" id="searchInput" placeholder="Search orders...">
-            <a href="/orders/create" class="btn btn-primary">
-                <i class="bi bi-plus"></i> Create Order
-            </a>
-        </div>
         <!-- Orders Table -->
         <div class="card border-0 shadow-lg container-fluid px-4">
             <div class="card-body p-4">
@@ -43,9 +34,13 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a class="dropdown-item text-primary" href="/orders/view/<?php echo $order['order_id'] ?>" data-bs-toggle="modal" data-bs-target="#viewOrderModal">
-                                                        <i class="bi bi-eye"></i> View Details
-                                                    </a>
+                                                <a class="dropdown-item text-primary view-order" 
+                                                    href="javascript:void(0);" 
+                                                    data-order-id="<?php echo $order['order_id']; ?>"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#viewOrderModal">
+                                                    <i class="bi bi-eye"></i> View Details
+                                                </a>
                                                 </li>
                                                 <li>
                                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
@@ -155,6 +150,10 @@
                         </h5>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add custom CSS -->
 <style>
@@ -181,9 +180,8 @@
         border-radius: 10px;
     }
 </style>
-
-
 <script>
+    
     // Example: Add search functionality
     document.getElementById('searchInput').addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -203,3 +201,5 @@
         document.getElementById('delete-form-' + orderId).submit();
     }
 </script>
+
+
