@@ -34,13 +34,9 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                <a class="dropdown-item text-primary view-order" 
-                                                    href="javascript:void(0);" 
-                                                    data-order-id="<?php echo $order['order_id']; ?>"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#viewOrderModal">
-                                                    <i class="bi bi-eye"></i> View Details
-                                                </a>
+                                                    <a class="dropdown-item text-primary" href="/orders/view/<?php echo $order['order_id'] ?>">
+                                                        <i class="bi bi-eye"></i> View Details
+                                                    </a>
                                                 </li>
                                                 <li>
                                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
