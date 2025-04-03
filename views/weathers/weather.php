@@ -14,7 +14,7 @@ if (!isset($_SESSION['user'])) {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="weatherChangeModalLabel">Weather Change Alerts</h5>
+        <h5 class="modal-title" id="weatherChangeModalLabel">Weather Change Alert</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="weatherChangeModalBody">
@@ -32,7 +32,7 @@ if (!isset($_SESSION['user'])) {
   <div id="weatherapi-weather-widget-3"></div>
   <script type='text/javascript' src='https://www.weatherapi.com/weather/widget.ashx?loc=1318546&wid=3&tu=1&div=weatherapi-weather-widget-3' async></script>
   <noscript>
-    <a href="https://www.weatherapi.com/weather/q/phnum-penh-1318546" alt="Hour by hour Phnum Penh weather">10 day hour by hour Phnum Penh weather</a>
+    <a href="https://www.weatherapi.com/weather/q/phnum-penh-1318546" alt="Hour by hour Phnum Penh weather">10 days hour by hour Phnum Penh weather</a>
   </noscript>
 
   <!-- Temperature Chart -->

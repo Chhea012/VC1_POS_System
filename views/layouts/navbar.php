@@ -19,6 +19,11 @@
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
+                <style>
+                    body {
+                        font-family: <?php echo $lang === 'km' ? "'Noto Sans Khmer', sans-serif" : "'Public Sans', sans-serif"; ?>;
+                    }
+                </style>
                 <li class="nav-item dropdown">
                     <!-- Globe Icon that opens the dropdown -->
                     <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,28 +46,28 @@
                     </ul>
                 </li>
                 <script>
-                    // function changeLanguage(lang) {
-                    //     localStorage.setItem('selectedLanguage', lang);
-                    //     location.reload(); // Reload to apply changes
-                    // }
+                    function changeLanguage(lang) {
+                        localStorage.setItem('selectedLanguage', lang);
+                        location.reload(); // Reload to apply changes
+                    }
 
-                    // // Function to apply selected language on page load
-                    // document.addEventListener("DOMContentLoaded", function() {
-                    //     const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-                    //     applyLanguage(selectedLanguage);
-                    // });
+                    // Function to apply selected language on page load
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+                        applyLanguage(selectedLanguage);
+                    });
 
-                    // function applyLanguage(lang) {
-                    //     // Example of language switching logic
-                    //     // You can expand this to fetch translations from a JSON file or API
-                    //     if (lang === 'km') {
-                    //         document.documentElement.lang = 'km';
-                    //         document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer';
-                    //     } else {
-                    //         document.documentElement.lang = 'en';
-                    //         document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English';
-                    //     }
-                    // }
+                    function applyLanguage(lang) {
+                        // Example of language switching logic
+                        // You can expand this to fetch translations from a JSON file or API
+                        if (lang === 'km') {
+                            document.documentElement.lang = 'km';
+                            document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer';
+                        } else {
+                            document.documentElement.lang = 'en';
+                            document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English';
+                        }
+                    }
 
                     function changeLanguage(lang) {
                         localStorage.setItem('selectedLanguage', lang);

@@ -25,6 +25,7 @@ require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
 require_once "Controllers/TopProductOrderController.php";
+require_once "Controllers/NavbarKhmerController.php";
 
 
 // Create an instance of the Router class
@@ -58,7 +59,7 @@ $route->post('/category/delete/{category_id}', [categoryController::class, 'dele
 // $route->get("/food", [FoodController::class, 'index']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
-$route->get("/drink", [InventoryController::class, 'index']);
+$route->get("/drink", [DrinkController::class, 'index']);
 $route->get("/food", [FoodController::class, 'index']);
 $route->get("/ice", [IceController::class, 'index']);
 // $route->post('/checkBarcode', [AddProductController::class, 'checkBarcode']);
@@ -102,9 +103,6 @@ $route->get("/orders/create/QR", [CreateOrderController::class, 'qrcode']);
 $route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); 
 $route->get("/orders/summary", [CreateOrderController::class, 'summary']); 
 
-
-$route->get("/orders/view", [ OrderViewController::class, '']);
-
 // generate ---
 $route->get('/generate/pdf', [GeneratePdfController::class, 'index']);
 $route->post('/generate/generatepdf', [GeneratePdfController::class, 'generatepdf']);
@@ -135,5 +133,13 @@ $route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class,
 
 // top product orders
 $route->get('/topproductorder', [TopProductOrderController::class, 'index']);
+
+
+
+
+
+$route->get("/language/{lang}", [NavbarKhmerController::class, 'switchLanguage']);
+
+
 
 $route->route();
