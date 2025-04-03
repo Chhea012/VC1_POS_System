@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-gradient">Notifications</h2>
             <button id="mark-all-read" class="btn btn-outline-primary btn-sm" style="display: none;">
-                <i class="bi bi-check-all me-1"></i> Mark All as Read
+                <i class="bi bi-check-all me-1"></i> Mark All as View
             </button>
         </div>
         <div id="notifications-list" class="notification-container"></div>
@@ -153,7 +153,7 @@
                                         <li>
                                             <a class="dropdown-item" href="#" onclick="markAsRead(${index}); return false;" style="color: #333;">
                                                 <i class="bi ${event.isRead ? 'bi-eye-slash' : 'bi-check'}"></i>
-                                                ${event.isRead ? "Mark Unread" : "Mark Read"}
+                                                ${event.isRead ? "Unview" : "View"}
                                             </a>
                                         </li>
                                         <li>
@@ -161,6 +161,7 @@
                                                 <i class="bi bi-trash"></i> Delete
                                             </a>
                                         </li>
+                                       
                                     </ul>
                                 </div>
                             </div>
