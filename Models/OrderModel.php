@@ -13,11 +13,10 @@ class OrderModel {
         $stmt = $this->db->query($query);
         
         // Check if query execution is successful and if any orders are returned
-        if ($stmt === false) {
-            // If the query failed, handle the error
-            echo "Query failed!";
-            return [];
+        if (!$stmt) {
+            throw new Exception("Database query failed.");
         }
+        
     
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -40,7 +39,7 @@ class OrderModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function getOrderItemsByOrderId($orderId) {
-        if (empty($order_id)) {
+        if (empty($orderId)) {
             throw new InvalidArgumentException("Order ID is required");
         }
         $query = "SELECT oi.product_name, oi.price, oi.quantity, (oi.price * oi.quantity) AS total_price 
@@ -73,15 +72,35 @@ class OrderModel {
                                     WHERE o.order_id = ?");
         $stmt->execute([$orderId]);
         
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false; // Return false if not found
-    }    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }  
+    // Fetch detailed information about the order
+    public function getOrderDetailsById($orderId) {
+        $query = "SELECT o.order_id, o.user_id, o.total_amount, o.order_date, o.status, 
+                          o.payment_mode, o.order_reference
+                  FROM orders o
+                  WHERE o.order_id = :order_id";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null; 
+    }
      //  delete product
      public function delete($orderId) {
         $sql = "DELETE FROM orders WHERE order_id = :order_id";
-        $stmt = $this->db->prepare($sql); 
-        $stmt->execute(['order_id' => $orderId]); 
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            return true; // Deletion successful
+        } else {
+            throw new Exception("Order deletion failed or order not found.");
+        }
+    }
     
-}
 }
 ?>
 

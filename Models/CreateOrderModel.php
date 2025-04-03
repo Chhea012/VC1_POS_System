@@ -143,6 +143,21 @@ class CreateOrderModel {
     
         return false; // Insufficient stock
     }
+    public function getProductByBarcode($barcode) {
+        try {
+            $query = "SELECT product_name AS name, price, quantity 
+                      FROM products 
+                      WHERE barcode = :barcode 
+                      LIMIT 1";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':barcode', $barcode, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error fetching product by barcode: " . $e->getMessage());
+            return false;
+        }
+    }
     
 }
 ?>
