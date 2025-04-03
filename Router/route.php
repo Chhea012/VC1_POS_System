@@ -24,7 +24,7 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
-require_once "Controllers/DashboardKhmerController.php";
+// require_once "Controllers/DashboardKhmerController.php";
 
 
 // Create an instance of the Router class
