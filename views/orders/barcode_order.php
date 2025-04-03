@@ -10,13 +10,12 @@ if (!isset($_SESSION['user'])) {
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex gap-2">
-        <a href="/orders/barcode" class="btn btn-secondary">
+        <a href="/orders/barcode" class="btn btn-primary">
             <i class="bi bi-upc"></i> Barcode Order
         </a>
-        <a href="/orders/create" class="btn btn-primary">
+        <a href="/orders/create" class="btn btn-outline-primary create-order-btn">
             <i class="bi bi-plus"></i> Create Order
         </a>
-
     </div>
 </div>
 <div class="container-xxl flex-grow-1 container-p-y">
