@@ -101,15 +101,18 @@
         font-weight: bold;
         border-radius: 5px;
     }
+
     .flag-icon {
         width: 20px;
         height: 20px;
         margin-right: 8px;
     }
+
     .menu-link {
         display: flex;
         align-items: center;
     }
+
     .menu-icon {
         margin-right: 10px;
     }
@@ -161,38 +164,18 @@
         });
     }
 
-    // Change language and update UI
-    function changeLanguage(lang) {
-        localStorage.setItem('selectedLanguage', lang);
-        applyTranslations(lang);
-        updateLanguageDropdown(lang);
-        updateFontFamily(lang);
-    }
-
-    // Update language dropdown display
-    function updateLanguageDropdown(lang) {
-        const languageDropdown = document.getElementById('languageDropdown');
-        if (!languageDropdown) return;
-        
-        if (lang === 'km') {
-            languageDropdown.innerHTML = '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer';
-        } else {
-            languageDropdown.innerHTML = '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English';
-        }
-    }
-
     // Update font family based on language
     function updateFontFamily(lang) {
-        document.documentElement.style.fontFamily = lang === 'km' 
-            ? "'Noto Sans Khmer', sans-serif" 
-            : "'Public Sans', sans-serif";
+        document.documentElement.style.fontFamily = lang === 'km' ?
+            "'Noto Sans Khmer', sans-serif" :
+            "'Public Sans', sans-serif";
     }
 
     // Initialize on page load
     document.addEventListener("DOMContentLoaded", function() {
         const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
         changeLanguage(selectedLanguage);
-        
+
         // Set active menu item
         const currentUrl = window.location.pathname;
         document.querySelectorAll(".menu-item a").forEach(item => {
@@ -200,7 +183,7 @@
                 item.classList.add("active");
             }
         });
-        
+
         updateNotificationBadge();
     });
 

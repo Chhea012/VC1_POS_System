@@ -25,7 +25,6 @@ require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
 require_once "Controllers/TopProductOrderController.php";
-require_once "Controllers/NavbarKhmerController.php";
 
 
 // Create an instance of the Router class
@@ -137,8 +136,6 @@ $route->get('/topproductorder', [TopProductOrderController::class, 'index']);
 
 
 
-
-$route->get("/language/{lang}", [NavbarKhmerController::class, 'switchLanguage']);
 
 
 

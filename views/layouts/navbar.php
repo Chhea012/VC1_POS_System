@@ -24,80 +24,76 @@
                         font-family: <?php echo $lang === 'km' ? "'Noto Sans Khmer', sans-serif" : "'Public Sans', sans-serif"; ?>;
                     }
                 </style>
-                <li class="nav-item dropdown">
-                    <!-- Globe Icon that opens the dropdown -->
-                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- This will be updated dynamically -->
                     </a>
 
-                    <!-- Dropdown menu with Khmer and English options -->
-                    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('km')">
-                                <img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#" onclick="changeLanguage('en')">
-                                <img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English
-                            </a>
-                        </li>
+                    <!-- Dropdown menu (only one language option at a time) -->
+                    <ul class="dropdown-menu" id="languageDropdownMenu" aria-labelledby="languageDropdown">
+                        <!-- This will be updated dynamically -->
                     </ul>
                 </li>
+
                 <script>
+                    //Change language and update UI
                     function changeLanguage(lang) {
                         localStorage.setItem('selectedLanguage', lang);
-                        location.reload(); // Reload to apply changes
+                        applyTranslations(lang);
+                        updateLanguageDropdown(lang);
+                        updateFontFamily(lang);
                     }
 
-                    // Function to apply selected language on page load
+                    // // Update language dropdown display
                     document.addEventListener("DOMContentLoaded", function() {
                         const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-                        applyLanguage(selectedLanguage);
+                        updateLanguageDropdown(selectedLanguage);
                     });
 
-                    function applyLanguage(lang) {
-                        // Example of language switching logic
-                        // You can expand this to fetch translations from a JSON file or API
-                        if (lang === 'km') {
-                            document.documentElement.lang = 'km';
-                            document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer';
-                        } else {
-                            document.documentElement.lang = 'en';
-                            document.getElementById('languageDropdown').innerHTML = '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English';
-                        }
-                    }
-
-                    function changeLanguage(lang) {
-                        localStorage.setItem('selectedLanguage', lang);
-                        applyLanguage(lang); // Apply changes without reloading
-                    }
-
-                    // Function to apply selected language on page load
-                    document.addEventListener("DOMContentLoaded", function() {
-                        const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-                        applyLanguage(selectedLanguage);
-                    });
-
-                    function applyLanguage(lang) {
+                    function updateLanguageDropdown(lang) {
                         const languageDropdown = document.getElementById('languageDropdown');
-                        const dropdownMenu = document.querySelector('.dropdown-menu');
-                        dropdownMenu.innerHTML = ''; // Clear existing menu items
+                        const dropdownMenu = document.getElementById('languageDropdownMenu');
 
-                        if (lang === 'km') {
-                            document.documentElement.lang = 'km';
-                            languageDropdown.innerHTML = '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer';
-                            dropdownMenu.innerHTML = '<li><a class="dropdown-item" href="#" onclick="changeLanguage(\'en\')">' +
-                                '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English</a></li>';
-                        } else {
-                            document.documentElement.lang = 'en';
-                            languageDropdown.innerHTML = '<img src="/views/assets/modules/img/country/english.png" alt="English" class="flag-icon"> English';
-                            dropdownMenu.innerHTML = '<li><a class="dropdown-item" href="#" onclick="changeLanguage(\'km\')">' +
-                                '<img src="/views/assets/modules/img/country/cambodia.png" alt="Khmer" class="flag-icon"> Khmer</a></li>';
+                        const languages = {
+                            en: {
+                                name: "English",
+                                flag: "/views/assets/modules/img/country/english.png",
+                                oppositeLang: "km",
+                                oppositeName: "Khmer",
+                                oppositeFlag: "/views/assets/modules/img/country/cambodia.png"
+                            },
+                            km: {
+                                name: "ខ្មែរ",
+                                flag: "/views/assets/modules/img/country/cambodia.png",
+                                oppositeLang: "en",
+                                oppositeName: "អង់គ្លេស",
+                                oppositeFlag: "/views/assets/modules/img/country/english.png"
+                            }
+
+                        };
+                        // Function to switch language
+                        function changeLanguage(lang) {
+                            document.documentElement.lang = lang;
+                            updateLanguageDropdown(lang);
+                            // You can also save the selected language in local storage or a cookie if needed
                         }
+
+                        // Update the dropdown button
+                        languageDropdown.innerHTML = `
+            <img src="${languages[lang].flag}" alt="${languages[lang].name}" class="flag-icon"> ${languages[lang].name}
+        `;
+
+                        // Show only the opposite language in the dropdown menu
+                        dropdownMenu.innerHTML = `
+            <li><a class="dropdown-item" href="#" onclick="changeLanguage('${languages[lang].oppositeLang}')">
+                <img src="${languages[lang].oppositeFlag}" alt="${languages[lang].oppositeName}" class="flag-icon"> ${languages[lang].oppositeName}
+            </a></li>
+        `;
                     }
                 </script>
+
+
                 <!-- Notification Bell -->
                 <a class="nav-link" href="/notification" id="notificationDropdown" role="button" aria-expanded="false" style="position: relative;">
                     <i class="bx bx-bell bx-sm"></i>
