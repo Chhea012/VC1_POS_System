@@ -37,11 +37,11 @@ if (!isset($_SESSION['user'])) {
                 <table class="table table-custom table-bordered">
                     <thead>
                         <tr>
-                            <th style="color: white;">ID</th>
-                            <th style="color: white;">Product Name</th>
-                            <th style="color: white;">Price</th>
-                            <th style="color: white;">Quantity</th>
-                            <th style="color: white;">Total Price</th>
+                            <th style="color: gray;">ID</th>
+                            <th style="color: gray;">Product Name</th>
+                            <th style="color: gray;">Price</th>
+                            <th style="color: gray;">Quantity</th>
+                            <th style="color: gray;">Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
