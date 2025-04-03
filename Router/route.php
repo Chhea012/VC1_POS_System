@@ -24,6 +24,7 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
+require_once "Controllers/TopProductOrderController.php";
 
 
 // Create an instance of the Router class
@@ -95,6 +96,7 @@ $route->post("/orders/delete/{orderId}", [OrderController::class, 'delete']);
 $route->get("/orders/detail/{orderId}", [OrderController::class, 'detail']);
 $route->get("/orders/create", [CreateOrderController::class, 'index']);
 $route->get("/orders/barcode", [CreateOrderController::class, 'barcode']);
+$route->get("/orders/getProductByBarcode", [CreateOrderController::class, 'getProductByBarcode']);
 $route->get("/orders/checkStock", [CreateOrderController::class, 'checkStock']);
 $route->get("/orders/create/QR", [CreateOrderController::class, 'qrcode']);
 $route->post("/orders/saveOrder", [CreateOrderController::class, 'placeOrder']); 
@@ -129,5 +131,9 @@ $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
 $route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
 $route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
+
+
+// top product orders
+$route->get('/topproductorder', [TopProductOrderController::class, 'index']);
 
 $route->route();

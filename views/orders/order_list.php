@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 
 <<div class="container-xxl flex-grow-1 container-p-y">
     <div class="orders-card px-0">
@@ -14,6 +15,9 @@
         </a>
     </div>
 </div>
+=======
+<div class="container-xxl flex-grow-1 container-p-y">
+>>>>>>> 5bfeceb066ebc66e30f10384a27add074bd809cd
         <!-- Orders Table -->
         <div class="card border-0 shadow-lg container-fluid px-4">
             <div class="card-body p-4">

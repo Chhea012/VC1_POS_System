@@ -42,6 +42,7 @@ class OrderController extends BaseController {
         header("Location: /orders");
         exit;
     }
+<<<<<<< HEAD
         // Fetch detailed information about the order
     public function detail($orderId) {
         $orderDetails = $this->orderModel->getOrderDetailsById($orderId);
@@ -66,3 +67,6 @@ class OrderController extends BaseController {
     
     
 }
+=======
+}
+>>>>>>> 5bfeceb066ebc66e30f10384a27add074bd809cd

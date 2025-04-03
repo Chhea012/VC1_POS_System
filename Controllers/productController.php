@@ -127,8 +127,8 @@ class productController extends BaseController
             $barcode          = trim($_POST['barcode']);
             $quantity         = (int) $_POST['quantity'];
             $description      = trim($_POST['description']);
-            $base_price       = (float) $_POST['base_price'];
             $cost_price       = (float) $_POST['cost_price'];
+            $base_price       = (float) $_POST['base_price'];
             $discounted_price = isset($_POST['discounted_price']) ? (float) $_POST['discounted_price'] : null;
             $in_stock         = isset($_POST['in_stock']) ? 1 : 0;
             $db_image_path    = $_POST['existing_image'] ?? "uploads/default.png";
