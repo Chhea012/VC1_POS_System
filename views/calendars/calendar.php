@@ -100,6 +100,7 @@ if (!isset($_SESSION['user'])) {
     </div>
 </div>
 
+
 <script>
     
     document.addEventListener("DOMContentLoaded", function () {
