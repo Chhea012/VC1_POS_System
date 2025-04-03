@@ -177,7 +177,6 @@
     }
 </style>
 <script>
-    
     // Example: Add search functionality
     document.getElementById('searchInput').addEventListener('input', function() {
         const searchTerm = this.value.toLowerCase();
@@ -195,7 +194,7 @@
     }
     function confirmDelete(orderId) {
         document.getElementById('delete-form-' + orderId).submit();
-    }
+}
 </script>
 
 
