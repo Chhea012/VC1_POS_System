@@ -30,7 +30,7 @@ if (!isset($_SESSION['user'])) {
 
         <div class="d-flex justify-content-center gap-2 mt-3">
             <a href="javascript:history.back()" class="btn btn-outline-secondary">CANCEL</a>
-            <a href="/orders" class="btn btn-warning">ACCEPTED</a>
+            <a href="/orders/barcode" class="btn btn-warning">ACCEPTED</a>
         </div>
     </div>
 </div>

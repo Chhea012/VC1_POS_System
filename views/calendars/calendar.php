@@ -67,26 +67,44 @@ if (!isset($_SESSION['user'])) {
 
 <!-- Event Detail Modal -->
 <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Event Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="eventDetailModalLabel">
+                    <i class="bi bi-calendar-event me-2 text-white"></i> <h5 class="text-white mt-3">Event Details</h5> 
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Title:</strong> <span id="detailTitle"></span></p>
-                <p><strong>Date:</strong> <span id="detailDate"></span></p>
-                <p><strong>Category:</strong> <span id="detailCategory"></span></p>
-                <p><strong>Description:</strong> <span id="detailDescription"></span></p>
-                <button class="btn btn-warning" id="editEventBtn">Edit Event</button>
-                <button class="btn btn-danger" id="deleteEventBtn">Delete Event</button>
+                <div class="d-flex align-items-start">
+                    <div class="p-2 bg-primary rounded-circle text-white text-center me-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-bookmark-fill fs-3" id="categoryIcon"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="fw-bold mb-3" id="detailTitle"></h4>
+                        <p class="mb-2"><i class="bi bi-calendar3 text-primary me-2"></i><strong>Date:</strong> <span id="detailDate"></span></p>
+                        <p class="mb-2"><i class="bi bi-tag-fill text-primary me-2"></i><strong>Category:</strong> <span id="detailCategory"></span></p>
+                        <p class="mb-0"><i class="bi bi-chat-square-text text-primary me-2"></i><strong>Description:</strong> <span id="detailDescription"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button class="btn btn-outline-primary" id="editEventBtn">
+                    <i class="bi bi-pencil-square me-2"></i>Edit Event
+                </button>
+                <button class="btn btn-outline-danger" id="deleteEventBtn">
+                    <i class="bi bi-trash-fill me-2"></i>Delete Event
+                </button>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
+    
     document.addEventListener("DOMContentLoaded", function () {
+        
         var calendarEl = document.getElementById("calendar");
 
         let storedEvents = JSON.parse(localStorage.getItem("events")) || [];
@@ -131,6 +149,8 @@ if (!isset($_SESSION['user'])) {
 
         calendar.render();
         updateNotificationBadge(); // Initial badge update
+
+        
 
         // Handle category filter selection
         document.querySelectorAll(".dropdown-item").forEach((item) => {

@@ -116,7 +116,7 @@ class ProductManager
     }
 
     // Update an existing product
-    public function updateProduct($id, $title, $category_id, $barcode, $quantity, $description, $base_price,$cost_price, $discounted_price, $in_stock, $image_path)
+    public function updateProduct($id, $title, $category_id, $barcode, $quantity, $description, $cost_price, $base_price, $discounted_price, $in_stock, $image_path)
     {
         try {
             $stmt = $this->db->prepare("
@@ -126,8 +126,8 @@ class ProductManager
                     barcode = :barcode, 
                     quantity = :quantity, 
                     description = :description, 
-                    price = :base_price, 
                     cost_product = :cost_price, 
+                    price = :base_price, 
                     discounted_price = :discounted_price, 
                     in_stock = :in_stock, 
                     image = :image_path,
@@ -140,8 +140,8 @@ class ProductManager
             $stmt->bindParam(':barcode', $barcode);
             $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
             $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':base_price', $base_price);
             $stmt->bindParam(':cost_price', $cost_price);
+            $stmt->bindParam(':base_price', $base_price);
             $stmt->bindParam(':discounted_price', $discounted_price);
             $stmt->bindParam(':in_stock', $in_stock, PDO::PARAM_INT);
             $stmt->bindParam(':image_path', $image_path);
