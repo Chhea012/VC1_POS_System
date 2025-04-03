@@ -151,25 +151,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
 
-
-        // filter category stock  ///
-        function filterStock(stock) {
-            let rows = document.querySelectorAll("#categoryTable tr");
-            let stockText = document.getElementById("selectedStock");
+            function filterStock(stock) {
+                let rows = document.querySelectorAll("#categoryTable tr");
+                let stockText = document.getElementById("selectedStock");
+                let dropdownMenu = document.querySelector(".dropdown-menu");
+            
+                // Update button text based on the selected stock filter
+                stockText.textContent = stock === "" ? "Stock" : stock;
+            
+                // Force dropdown to stay in front of other elements
+                dropdownMenu.style.zIndex = "9999"; // Increase z-index to bring it forward
+                dropdownMenu.style.position = "absolute"; // Ensure it's positioned properly
+                dropdownMenu.style.display = "block"; // Keep dropdown visible momentarily
+            
+                // Loop through the table rows and filter them based on stock status
+                rows.forEach(row => {
+                    let rowStock = row.getAttribute("data-stock");
+            
+                    // Show all if 'All' is selected, otherwise filter by selected stock
+                    if (stock === "" || rowStock === stock) {
+                        row.style.display = ""; // Show row
+                    } else {
+                        row.style.display = "none"; // Hide row
+                    }
+                });
+            
+             
+            }
+            
         
-            // Update button text
-            stockText.textContent = stock === "" ? "Stock" : stock;
-        
-            // Loop through table rows
-            rows.forEach(row => {
-                let rowStock = row.getAttribute("data-stock");
-        
-                // Show all if 'All' is selected, otherwise filter by selected stock
-                if (stock === "" || rowStock === stock) {
-                    row.style.display = ""; // Show row
-                } else {
-                    row.style.display = "none"; // Hide row
-                }
-            });
-        }
         

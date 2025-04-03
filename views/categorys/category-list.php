@@ -28,17 +28,16 @@ $existingCategories = array_map(function ($product) {
                         <input type="text" class="form-control" placeholder="Search Category" id="productSearch" onkeyup="searchProduct()">
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span id="selectedStock">Stock</span>
                             <i class="bi bi-chevron-down"></i>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="filterStock('')"><i class="bi bi-filter me-2"></i>All</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="filterStock('Low Stock')"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Low Stock</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="filterStock('High Stock')"><i class="bi bi-check-circle me-2 text-success"></i>High Stock</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterStock('')">All</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterStock('Low Stock')">Low Stock</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="filterStock('High Stock')">High Stock</a></li>
                         </ul>
                     </div>
                 </div>
@@ -59,7 +58,7 @@ $existingCategories = array_map(function ($product) {
                     <thead class="table-light">
                         <tr class="fw-semibold">
                             <th width="40px">
-                             #
+                                #
                             </th>
                             <th>CATEGORY</th>
                             <th>STOCK</th>
@@ -76,7 +75,7 @@ $existingCategories = array_map(function ($product) {
 
 
                             <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
-                            <td class="text-center row-number"></td>
+                                <td class="text-center row-number"></td>
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
                                         <?php echo htmlspecialchars($product['category_name']) ?>
@@ -89,7 +88,7 @@ $existingCategories = array_map(function ($product) {
                                     </span>
                                 </td>
                                 <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                <td>$<?php echo number_format($product['Price_Total'], 2)?></td>
+                                <td>$<?php echo number_format($product['Price_Total'], 2) ?></td>
                                 <td>
                                     <div class="dropdown">
                                         <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
@@ -110,7 +109,7 @@ $existingCategories = array_map(function ($product) {
                                         </ul>
                                     </div>
                                 </td>
-                            </td>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -118,7 +117,6 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
     </div>
-
     <!-- Modal for adding a new category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog">
@@ -147,7 +145,7 @@ $existingCategories = array_map(function ($product) {
                 </div>
             </div>
         </div>
-    </div>                       
+    </div>
     <!-- Modal for editing a category -->
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog">
@@ -216,106 +214,103 @@ $existingCategories = array_map(function ($product) {
     <?php endif; ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-        // Modal and form variables
-        const editCategoryModal = document.getElementById('editCategoryModal');
-        const editCategoryForm = document.getElementById('editCategoryForm');
-        const editCategoryNameInput = document.getElementById('edit_category_name');
-        const editCategoryNameError = document.getElementById('editCategoryNameError');
-        const existingCategories = <?php echo json_encode($existingCategories); ?>; // Use PHP to pass existing categories
+            // Modal and form variables
+            const editCategoryModal = document.getElementById('editCategoryModal');
+            const editCategoryForm = document.getElementById('editCategoryForm');
+            const editCategoryNameInput = document.getElementById('edit_category_name');
+            const editCategoryNameError = document.getElementById('editCategoryNameError');
+            const existingCategories = <?php echo json_encode($existingCategories); ?>; // Use PHP to pass existing categories
 
-        // Function to reset the form
-        function resetEditForm() {
-            editCategoryNameInput.classList.remove('is-invalid');
-            editCategoryNameError.style.display = 'none';
-            editCategoryNameInput.value = ''; // Clear the input field
-        }
-
-        // Reset the form when the modal is closed
-        editCategoryModal.addEventListener('hidden.bs.modal', function() {
-            resetEditForm();
-        });
-
-        // Reset the form when the modal is opened
-        editCategoryModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget; // Button that triggered the modal
-            const categoryId = button.getAttribute('data-category-id');
-            const categoryName = button.getAttribute('data-category-name');
-
-            // Populate the form with the existing category data
-            document.getElementById('edit_category_id').value = categoryId;
-            editCategoryNameInput.value = categoryName;
-        });
-
-        // Form submit handler
-        editCategoryForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const categoryName = editCategoryNameInput.value.trim().toUpperCase();
-
-            // Check if category name already exists
-            if (existingCategories.includes(categoryName)) {
-                // Show validation error inside the input field
-                editCategoryNameInput.classList.add('is-invalid');
-                editCategoryNameError.style.display = 'block';
-            } else {
-                // Hide validation error if it was shown earlier
+            // Function to reset the form
+            function resetEditForm() {
                 editCategoryNameInput.classList.remove('is-invalid');
                 editCategoryNameError.style.display = 'none';
-                // Proceed with form submission
-                editCategoryForm.submit();
+                editCategoryNameInput.value = ''; // Clear the input field
             }
+
+            // Reset the form when the modal is closed
+            editCategoryModal.addEventListener('hidden.bs.modal', function() {
+                resetEditForm();
+            });
+
+            // Reset the form when the modal is opened
+            editCategoryModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget; // Button that triggered the modal
+                const categoryId = button.getAttribute('data-category-id');
+                const categoryName = button.getAttribute('data-category-name');
+
+                // Populate the form with the existing category data
+                document.getElementById('edit_category_id').value = categoryId;
+                editCategoryNameInput.value = categoryName;
+            });
+
+            // Form submit handler
+            editCategoryForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+
+                const categoryName = editCategoryNameInput.value.trim().toUpperCase();
+
+                // Check if category name already exists
+                if (existingCategories.includes(categoryName)) {
+                    // Show validation error inside the input field
+                    editCategoryNameInput.classList.add('is-invalid');
+                    editCategoryNameError.style.display = 'block';
+                } else {
+                    // Hide validation error if it was shown earlier
+                    editCategoryNameInput.classList.remove('is-invalid');
+                    editCategoryNameError.style.display = 'none';
+                    // Proceed with form submission
+                    editCategoryForm.submit();
+                }
+            });
+
+            // Clear validation error when the user starts typing
+            editCategoryNameInput.addEventListener('input', function() {
+                editCategoryNameInput.classList.remove('is-invalid');
+                editCategoryNameError.style.display = 'none';
+            });
         });
 
-        // Clear validation error when the user starts typing
-        editCategoryNameInput.addEventListener('input', function() {
-            editCategoryNameInput.classList.remove('is-invalid');
-            editCategoryNameError.style.display = 'none';
-        });
-    });
-   
         function confirmDelete(categoryId) {
-                document.getElementById('delete-form-' + categoryId).submit();
-            }
-
+            document.getElementById('delete-form-' + categoryId).submit();
+        }
     </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll('.row-number').forEach((cell, index) => {
-            cell.textContent = index + 1; // Adds numbering starting from 1
+                cell.textContent = index + 1; // Adds numbering starting from 1
             });
         });
     </script>
     <style>
-        
         .plus-btn {
-        width: 18px;
-        height: 18px;
-        background: #696cff;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        box-shadow: 
-            0 3px 5px rgba(0, 0, 0, 0.2), 
-            0 0 10px rgba(108, 99, 255, 0.4),
-            inset 0 1px 2px rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease-in-out;
-        position: relative;
-    }
-    
-    .plus-btn:hover {
-        background: linear-gradient(135deg, #5a54e0, #4038c9);
-        box-shadow: 
-            0 5px 10px rgba(0, 0, 0, 0.3), 
-            0 0 15px rgba(108, 99, 255, 0.6);
-        transform: scale(1.15) rotate(5deg);
-    }
-    
+            width: 18px;
+            height: 18px;
+            background: #696cff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            box-shadow:
+                0 3px 5px rgba(0, 0, 0, 0.2),
+                0 0 10px rgba(108, 99, 255, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .plus-btn:hover {
+            background: linear-gradient(135deg, #5a54e0, #4038c9);
+            box-shadow:
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(108, 99, 255, 0.6);
+            transform: scale(1.15) rotate(5deg);
+        }
     </style>
