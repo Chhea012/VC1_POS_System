@@ -100,6 +100,7 @@
         background-color: rgba(23, 68, 217, 0.79) !important;
         font-weight: bold;
         border-radius: 5px;
+        margin-right: 35px;
     }
 
     .flag-icon {
