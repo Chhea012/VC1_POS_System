@@ -130,6 +130,20 @@ public function totalMoneyorder() {
     return $result;
 }
 
+public function orderDay() {
+    $query = "SELECT 
+        DAYNAME(order_date) AS order_day,
+        COUNT(*) AS order_count
+    FROM orders
+    WHERE order_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    GROUP BY order_day
+    ORDER BY FIELD(order_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
+
+    $stmt = $this->db->query($query);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results
+}
+
+
 // Calculate order percentage increase
 public function getOrderIncreasePercentage() {
     $today = date('Y-m-d');
@@ -153,11 +167,11 @@ public function getOrderIncreasePercentage() {
     // Fetch the total orders by category
     public function getCategoriesOrderedToday() {
         $query = "
-            SELECT categories.category_name, COUNT(order_items.order_id) AS total_orders
-            FROM order_items
-            INNER JOIN products ON products.product_id = order_items.product_id
-            INNER JOIN categories ON categories.category_id = products.category_id
-            GROUP BY categories.category_name
+SELECT categories.category_name, SUM(order_items.quantity) AS total_orders
+FROM order_items
+INNER JOIN products ON products.product_id = order_items.product_id
+INNER JOIN categories ON categories.category_id = products.category_id
+GROUP BY categories.category_name
         ";
 
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
