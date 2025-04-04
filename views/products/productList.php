@@ -206,12 +206,12 @@ if (! isset($_SESSION['user'])) {
                                             <i class="bi bi-cup-hot me-1"></i>
                                             <?php echo $product['category_name'] ?>
                                         </span>
-                                    </td>
+                                    </td>                                   
                                     <td>
-                                        <span style="color: <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'red' : 'green' ?>;">
-                                            <?php echo isset($product['quantity']) && $product['quantity'] < 5 ? 'Low stock' : 'High stock' ?>
-                                        </span>
-                                    </td>
+                                    <span class="text-<?= ($product['quantity'] ?? 0) < 5 ? 'danger' : (($product['quantity'] ?? 0) < 15 ? 'warning' : 'success') ?>">
+                                        <?= ($product['quantity'] ?? 0) < 5 ? 'Low stock' : (($product['quantity'] ?? 0) < 15 ? 'Medium stock' : 'High stock') ?>
+                                    </span>
+                                </td>
                                     <td>$<?php echo isset($product['cost_product']) ? number_format($product['cost_product'], 2) : '0.00'; ?></td>
                                     <td>$<?php echo isset($product['price']) ? number_format($product['price'], 2) : '0.00' ?></td>
                                     <td><?php echo isset($product['quantity']) ? $product['quantity'] : 'N/A' ?></td>
