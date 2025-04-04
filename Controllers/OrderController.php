@@ -47,38 +47,12 @@ class OrderController extends BaseController {
         header("Location: /orders");
         exit;
     }
-<<<<<<< HEAD
-        // Fetch detailed information about the order
-    public function detail($orderId) {
-        $orderDetails = $this->orderModel->getOrderDetailsById($orderId);
-        $orderItems = $this->orderModel->getOrderItemsByOrderId($orderId);
-
-        // Calculate the grand total
-        $grandTotal = 0;
-        foreach ($orderItems as $item) {
-            $grandTotal += $item['total_price'];
-        }
-
-        // Return as JSON
-        echo json_encode([
-            'order_date' => date('d M Y', strtotime($orderDetails['order_date'])),
-            'payment_mode' => ucfirst($orderDetails['payment_mode']),
-            'order_items' => $orderItems,
-            'grand_total' => number_format($grandTotal, 2)
-        ]);
-        exit;
-=======
     public function deleteByOrderId($orderId) {
         $sql = "DELETE FROM order_items WHERE order_id = :order_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":order_id", $orderId, PDO::PARAM_INT);
         return $stmt->execute();
->>>>>>> 807f291f62e6374aacfdeafd1accaf1e494db7b3
     }
     
 }
-<<<<<<< HEAD
-
-=======
 ?>
->>>>>>> 807f291f62e6374aacfdeafd1accaf1e494db7b3
