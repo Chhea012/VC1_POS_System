@@ -297,22 +297,7 @@
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h5>Graphic Sales</h5>
-                        <div class="dropdown">
-                            <button
-                                class="btn p-0"
-                                type="button"
-                                id="transactionID"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                                <a class="dropdown-item" href="javascript:void(0);">Last week</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                            </div>
-                        </div>
+           
                     </div>
                     <div class="card-body">
                         <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
