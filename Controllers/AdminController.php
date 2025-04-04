@@ -59,6 +59,8 @@ class AdminController extends BaseController {
             ];
         }
 
+        $orderData = $this->adminHome->orderDay();
+
         // Get the order increase percentage
         $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
         $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
@@ -83,7 +85,9 @@ class AdminController extends BaseController {
             'orderIncrease' => $orderIncrease,  
             'categoriesOrderedToday' => $categoriesOrderedToday,
             'totalCost' => $totalCost,
-            'totalMoneyorder' => $totalMoneyorder
+            'totalMoneyorder' => $totalMoneyorder,
+            'orderData' => $orderData
+
         ]);
     }
 }
