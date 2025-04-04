@@ -399,3 +399,34 @@ if (! isset($_SESSION['user'])) {
             }
         });
     </script>
+
+<style>
+    @media (max-width: 768px) {
+        .row > div {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .table thead { 
+            display: none; 
+        }
+        .table tbody tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 5px;
+        }
+        .table tbody tr td:last-child {
+            border-bottom: none;
+        }
+    }
+</style>

@@ -1,23 +1,5 @@
 
-<<<<<<< HEAD
-
-<<div class="container-xxl flex-grow-1 container-p-y">
-    <div class="orders-card px-0">
-        <!-- Search Bar and Create Order Button -->
-        <div class="mb-4 d-flex justify-content-between align-items-center">
-    <input type="text" class="form-control w-50" id="searchInput" placeholder="Search orders...">
-    <div class="d-flex gap-2">
-        <a href="/orders/create" class="btn btn-primary">
-            <i class="bi bi-plus"></i> Create Order
-        </a>
-        <a href="/orders/barcode" class="btn btn-secondary">
-            <i class="bi bi-upc"></i> Barcode Order
-        </a>
-    </div>
-</div>
-=======
 <div class="container-xxl flex-grow-1 container-p-y">
->>>>>>> 5bfeceb066ebc66e30f10384a27add074bd809cd
         <!-- Orders Table -->
         <div class="card border-0 shadow-lg container-fluid px-4">
             <div class="card-body p-4">
