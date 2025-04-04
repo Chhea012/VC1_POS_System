@@ -125,7 +125,7 @@
                         <div id="weatherapi-weather-widget-3"></div>
                         <script type="text/javascript" src="https://www.weatherapi.com/weather/widget.ashx?loc=1318546&wid=3&tu=1&div=weatherapi-weather-widget-3" async></script>
                         <noscript>
-                            <a href="https://www.weatherapi.com/weather/q/phnum-penh-1318546" alt="Phnum Penh Weather">10 day hour by hour Phnum Penh weather</a>
+                            <a href="https://www.weatherapi.com/weather/q/phnum-penh-1318546" alt="Phnum Penh Weather">10 days hour by hour Phnom Penh weather</a>
                         </noscript>
                     </div>
                 </div>
