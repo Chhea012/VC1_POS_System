@@ -548,3 +548,10 @@ h1 {
   transform: scale(1.15) rotate(5deg);
 }
 
+/* button barcode hover and create orders */
+
+    .create-order-btn:hover {
+        background-color: #0d6efd !important; /* Bootstrap primary color */
+        color: white !important;
+        border-color: #0d6efd !important;
+    }

@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-gradient">Notifications</h2>
             <button id="mark-all-read" class="btn btn-outline-primary btn-sm" style="display: none;">
-                <i class="bi bi-check-all me-1"></i> Mark All as Read
+                <i class="bi bi-check-all me-1"></i> Mark All as View
             </button>
         </div>
         <div id="notifications-list" class="notification-container"></div>
@@ -153,7 +153,7 @@
                                         <li>
                                             <a class="dropdown-item" href="#" onclick="markAsRead(${index}); return false;" style="color: #333;">
                                                 <i class="bi ${event.isRead ? 'bi-eye-slash' : 'bi-check'}"></i>
-                                                ${event.isRead ? "Mark Unread" : "Mark Read"}
+                                                ${event.isRead ? "Unview" : "View"}
                                             </a>
                                         </li>
                                         <li>
@@ -161,6 +161,7 @@
                                                 <i class="bi bi-trash"></i> Delete
                                             </a>
                                         </li>
+                                       
                                     </ul>
                                 </div>
                             </div>
@@ -196,17 +197,114 @@
         }
 
         function markAsRead(index) {
-            try {
-                const events = JSON.parse(localStorage.getItem("events")) || [];
-                if (index >= 0 && index < events.length) {
-                    events[index].isRead = !events[index].isRead;
-                    localStorage.setItem("events", JSON.stringify(events));
-                    loadNotifications();
-                }
-            } catch (error) {
-                console.error("Error marking as read:", error);
+    try {
+        const events = JSON.parse(localStorage.getItem("events")) || [];
+        if (index >= 0 && index < events.length) {
+            const event = events[index];
+            event.isRead = true; // Mark as read
+
+            localStorage.setItem("events", JSON.stringify(events));
+            loadNotifications();
+
+            if (event.title.toLowerCase().includes("low stock")) {
+                // Redirect to product list with a filter for low stock items
+                window.location.href = `/products?low_stock=true`;
+            } else {
+                // Show event details in a modal
+                showNotificationDetails(event);
             }
         }
+    } catch (error) {
+        console.error("Error marking as read:", error);
+    }
+}
+
+function showNotificationDetails(event) {
+    // Remove existing alert if present
+    const existingAlert = document.getElementById("notificationCard");
+    if (existingAlert) existingAlert.remove();
+
+    // Create a centered notification card with creative design
+    const alertHtml = `
+        <div id="notificationCard" class="position-fixed top-50 start-50 translate-middle p-4 rounded shadow-lg"
+            style="width: 400px; background: #1e3c72; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; 
+                   border-radius: 20px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); animation: scaleIn 0.6s ease-out, fadeIn 0.4s ease-in-out;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold d-flex align-items-center">
+                    <i class="bi bi-bell-fill text-warning me-2"></i> ${event.title}
+                </h5>
+                <button class="btn-close text-white" onclick="closeNotificationCard()" aria-label="Close"></button>
+            </div>
+            <hr style="border-color: rgba(255, 255, 255, 0.2);">
+            <p style="font-size: 14px; opacity: 0.85;">${event.description || "No additional details available."}</p>
+            <small class="text-light">🕒 ${new Date(event.timestamp).toLocaleString()}</small>
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-sm btn-light px-4" onclick="closeNotificationCard()">Close</button>
+            </div>
+            <div id="progressBar" style="height: 5px; width: 100%; background: rgba(255, 255, 255, 0.3); margin-top: 10px;">
+                <div id="progressBarFill" style="height: 100%; width: 0%; background: #ffde59; transition: width 5s;"></div>
+            </div>
+        </div>
+        
+        <div id="confetti" style="display: none;"></div>
+
+        <audio id="notificationSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+        
+        <style>
+            @keyframes scaleIn {
+                from { transform: scale(0.5) rotateY(-90deg); opacity: 0; }
+                to { transform: scale(1) rotateY(0); opacity: 1; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            @keyframes confetti {
+                0% { top: 0%; opacity: 1; transform: translateX(0); }
+                100% { top: 100%; opacity: 0; transform: translateX(100px); }
+            }
+            .confetti-piece {
+                position: absolute;
+                background-color: #ff4081;
+                width: 10px;
+                height: 10px;
+                animation: confetti 3s infinite ease-in-out;
+            }
+        </style>
+    `;
+
+    // Append to body
+    document.body.insertAdjacentHTML("beforeend", alertHtml);
+
+    // Play sound when notification opens
+    document.getElementById("notificationSound").play();
+
+    // Auto-close after 5 seconds and animate the progress bar
+    setTimeout(() => {
+        const progressBar = document.getElementById("progressBarFill");
+        progressBar.style.width = '100%'; // Fill the progress bar
+        createConfetti(); // Trigger confetti when closing
+        closeNotificationCard();
+    }, 5000);  // Notification closes after 5 seconds
+
+    // Add parallax effect when scrolling
+    document.body.style.overflow = 'hidden';
+}
+
+function closeNotificationCard() {
+    const alert = document.getElementById("notificationCard");
+    if (alert) {
+        alert.style.animation = "fadeOut 0.4s ease-in-out forwards";
+        setTimeout(() => alert.remove(), 400); // Remove after animation ends
+    }
+    // Allow scrolling again after notification is removed
+    document.body.style.overflow = 'auto';
+}
+
 
         function updateNotificationBadge() {
             try {
