@@ -63,7 +63,9 @@ class AdminController extends BaseController {
         $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
         $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
         $totalOrders = $this->adminHome->getTotalOrders();
-
+        $totalCost = $this->adminHome->totalCost()['Cost_total'] ?? 0;
+        $totalMoneyorder = $this->adminHome->totalMoneyorder()['Money_order'] ?? 0;
+        
         // Pass the data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
@@ -79,7 +81,9 @@ class AdminController extends BaseController {
             'totalMoneyOrder' => $totalMoneyOrder,
             'salesIncrement'  => $salesIncrement,
             'orderIncrease' => $orderIncrease,  
-            'categoriesOrderedToday' => $categoriesOrderedToday
+            'categoriesOrderedToday' => $categoriesOrderedToday,
+            'totalCost' => $totalCost,
+            'totalMoneyorder' => $totalMoneyorder
         ]);
     }
 }

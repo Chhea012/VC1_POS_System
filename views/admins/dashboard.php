@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-center">
-                            <img src="views/assets/modules/img/illustrations/man-with-laptop-light.png" height="160" alt="Illustration">
+                            <img src="views/assets/modules/img/illustrations/dashoad.png" height="200" alt="Illustration">
                         </div>
                     </div>
                 </div>
@@ -38,9 +38,9 @@
                 <div class="card p-2 border-primary">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Chart Success" class="rounded" width="50" height="50">
-                            </div>
+                        <div class="avatar flex-shrink-0">
+                        <i class="bx bx-cylinder fs-2 text-warning"></i>
+                        </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
@@ -55,35 +55,13 @@
                         <h1 class="card-title mb-2 text-primary">
                             <?php echo htmlspecialchars($totalOrderedQuantity)?>
                         </h1>
-                        <small class="text-success fs-6">
-                            <i class="bx bx-up-arrow-alt"></i> +8 🔥
-                        </small>
-                    </div>
-                </div>
-            </div>
-            <!-- Product Default Card -->
-            <div class="col-lg-4 order-1 mt-4">
-                <div class="card p-2 border-success">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Wallet Info" class="rounded" width="50" height="50">
-                            </div>
-                            <div class="dropdown">
-                                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="fw-semibold d-block mb-1 fs-5">Default Products 🛒</span>
-                        <h1 class="card-title mb-2 text-success"><?php echo $addedStock?></h1>
-                        <?php if ($addedStock >= 0): ?>
+                        <?php if ($orderIncrease >= 0): ?>
                             <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +<?php echo $addedStock?> 🌟
+                                <i class="bx bx-up-arrow-alt"></i> +<?= $orderIncrease ?>% 🔥
+                            </small>
+                        <?php else: ?>
+                            <small class="text-muted fs-6">
+                                <i class="bx bx-minus"></i> 0%
                             </small>
                         <?php endif; ?>
                     </div>
@@ -95,9 +73,9 @@
                 <div class="card p-2 border-warning">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Chart Success" class="rounded" width="50" height="50">
-                            </div>
+                <div class="avatar flex-shrink-0">
+                        <i class="bx bx-box fs-2 text-warning"></i>
+                </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
@@ -117,6 +95,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- Weather Widget -->
             <div class="col-lg-8 mb-4 order-2 w-100">
                 <div class="card p-3">
@@ -130,14 +109,14 @@
                     </div>
                 </div>
             </div>
-
             <!-- money get from order -->
             <div class="col-lg-4 order-1 mt-4">
                 <div class="card p-2 border-primary">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/chart-success.png" alt="Chart Success" class="rounded" width="50" height="50">
+                        <div class="avatar flex-shrink-0">
+                        <i class='bx bx-credit-card-alt fs-2 text-warning'></i>
+
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -150,23 +129,20 @@
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
-                        <h1 class="card-title mb-2 text-primary"><?php echo number_format($totalMoneyOrder, 2); ?>$</h1>
+                        <h1 class="card-title mb-2 text-primary">
+                        <?= htmlspecialchars($totalMoneyorder) ?>$</h1>
                         <?php if (isset($salesIncrement) >= 0): ?>
-                            <small class="text-success fs-6">
-                                <i class="bx bx-up-arrow-alt"></i> +8.00 $🔥
-                            </small>
                         <?php endif; ?>
                     </div>
                 </div>
             </div>
-            <!-- Expenses​  Card -->
             <div class="col-lg-4 order-1">
                 <div class="card p-2 border-info">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/wallet-info.png" alt="Wallet Info" class="rounded" width="50" height="50">
-                            </div>
+                        <div class="avatar flex-shrink-0">
+                        <i class='bx bx-money fs-2 text-warning'></i>
+                        </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
@@ -177,9 +153,9 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1 fs-5">Expenses 💰</span>
-                        <h1 class="card-title mb-2 text-info">10.00 $</h1>
-                        <small class="text-danger fs-6"><i class="bx bx-down-arrow-alt"></i> -2.42 $ 💸</small>
+                        <span class="fw-semibold d-block mb-1 fs-5">Expenses💰</span>
+                        <h1 class="card-title mb-2 text-info">
+                            $<?= htmlspecialchars($totalCost) ?></h1>
                     </div>
                 </div>
             </div>
@@ -187,9 +163,9 @@
                 <div class="card p-2 border-info">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                            <div class="avatar flex-shrink-0">
-                                <img src="views/assets/modules/img/icons/unicons/wallet-info.png" alt="Wallet Info" class="rounded" width="50" height="50">
-                            </div>
+                        <div class="avatar flex-shrink-0">
+                        <i class="bx bx-wallet fs-2 text-warning"></i>
+                        </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-5"></i>
@@ -206,7 +182,7 @@
                         <?php if ($increment >= 0): ?>
                             <small class="text-success fs-6">
                                 <i class="bx bx-up-arrow-alt"></i>
-                                +                                  <?php echo number_format($increment ?? 0, 2); ?> $ 💸
+                                +<?php echo number_format($increment ?? 0, 2); ?> $ 💸
                             </small>
                         <?php endif; ?>
                     </div>
@@ -252,29 +228,27 @@
                     </div>
                 </div>
             </div>
-
-            <!--/ Order Statistics -->
+            
             <!-- Product Stock -->
             <div class="col-md-6 col-lg-4 order-1 mb-4">
                 <div class="card h-100 shadow-sm border-light rounded-3">
                     <div class="card-header d-flex justify-content-between align-items-center  text-white rounded-top">
                         <ul class="nav nav-pills" role="tablist">
                             <li class="nav-item">
-                                <button type="button" class="nav-link active btn btn-outline-info mx-1" role="tab" data-bs-toggle="tab"
+                                <button type="button" class="nav-link active btn-outline-info mx-1" role="tab" data-bs-toggle="tab"
                                     data-bs-target="#low-stock" aria-controls="low-stock" aria-selected="true">
                                     <i class="bx bx-down-arrow-circle"></i> Low Stock
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <button type="button" class="nav-link btn btn btn-outline-info" role="tab" data-bs-toggle="tab"
+                                <button type="button" class="nav-link btn-outline-info" role="tab" data-bs-toggle="tab"
                                     data-bs-target="#high-stock" aria-controls="high-stock" aria-selected="false">
                                     <i class="bx bx-up-arrow-circle"></i> High Stock
                                 </button>
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="tab-content">
+                        <div class="tab-content p-0">
                             <!-- Low Stock Tab -->
                             <div class="tab-pane fade show active" id="low-stock" role="tabpanel">
                                 <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
@@ -283,7 +257,7 @@
                                             <div class="d-flex align-items-center">
                                                 <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
                                                     class="rounded-circle"
-                                                    style="width: 40px; height: 50px;"
+                                                    style="width: 50px;"
                                                     alt="Product Image" />
                                                 <div class="ms-3">
                                                     <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
@@ -303,7 +277,7 @@
                                             <div class="d-flex align-items-center">
                                                 <img src="<?php echo htmlspecialchars('views/products/' . $product['image']) ?>"
                                                     class="rounded-circle"
-                                                    style="width: 40px; height: 50px;"
+                                                    style="width: 50px;"
                                                     alt="Product Image" />
                                                 <div class="ms-3">
                                                     <h6 class="mb-1 text-dark fw-bold"><?php echo $product['product_name'] ?></h6>
@@ -315,7 +289,6 @@
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -472,6 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
+    
     /* Custom scrollbar */
     .list-group-flush::-webkit-scrollbar {
         width: 8px;
@@ -490,4 +464,5 @@ document.addEventListener('DOMContentLoaded', function () {
     .list-group-flush::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+    
 </style>

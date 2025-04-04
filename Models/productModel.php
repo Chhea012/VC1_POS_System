@@ -202,5 +202,13 @@ public function updateProductQuantity($product_id, $quantity)
         return false;
     }
 }
+
+public function totalStockproduct(){
+    $query = "SELECT p.quantity, p.price, p.cost_product FROM products p";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
         
 }

@@ -18,17 +18,21 @@ if (! isset($_SESSION['user'])) {
                 <div class="col-md-4 border-end">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-muted small">IN-STORE SALES</div>
-                            <div class="text-primary fs-4 fw-bold">$30</div>
-                            <div class="small">
-                                <?php echo $salesData['in_store']['orders'] ?> orders
-                                <span class="ms-2 badge bg-success-subtle text-success">
-                                    +<?php echo $salesData['in_store']['change'] ?>%
-                                </span>
+                            <div class="text-muted small">TOTAL STOCK PRODUCT</div>
+                                <div class="text-primary fs-4 fw-bold"><div class="text-primary fs-4 fw-bold">
+                                <?php
+                                        $totalQuantity = 0;
+                                        foreach ($products as $product) {
+                                            $totalQuantity += isset($product['quantity']) ? $product['quantity'] : 0;
+                                        }
+                                        ?>
+                                        <td><?= number_format($totalQuantity) ?></td>
+                                </div>
                             </div>
+
                         </div>
-                        <div class="bg-light p-2 rounded">
-                            <i class="bi bi-shop fs-5"></i>
+                        <div class="bg-light p-3 rounded">
+                            <i class="bi bi-box-seam-fill fs-5"></i>
                         </div>
                     </div>
                 </div>
@@ -37,17 +41,20 @@ if (! isset($_SESSION['user'])) {
                 <div class="col-md-4 border-end">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-muted small">WEBSITE SALES</div>
-                            <div class="fs-4 fw-bold">$20</div>
-                            <div class="small">
-                                <?php echo $salesData['website']['orders'] ?> orders
-                                <span class="ms-2 badge bg-success-subtle text-success">
-                                    +<?php echo $salesData['website']['change'] ?>%
-                                </span>
+                            <div class="text-muted small">TOTAL PRICE </div>
+                            <div class=" text-primary fs-4 fw-bold">
+                            <?php
+                                    $totalPrice = 0;
+                                    foreach ($products as $product) {;
+
+                                        $totalPrice += isset($product['price']) && isset($product['quantity']) ? $product['price'] * $product['quantity'] : 0;
+                                    }
+                                    ?>
+                                    <td><?= number_format($totalPrice, 2) ?>$</td>
                             </div>
                         </div>
-                        <div class="bg-light p-2 rounded">
-                            <i class="bi bi-laptop fs-5"></i>
+                        <div class="bg-light p-3 rounded">
+                            <i class="bi bi-coin fs-5"></i>
                         </div>
                     </div>
                 </div>
@@ -56,17 +63,20 @@ if (! isset($_SESSION['user'])) {
                 <div class="col-md-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div class="text-muted small">AFFILIATE</div>
-                            <div class="text-primary fs-4 fw-bold">$30</div>
-                            <div class="small">
-                                <?php echo $salesData['affiliate']['orders'] ?> orders
-                                <span class="ms-2 badge bg-danger-subtle text-danger">
-                                    -<?php echo $salesData['affiliate']['change'] ?>%
-                                </span>
+                            <div class="text-muted small">TOTAL PROFITE</div>
+                            <div class="text-primary fs-4 fw-bold">
+                            <?php
+                                    $totalProfit = 0;
+                                    foreach ($products as $product) {;
+
+                                        $totalProfit += isset($product['price'], $product['quantity'], $product['cost_product']) ? number_format(($product['price'] * $product['quantity']) - ($product['cost_product'] * $product['quantity']), 2) : '0.00' ;
+                                    }
+                                    ?>
+                                    <td><?= number_format($totalProfit, 2) ?>$</td>
                             </div>
                         </div>
-                        <div class="bg-light p-2 rounded">
-                            <i class="bi bi-people fs-5"></i>
+                        <div class="bg-light p-3 rounded">
+                            <i class="bi bi-wallet fs-5"></i>
                         </div>
                     </div>
                 </div>

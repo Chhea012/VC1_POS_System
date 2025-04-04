@@ -38,11 +38,21 @@ class adminHome {
     }
     
     public function storeTotalMoney($total) {
-        $stmt = $this->db->query("INSERT INTO money_history (total_money) VALUES (:total_money)", [
-            ':total_money' => $total
-        ]);
-        return $stmt->rowCount() > 0;
+        // Get the latest total_money from the table
+        $stmt = $this->db->query("SELECT total_money FROM money_history ORDER BY id DESC LIMIT 1");
+        $lastTotal = $stmt->fetchColumn();
+    
+        // Insert only if the new total is greater than the last total
+        if ($total > $lastTotal) {
+            $stmt = $this->db->query("INSERT INTO money_history (total_money) VALUES (:total_money)", [
+                ':total_money' => $total
+            ]);
+            return $stmt->rowCount() > 0;
+        }
+        return false; // No insertion happened
     }
+    
+    
 
     // New methods for stock tracking
     public function getPreviousTotalStock() {
@@ -51,11 +61,21 @@ class adminHome {
     }
     
     public function storeTotalStock($total) {
-        $stmt = $this->db->query("INSERT INTO stock_history (total) VALUES (:total)", [
-            ':total' => $total
-        ]);
-        return $stmt->rowCount() > 0;
+        // Get the latest total stock from the table
+        $stmt = $this->db->query("SELECT total FROM stock_history ORDER BY id DESC LIMIT 1");
+        $lastTotal = $stmt->fetchColumn();
+        
+        // Insert only if the new total is greater than the last total
+        if ($total > $lastTotal) {
+            $stmt = $this->db->query("INSERT INTO stock_history (total) VALUES (:total)", [
+                ':total' => $total
+            ]);
+            return $stmt->rowCount() > 0;
+        }
+    
+        return false; // No insertion happened
     }
+    
 
     public function getTotalOrderedQuantity() {
         $query = "SELECT SUM(quantity) AS total_ordered_quantity FROM order_items";
@@ -96,6 +116,18 @@ public function getTotalOrders() {
     $stmt = $this->db->query($query);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result ? $result['total_orders'] : 0;
+}
+public function totalCost() {
+    $query = "SELECT SUM(cost_product * quantity) AS Cost_total FROM products";
+    $stmt = $this->db->query($query);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+public function totalMoneyorder() {
+    $query = "SELECT SUM(total_amount) AS Money_order FROM orders";
+    $stmt = $this->db->query($query);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 // Calculate order percentage increase

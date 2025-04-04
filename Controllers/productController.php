@@ -21,7 +21,8 @@ class productController extends BaseController
         $products = $this->productManager->getAllpage($itemsPerPage, $offset, $category_id, $stock_filter);
         $totalProducts = $this->productManager->getTotalProducts($category_id, $stock_filter);
         $totalPages    = ceil($totalProducts / $itemsPerPage);
-        $categories    = $this->productManager->getCategories(); // Fetch categories for dropdown
+        $categories    = $this->productManager->getCategories(); 
+        $totalStock    = $this->productManager->totalStockproduct(); 
     
         $salesData = [
             'in_store'  => ['amount' => 500, 'orders' => 56, 'change' => 4.7, 'positive' => true],
@@ -35,7 +36,7 @@ class productController extends BaseController
             'itemsPerPage' => $itemsPerPage,
             'totalPages'   => $totalPages,
             'salesData'    => $salesData,
-            'categories'   => $categories, // Pass categories to the view
+            'categories'   => $categories,
         ]);
     }
 
