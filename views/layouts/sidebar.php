@@ -134,7 +134,7 @@
             orders: "Orders",
             topproductorder: "Top Products Ordered",
             historyorders: "History Orders",
-            user: "User",
+            user: "Users",
             weather: "Weather",
             calendar: "Calendar"
         },

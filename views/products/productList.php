@@ -119,9 +119,9 @@ if (! isset($_SESSION['user'])) {
                             <i class="bi bi-chevron-right"></i>
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => null])) ?>">All Stock</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => 'high'])) ?>">High Stock</a></li>
-                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => 'low'])) ?>">Low Stock</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => null])) ?>"><i class="bi bi-filter me-2"></i>All Stock</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => 'high'])) ?>"><i class="bi bi-check-circle me-2 text-success"></i>High Stock</a></li>
+                            <li><a class="dropdown-item" href="?<?php echo http_build_query(array_merge($_GET, ['stock' => 'low'])) ?>"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Low Stock</a></li>
                         </ul>
                     </div>
                 </div>
@@ -184,17 +184,17 @@ if (! isset($_SESSION['user'])) {
                     <table class="table table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th width="40px">
+                                <th width="40px" style="color: #000000;">
                                     #
                                 </th>
-                                <th>PRODUCT</th>
-                                <th>CATEGORY</th>
-                                <th>STOCK</th>
-                                <th>COST</th>
-                                <th>PRICE</th>
-                                <th>QTY</th>
-                                <th>Profit</th>
-                                <th>ACTION</th>
+                                <th style="color: #000000;">PRODUCT</th>
+                                <th style="color: #000000;">CATEGORY</th>
+                                <th style="color: #000000;">STOCK</th>
+                                <th style="color: #000000;">COST</th>
+                                <th style="color: #000000;">PRICE</th>
+                                <th style="color: #000000;">QTY</th>
+                                <th style="color: #000000;">Profit</th>
+                                <th style="color: #000000;">ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
