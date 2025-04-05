@@ -23,7 +23,7 @@
                                 <p class="mb-4 fs-5">Boom! You've smashed it with <span class="fw-bold text-success">
                                         <?php echo $orderIncrease?>% more orders</span>
                                     today. Check your orders now!</p>
-                                <a href="/orders" class="btn btn-primary fs-6">View Orders</a>
+                                <a href="/orders/barcode" class="btn btn-primary fs-6">View Orders</a>
                             </div>
                         </div>
                         <div class="col-sm-4 text-center">
