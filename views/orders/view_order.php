@@ -1,4 +1,12 @@
-<style>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
         .container-p-y {
             padding-top: 1.5rem;
             padding-bottom: 1.5rem;
@@ -17,7 +25,6 @@
         }
         .order-items-table th {
             background-color: #212529;
-
         }
         .hover-row:hover {
             background-color: #f5f5f5;
@@ -25,6 +32,12 @@
         .grand-total {
             font-weight: bold;
             color: #ff5733;
+        }
+        .product-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -40,19 +53,19 @@
             <div class="modal-body">
                 <!-- Order Details -->
                 <div class="order-details mt-4 card p-3">
-                    <p><strong>Order Date:</strong> <span class="text-muted"><?php echo $order['order_date']; ?></span></p>
-                    <p><strong>Payment Mode:</strong> <i class="bi bi-cash-coin me-1"></i> <?php echo ucfirst($order['payment_mode']); ?></p>
+                    <p><strong>Order Date:</strong> <span class="text-muted"><?php echo htmlspecialchars($order['order_date']); ?></span></p>
+                    <p><strong>Payment Mode:</strong> <i class="bi bi-cash-coin me-1"></i> <?php echo htmlspecialchars(ucfirst($order['payment_mode'])); ?></p>
                 </div>
                 
                 <!-- Order Items Details -->
                 <div class="order-items mt-4">
                     <h3 class="section-title mb-3">Order Items Details</h3>
                     <div class="table-responsive">
-                    <table class="table table-hover align-middle table-striped border rounded shadow-sm">
-                        <table class="table order-items-table table-bordered">
+                        <table class="table order-items-table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th style="color: white;">#</th>
+                                    <th style="color: white;">Image</th>
                                     <th style="color: white;">Product</th>
                                     <th style="color: white;">Price</th>
                                     <th style="color: white;">Quantity</th>
@@ -60,25 +73,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php if (!empty($orderItems)): ?>
-                            <?php $index = 0; ?>
-                            <?php foreach ($orderItems as $item): ?>
-                                <tr class="hover-row">
-                                    <td><?php echo ++$index; ?></td> 
-                                    <td><?php echo htmlspecialchars($item['product_name']); ?></td>
-                                    <td><?php echo number_format($item['price'], 2); ?></td>
-                                    <td><?php echo $item['quantity']; ?></td>
-                                    <td><?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="5" class="text-center">No items found for this order.</td>
-                            </tr>
-                        <?php endif; ?>
+                                <?php if (!empty($orderItems)): ?>
+                                    <?php $index = 0; ?>
+                                    <?php foreach ($orderItems as $item): ?>
+                                        <tr class="hover-row">
+                                            <td><?php echo ++$index; ?></td>
+                                            <td>
+                                                <img src="<?php echo htmlspecialchars($item['image'] ? '/views/products/' . $item['image'] : '/views/products/default.jpg'); ?>" 
+                                                     class="product-image" 
+                                                     alt="<?php echo htmlspecialchars($item['product_name']); ?>"
+                                                     onerror="this.src='/views/products/default.jpg'">
+                                            </td>
+                                            <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                            <td><?php echo number_format($item['price'], 2); ?></td>
+                                            <td><?php echo $item['quantity']; ?></td>
+                                            <td><?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center">No items found for this order.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
-                    </table>
                     </div>
                     <div class="mt-3 text-end">
                         <h5 class="grand-total">
@@ -89,3 +107,5 @@
             </div>
         </div>
     </div>
+</body>
+</html>
