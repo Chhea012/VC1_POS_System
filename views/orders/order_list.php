@@ -188,7 +188,7 @@ if (!isset($_SESSION['user'])) {
         }
         
         .carousel-inner {
-            padding: 0;
+            padding: 0; 
         }
         
         .row.g-4.p-4 {
