@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Top Products Slideshow - Now with 2 products per slide -->
+    <!-- Top Products Slideshow -->
     <?php if (!empty($topProducts)): ?>
         <div class="card mb-4 border-0 overflow-hidden">
             <div class="card-header bg-primary py-3">
@@ -21,7 +21,6 @@ if (!isset($_SESSION['user'])) {
                 <div id="topProductsCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <?php 
-                        // Split products into chunks of 2 for each slide
                         $productChunks = array_chunk($topProducts, 2);
                         foreach ($productChunks as $index => $chunk): ?>
                             <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
@@ -68,7 +67,6 @@ if (!isset($_SESSION['user'])) {
         </div>
     <?php endif; ?>
 
-    <!-- Rest of your code remains unchanged -->
     <!-- Orders Table -->
     <div class="card">
         <div class="card-body">
@@ -86,7 +84,7 @@ if (!isset($_SESSION['user'])) {
                     </thead>
                     <tbody id="ordersTableBody">
                         <?php foreach ($orders as $index => $order): ?>
-                            <tr>
+                            <tr data-order-id="<?php echo $order['order_id']; ?>">
                                 <th scope="row"><?php echo $index + 1; ?></th>
                                 <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
                                 <td><?php echo date('H:i:s A', strtotime($order['order_date'])); ?></td>
@@ -108,10 +106,15 @@ if (!isset($_SESSION['user'])) {
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
+                                                <a class="dropdown-item text-danger delete-order" 
+                                                   href="javascript:void(0);" 
+                                                   data-order-id="<?php echo $order['order_id']; ?>">
                                                     <i class="bi bi-trash me-2"></i>Delete Order
                                                 </a>
-                                                <form id="delete-form-<?php echo $order['order_id'] ?>" action="/orders/delete/<?php echo $order['order_id'] ?>" method="POST" style="display:none;">
+                                                <form id="delete-form-<?php echo $order['order_id']; ?>" 
+                                                      action="/orders/delete/<?php echo $order['order_id']; ?>" 
+                                                      method="POST" 
+                                                      style="display:none;">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                 </form>
                                             </li>
@@ -126,23 +129,45 @@ if (!isset($_SESSION['user'])) {
         </div>
     </div>
 
-    <!-- Toast Notification and Modal sections remain unchanged -->
-    <!-- ... -->
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Order deleted successfully!
+            </div>
+        </div>
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Failed to delete order. Please try again.
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
-    /* Creative Image Border Styles */
     .image-frame {
         position: relative;
-        width: 250px;  /* Slightly smaller to fit two per slide */
-        height: 250px;
+        width: 100%;
+        max-width: 250px;
+        aspect-ratio: 1 / 1;
         padding: 8px;
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         border-radius: 15px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
+        margin: 0 auto;
     }
-    
+
     .image-frame::before {
         content: '';
         position: absolute;
@@ -150,14 +175,12 @@ if (!isset($_SESSION['user'])) {
         border-radius: 15px;
         padding: 2px;
         background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45aaf2, #a55eea);
-        -webkit-mask: 
-            linear-gradient(#fff 0 0) content-box, 
-            linear-gradient(#fff 0 0);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
         mask-composite: exclude;
         pointer-events: none;
     }
-    
+
     .product-image {
         width: 100%;
         height: 100%;
@@ -165,56 +188,187 @@ if (!isset($_SESSION['user'])) {
         border-radius: 10px;
         transition: transform 0.3s ease;
     }
-    
+
     .image-frame:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 30px rgba(0,0,0,0.2);
     }
-    
+
     .image-frame:hover .product-image {
         transform: scale(1.02);
     }
-    
-    /* Carousel adjustments for two products */
+
     .carousel-inner {
         padding: 0 15px;
     }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
+
+    .d-flex.flex-column.flex-md-row {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .text-center.text-md-start {
+        text-align: left;
+    }
+
+    @media (max-width: 768px) and (min-width: 577px) {
         .image-frame {
-            width: 150px;
-            height: 150px;
+            max-width: 200px;
         }
+<<<<<<< HEAD
         
         .carousel-inner {
             padding: 0; 
         }
         
+=======
+
+>>>>>>> a5fd521efbcbcba3d606f6883d0885c89d6ace85
         .row.g-4.p-4 {
             padding: 15px !important;
         }
-    }
-    
-    @media (max-width: 576px) {
-        /* Stack products vertically on small screens */
-        .carousel-item .col-md-6 {
-            width: 100%;
-            margin-bottom: 20px;
+
+        .product-image {
+            height: auto;
         }
-        
-        .image-frame {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto;
+
+        .badge {
+            font-size: 0.9rem;
+        }
+
+        .text-center.text-md-start h4 {
+            font-size: 1.1rem;
+        }
+
+        .d-flex.flex-column.flex-md-row {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .text-center.text-md-start {
+            text-align: center;
         }
     }
+<<<<<<< HEAD
+}
+
+@media (max-width: 576px) {
+    .form-label {
+        font-size: 1rem; /* Adjust label font size */
+    }
+
+    /* Make the select dropdown fit within its container on mobile */
+ 
+    .col-md-6, .col-md-2, .col-md-12 {
+        flex: 1 1 100%; /* Ensure all columns take full width in mobile view */
+        margin-bottom: 0.5rem; /* Spacing between columns on mobile */
+    }
+
+    /* Ensure the button inside the col-2 is aligned */
+    .d-flex .btn {
+        width: 100%; /* Full width buttons on small screens */
+        padding: 1rem; /* Increased padding for better touch */
+    }
+
+    /* Adjust the quantity input for better visibility */
+    .col-md-2 input[type="number"] {
+        width: 100%; /* Make sure inputs fill the container */
+    }
+
+    /* Adjust the table layout on mobile */
+    .table {
+        display: block;
+        width: 100%;
+        overflow-x: auto; /* Allow horizontal scrolling for table */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table th, .table td {
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    /* Adjust each table row into a block layout on mobile */
+    .table tbody tr {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem; /* Spacing between rows */
+    }
+
+    .table tbody tr td {
+        display: block;
+        width: 100%; /* Make each cell take full width */
+        padding: 0.5rem;
+        text-align: left;
+    }
+
+    .table tbody tr td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Additional styling to make sure content fits well */
+    .col-md-2.col-12 {
+        flex: 1; /* Ensure product input and quantity span full width on mobile */
+    }
+
+    /* Make sure the card has spacing */
+    .card {
+        margin-bottom: 1rem; /* Add margin between cards */
+    }
+}
+
+
+
+
+
+
+
+=======
+>>>>>>> e8d5df1bc0d86ef84f9b22e9f33bb66799bf09e3
 </style>
 
 <script>
-    function confirmDelete(orderId) {
-        if (confirm("Are you sure you want to delete this order?")) {
-            document.getElementById('delete-form-' + orderId).submit();
-        }
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-order');
+        
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const orderId = this.getAttribute('data-order-id');
+                const form = document.getElementById(`delete-form-${orderId}`);
+                const row = this.closest('tr');
+                
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form)
+                    });
+                    
+                    if (response.ok) {
+                        const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
+                            delay: 3000
+                        });
+                        successToast.show();
+                        
+                        row.style.transition = 'opacity 0.3s';
+                        row.style.opacity = '0';
+                        setTimeout(() => row.remove(), 300);
+                    } else {
+                        throw new Error('Delete failed');
+                    }
+                } catch (error) {
+                    const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                        delay: 3000
+                    });
+                    errorToast.show();
+                }
+            });
+        });
+    });
 </script>

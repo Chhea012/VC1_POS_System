@@ -30,7 +30,7 @@ if (!isset($_SESSION['user'])) {
         <div class="card shadow-sm p-4">
             <h2>Create Order</h2>
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-6 col-12">
                     <label class="form-label fw-bold">Product</label>
                     <select id="product" class="form-select">
                         <option value="">Select Product</option>
@@ -44,6 +44,7 @@ if (!isset($_SESSION['user'])) {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="col-md-2">
                     <label class="form-label fw-bold">Discount (%)</label>
                     <input type="number" id="discount" class="form-control" value="0" min="0" max="100">
