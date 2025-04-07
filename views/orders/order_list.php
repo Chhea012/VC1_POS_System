@@ -216,7 +216,6 @@ if (!isset($_SESSION['user'])) {
         .image-frame {
             max-width: 200px;
         }
-
         .row.g-4.p-4 {
             padding: 15px !important;
         }
