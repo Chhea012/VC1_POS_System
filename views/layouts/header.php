@@ -24,9 +24,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
+
+    <head>
+    </head>
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="/views/assets/modules/vendor/fonts/boxicons.css" />
@@ -47,7 +51,7 @@
     <script src="/views/assets/modules/vendor/js/helpers.js"></script>
     <script src="/views/assets/modules/js/config.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
 
 </head>
 

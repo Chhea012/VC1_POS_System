@@ -27,12 +27,12 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <!-- This will be updated dynamically -->
+                        <img src="path/to/flag.png" alt="Language Flag" width="20" id="languageFlag">
+                        <span id="currentLang">EN</span>
                     </a>
-
-                    <!-- Dropdown menu (only one language option at a time) -->
                     <ul class="dropdown-menu" id="languageDropdownMenu" aria-labelledby="languageDropdown">
-                        <!-- This will be updated dynamically -->
+                        <li><a class="dropdown-item" href="#" data-lang="en">English (EN)</a></li>
+                        <li><a class="dropdown-item" href="#" data-lang="km">Khmer (KM)</a></li>
                     </ul>
                 </li>
 
