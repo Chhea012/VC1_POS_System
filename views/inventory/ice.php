@@ -432,6 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .table tbody tr {
             margin-bottom: 8px;
         }
+        
     }
 </style>
 
