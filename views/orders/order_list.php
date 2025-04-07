@@ -243,8 +243,7 @@ if (!isset($_SESSION['user'])) {
             text-align: center;
         }
     }
-<<<<<<< HEAD
-}
+
 
 @media (max-width: 576px) {
     .form-label {
@@ -321,8 +320,6 @@ if (!isset($_SESSION['user'])) {
 
 
 
-=======
->>>>>>> e8d5df1bc0d86ef84f9b22e9f33bb66799bf09e3
 </style>
 
 <script>
