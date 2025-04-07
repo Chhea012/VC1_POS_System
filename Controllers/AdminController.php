@@ -7,7 +7,7 @@ class AdminController extends BaseController {
     public function __construct() {
         $this->adminHome = new adminHome();
     }
-
+    
     public function index() {
         // Get Low stock products
         $lowStockProducts = $this->adminHome->getLowStockProducts();
@@ -59,11 +59,31 @@ class AdminController extends BaseController {
             ];
         }
 
-        $orderData = $this->adminHome->orderDay();
+// This week data
+$orderDataThisWeek = $this->adminHome->orderDay();
+$daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+$dailySumsThisWeek = array_fill_keys($daysOfWeek, 0);
+$totalMoneyThisWeek = 0;
+foreach ($orderDataThisWeek as $order) {
+    $dayName = date('l', strtotime($order['order_date']));
+    $dailySumsThisWeek[$dayName] += floatval($order['total_amount']);
+    $totalMoneyThisWeek += floatval($order['total_amount']);
+}
+$jsOrderDataThisWeek = implode(',', array_values($dailySumsThisWeek));
+
+// Last week data
+$orderDataLastWeek = $this->adminHome->orderDayLastWeek();
+$dailySumsLastWeek = array_fill_keys($daysOfWeek, 0);
+$totalMoneyLastWeek = 0;
+foreach ($orderDataLastWeek as $order) {
+    $dayName = date('l', strtotime($order['order_date']));
+    $dailySumsLastWeek[$dayName] += floatval($order['total_amount']);
+    $totalMoneyLastWeek += floatval($order['total_amount']);
+}
+$jsOrderDataLastWeek = implode(',', array_values($dailySumsLastWeek));
 
         // Get the order increase percentage
         $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
-        $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
         $totalOrders = $this->adminHome->getTotalOrders();
         $totalCost = $this->adminHome->totalCost()['Cost_total'] ?? 0;
         $totalMoneyorder = $this->adminHome->totalMoneyorder()['Money_order'] ?? 0;
@@ -86,9 +106,11 @@ class AdminController extends BaseController {
             'categoriesOrderedToday' => $categoriesOrderedToday,
             'totalCost' => $totalCost,
             'totalMoneyorder' => $totalMoneyorder,
-            'orderData' => $orderData
-
+            'orderDataThisWeek' => $orderDataThisWeek,
+            'jsOrderDataThisWeek' => $jsOrderDataThisWeek,
+            'jsOrderDataLastWeek' => $jsOrderDataLastWeek,
+            'totalMoneyThisWeek' => $totalMoneyThisWeek,
+            'totalMoneyLastWeek' => $totalMoneyLastWeek
         ]);
     }
 }
-
