@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 
-<div class="m-4">
+<div class="m-4 ">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewProductModalLabel">View Product</h5>
