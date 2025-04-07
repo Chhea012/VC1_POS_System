@@ -294,41 +294,48 @@
             </div>
             <!-- Grapic Sale -->
             <div class="col-md-6 col-lg-4 order-2 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5>Graphic Sales</h5>
-           
+    <div class="card h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5>Graphic Sales</h5>
+            <div class="dropdown">
+                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="#">This week</a>
+                    <a class="dropdown-item" href="#">Last week</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                <div class="d-flex p-4 pt-3">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <img src="views/assets/modules/img/icons/unicons/wallet.png" alt="User" />
                     </div>
-                    <div class="card-body">
-                        <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
-                            <div class="d-flex p-4 pt-3">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <img src="views/assets/modules/img/icons/unicons/wallet.png" alt="User" />
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block">Total Money Order</small>
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="mb-0 me-1"><?= htmlspecialchars($totalMoneyorder) ?>$</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Income Chart -->
-                            <div id="incomeChart"></div>
-
-                            <div class="d-flex justify-content-center pt-4 gap-2">
-                                <div class="flex-shrink-0">
-                                    <!-- Expenses this week -->
-                                    <div id="expensesOfWeek"></div>
-                                </div>
-                                <div>
-                                    <p class="mb-n1 mt-1">Quantiy Order this week</p>
-                                </div>
-                            </div>
+                    <div>
+                        <small class="text-muted d-block">Total Money Order</small>
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0 me-1" id="totalMoneyDisplay"><?= htmlspecialchars($totalMoneyThisWeek) ?>$</h6>
                         </div>
                     </div>
                 </div>
+
+                <!-- Income Chart -->
+                <div id="incomeChart"></div>
+
+                <div class="d-flex justify-content-center pt-4 gap-2">
+                    <div class="flex-shrink-0">
+                        <div id="expensesOfWeek"></div>
+                    </div>
+                    <div>
+                        <p class="mb-n1 mt-1">Quantity Order this week</p>
+                    </div>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 </div>
@@ -427,56 +434,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // ......Grapic orders ..........
+    // ......Grapic orders ..........   
     document.addEventListener("DOMContentLoaded", function () {
-
-    var orderData = [<?php echo $jsOrderData; ?>];
+    const thisWeekData = [<?php echo $jsOrderDataThisWeek; ?>];
+    const lastWeekData = [<?php echo $jsOrderDataLastWeek; ?>];
+    const totalMoneyThisWeek = <?php echo $totalMoneyThisWeek; ?>;
+    const totalMoneyLastWeek = <?php echo $totalMoneyLastWeek; ?>;
 
     const incomeChartEl = document.querySelector("#incomeChart");
+    const totalMoneyDisplay = document.querySelector("#totalMoneyDisplay");
 
     const incomeChartConfig = {
-        series: [{ name: "Total Sales $", data: orderData }],
-        chart: {
-            height: 215,
-            type: "area",
-            toolbar: { show: false }
-        },
+        series: [{ name: "Total Sales $", data: thisWeekData }],
+        chart: { height: 215, type: "area", toolbar: { show: false } },
         dataLabels: { enabled: false },
         stroke: { width: 2, curve: "smooth" },
         colors: ["#7367F0"],
-        fill: {
-            type: "gradient",
-            gradient: {
-                shade: "light",
-                shadeIntensity: 0.6,
-                opacityFrom: 0.5,
-                opacityTo: 0.25,
-                stops: [0, 95, 100]
-            }
+        fill: { 
+            type: "gradient", 
+            gradient: { 
+                shade: "light", 
+                shadeIntensity: 0.6, 
+                opacityFrom: 0.5, 
+                opacityTo: 0.25, 
+                stops: [0, 95, 100] 
+            } 
         },
-        grid: {
-            borderColor: "#ddd",
-            strokeDashArray: 3,
-            padding: { top: -20, bottom: -8, left: -10, right: 8 }
+        grid: { 
+            borderColor: "#ddd", 
+            strokeDashArray: 3, 
+            padding: { top: -20, bottom: -8, left: -10, right: 8 } 
         },
-        xaxis: {
-            categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-            labels: {
-                style: { fontSize: "13px", colors: "#666" }
-            }
+        xaxis: { 
+            categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"], 
+            labels: { style: { fontSize: "13px", colors: "#666" } } 
         },
-        yaxis: {
-            labels: { show: true },
-            min: 0,
-            tickAmount: 5
-        }
+        yaxis: { labels: { show: true }, min: 0, tickAmount: 5 }
     };
 
     if (incomeChartEl !== null) {
         const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
         incomeChart.render();
+
+        document.querySelectorAll(".dropdown-item").forEach(item => {
+            item.addEventListener("click", function (e) {
+                e.preventDefault();
+                const period = this.textContent;
+                if (period === "This week") {
+                    incomeChart.updateSeries([{ name: "Total Sales $", data: thisWeekData }]);
+                    totalMoneyDisplay.textContent = `${totalMoneyThisWeek}$`;
+                } else if (period === "Last week") {
+                    incomeChart.updateSeries([{ name: "Total Sales $", data: lastWeekData }]);
+                    totalMoneyDisplay.textContent = `${totalMoneyLastWeek}$`;
+                }
+            });
+        });
     }
 });
+
 </script>
 
 <style>
