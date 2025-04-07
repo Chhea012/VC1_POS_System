@@ -39,6 +39,45 @@ if (session_status() === PHP_SESSION_NONE) {
             object-fit: cover;
             border-radius: 4px;
         }
+        @media (max-width: 768px) {
+    .container-xxl {
+        padding: 10px;
+    }
+
+    .modal-body, .order-details {
+        padding: 10px;
+    }
+
+    .order-items-table {
+        font-size: 10px;
+    }
+
+    .order-items-table th, .order-items-table td {
+        padding: 4px;
+    }
+
+    .product-image {
+        width: 35px;
+        height: 35px;
+    }
+
+    .order-items .table-responsive {
+        overflow-x: auto;
+    }
+
+    .modal-header h5 {
+        font-size: 16px;
+    }
+
+    .btn-outline-secondary {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .grand-total {
+        font-size: 14px;
+    }
+}
     </style>
 </head>
 <body>

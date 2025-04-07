@@ -16,6 +16,8 @@ $products = $products ?? [];
 usort($products, function($a, $b) {
     return ($b['quantity'] ?? 0) <=> ($a['quantity'] ?? 0);
 });
+
+
 ?>
 
 <div class="container-xxl flex-grow-1 py-4">
@@ -132,6 +134,10 @@ usort($products, function($a, $b) {
         </div>
     </div>
         
+<<<<<<< HEAD
+=======
+                                
+>>>>>>> be8de9920dfd85369945d9cf64722ea0b509c440
     <!-- Transactions Section -->
     <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
         <h5 class="mb-0">Drinks Inventory:</h5>
