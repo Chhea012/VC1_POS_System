@@ -667,7 +667,7 @@ if (!isset($_SESSION['user'])) {
   /* moblie phone */
   @media (max-width: 768px) {
     .container-xxl {
-      padding: 3px; 
+      padding: 5px; 
     }
 
     .chart-container.one {
