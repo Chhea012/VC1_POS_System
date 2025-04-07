@@ -142,14 +142,14 @@ usort($products, function($a, $b) {
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="40px">#</th>
-                            <th>PRODUCT</th>
-                            <th>CATEGORY</th>
-                            <th>STOCK</th>
-                            <th>PRICE</th>
-                            <th>QTY</th>
-                            <th>AMOUNT</th>
-                            <th>ACTION</th>
+                            <th width="40px" style="color: #000000;">#</th>
+                            <th style="color: #000000;">PRODUCT</th>
+                            <th style="color: #000000;">CATEGORY</th>
+                            <th style="color: #000000;">STOCK</th>
+                            <th style="color: #000000;">PRICE</th>
+                            <th style="color: #000000;">QTY</th>
+                            <th style="color: #000000;">AMOUNT</th>
+                            <th style="color: #000000;">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>

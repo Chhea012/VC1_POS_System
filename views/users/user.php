@@ -48,15 +48,15 @@ $roles = $roles ?? [];
                 <?php if (!empty($users)): ?>
                     <?php foreach ($users as $user): ?>
                         <tr class="bg-light">
-                            <td class="text-center">
+                            <td class="text-center" data-label="Profile">
                                 <img src="<?= htmlspecialchars($user['profile_image'] ?? '/Views/assets/uploads/default-profile.png') ?>" class="rounded-circle" width="40" height="40" alt="Profile">
                             </td>
-                            <td><?= htmlspecialchars($user['user_name']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
-                            <td><span class="badge bg-info text-dark"><?= htmlspecialchars($user['role_name']) ?></span></td>
-                            <td><?= htmlspecialchars($user['phone_number'] ?? 'N/A') ?></td>
-                            <td>
-                                <div class="dropdown">
+                            <td data-label="User Name"><?= htmlspecialchars($user['user_name']) ?></td>
+                            <td data-label="Email"><?= htmlspecialchars($user['email']) ?></td>
+                            <td data-label="Role"><span class="badge bg-info text-dark"><?= htmlspecialchars($user['role_name']) ?></span></td>
+                            <td data-label="Phone"><?= htmlspecialchars($user['phone_number'] ?? 'N/A') ?></td>
+                            <td data-label="Actions">
+                                <div class="dropdown text-end">
                                     <button class="btn btn-light btn-sm border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-three-dots-vertical"></i>
                                     </button>
@@ -260,8 +260,144 @@ $roles = $roles ?? [];
         height: 100%;
         border-radius: 0;
     }
-</style>
 
+    /* Image upload box layout */
+    #image-upload-box, .border.rounded-2xl {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+        border: 2px dashed #6c757d;
+        cursor: pointer;
+        text-align: center;
+        background: #f8f9fa;
+    }
+
+    #image-upload-box img, #edit_image_preview, #create_image_preview {
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+    }
+
+    /* Responsive table for tablets and mobiles */
+    @media (max-width: 1024px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table thead {
+            display: table-header-group;
+        }
+
+        .table tbody tr {
+            display: table-row;
+        }
+
+        .table td, .table th {
+            padding: 0.75rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #495057;
+            margin-right: 0.5rem;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            left: auto;
+        }
+
+        .modal-right .modal-dialog {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .modal-content {
+            height: auto;
+            border-radius: 0.5rem;
+        }
+
+        #image-upload-box, .border.rounded-2xl {
+            padding: 0.75rem;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+        }
+
+        .form-control, .form-select {
+            font-size: 0.875rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .btn {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .modal-title {
+            font-size: 1rem;
+        }
+
+        #image-upload-box i, #edit-upload-placeholder i {
+            font-size: 1.5rem;
+        }
+
+        #image-upload-box p, #edit-upload-placeholder p {
+            font-size: 0.75rem;
+        }
+
+        .alert {
+            font-size: 0.875rem;
+        }
+    }
+
+    /* Ensure touch targets are large enough */
+    .dropdown-toggle {
+        padding: 0.5rem;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Delete Modal Handler

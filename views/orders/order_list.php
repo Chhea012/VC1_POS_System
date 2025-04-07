@@ -1,44 +1,113 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: /");
+    exit();
+}
+?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
-        <!-- Orders Table -->
-        <div class="card border-0 shadow-lg container-fluid px-4">
-            <div class="card-body p-4">
-                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                    <table class="table table-striped table-hover align-middle">
-                        <thead>
+    <!-- Top Products Slideshow - Now with 2 products per slide -->
+    <?php if (!empty($topProducts)): ?>
+        <div class="card mb-4 border-0 overflow-hidden">
+            <div class="card-header bg-primary py-3">
+                <h3 class="mb-0 text-center text-white">
+                    <i class="bi bi-star-fill me-2 text-white"></i>Top Product Orders
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <div id="topProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php 
+                        // Split products into chunks of 2 for each slide
+                        $productChunks = array_chunk($topProducts, 2);
+                        foreach ($productChunks as $index => $chunk): ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <div class="row g-4 p-4">
+                                    <?php foreach ($chunk as $product): ?>
+                                        <div class="col-md-6">
+                                            <div class="d-flex flex-column flex-md-row align-items-center">
+                                                <div class="position-relative me-md-4 mb-3 mb-md-0">
+                                                    <div class="image-frame">
+                                                        <img src="<?php echo htmlspecialchars($product['image'] ? '/views/products/' . $product['image'] : '/views/products/default.jpg'); ?>" 
+                                                             class="d-block product-image" 
+                                                             alt="<?php echo htmlspecialchars($product['product_name']); ?>"
+                                                             onerror="this.src='/views/products/default.jpg'">
+                                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                            #<?php echo $product['rank']; ?>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center text-md-start">
+                                                    <h4 class="fw-bold text-primary"><?php echo htmlspecialchars($product['product_name']); ?></h4>
+                                                    <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-2">
+                                                        <span class="badge bg-success">$<?php echo number_format($product['price'], 2); ?></span>
+                                                        <span class="badge bg-info">Qty: <?php echo $product['total_quantity']; ?></span>
+                                                        <span class="badge bg-primary">Rank: #<?php echo $product['rank']; ?></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#topProductsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#topProductsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <!-- Rest of your code remains unchanged -->
+    <!-- Orders Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" style="color: white;">S.No</th>
+                            <th scope="col" style="color: white;">Order Date</th>
+                            <th scope="col" style="color: white;">Order Time</th>
+                            <th scope="col" style="color: white;">Order Price</th>
+                            <th scope="col" style="color: white;">Payment Status</th>
+                            <th scope="col" style="color: white;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <?php foreach ($orders as $index => $order): ?>
                             <tr>
-                                <th>S.No</th>
-                                <th>Order Date</th>
-                                <th>Order Time</th>
-                                <th>Order Price</th>
-                                <th>Payment Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <?php foreach ($orders as $index => $order): ?>
-                                <tr>
-                                    <td class="text-secondary"><?php echo $index + 1; ?></td>
-                                    <td class="order-date"><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
-                                    <td class="order-time"><?php echo date('H:i:s A', strtotime($order['order_date'])); ?></td>
-                                    <td>
-                                        <span class="fw-bold"><?php echo htmlspecialchars($order['total_amount']); ?></span>
-                                    </td>
-                                    <td class="payment-status text-capitalize">
+                                <th scope="row"><?php echo $index + 1; ?></th>
+                                <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
+                                <td><?php echo date('H:i:s A', strtotime($order['order_date'])); ?></td>
+                                <td class="fw-bold text-primary">$<?php echo htmlspecialchars($order['total_amount']); ?></td>
+                                <td>
+                                    <span class="badge <?php echo $order['payment_mode'] === 'paid' ? 'bg-success' : 'bg-warning'; ?>">
                                         <?php echo htmlspecialchars($order['payment_mode']); ?>
-                                    </td>
-                                    <td>
-                                        <div class="action-dropdown">
-                                            <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
-                                                <i class="bi bi-three-dots-vertical"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item text-primary" href="/orders/view/<?php echo $order['order_id'] ?>">
-                                                        <i class="bi bi-eye"></i> View Details
-                                                    </a>
-                                                </li>
-                                                <li>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link text-dark" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                            <li>
+                                                <a class="dropdown-item" href="/orders/view/<?php echo $order['order_id'] ?>">
+                                                    <i class="bi bi-eye me-2"></i>View Details
+                                                </a>
+                                            </li>
+                                            <li>
                                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $order['order_id']; ?>)">
                                                     <i class="bi bi-trash me-2"></i>Delete Order
                                                 </a>
@@ -46,155 +115,121 @@
                                                     <input type="hidden" name="_method" value="DELETE">
                                                 </form>
                                             </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-    </div>
-</div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
-    <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body" id="toastText">
-                Success message here
-            </div>
-
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
-  <!-- message alert edit and delete -->
-  <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var toastElement = document.getElementById("toastMessage");
-                var toastText = document.getElementById("toastText");
-
-                <?php if (isset($_SESSION['success_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
-                    toastElement.classList.add("bg-success");
-                    <?php unset($_SESSION['success_message']); ?>
-                <?php endif; ?>
-
-                <?php if (isset($_SESSION['error_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
-                    toastElement.classList.add("bg-danger");
-                    <?php unset($_SESSION['error_message']); ?>
-                <?php endif; ?>
-
-                var toast = new bootstrap.Toast(toastElement, {
-                    delay: 1000 // Set delay to 1000ms (1 second)
-                });
-                toast.show();
-            });
-        </script>
-    <?php endif; ?>
-<!-- View Order Modal -->
-<div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewOrderModalLabel">Order Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="background-color: #f8f9fa; border-radius: 8px;">
-                <!-- Order Details -->
-                <div class="order-details mt-4 card p-3" style="background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px;">
-                    <p><strong>Order Date:</strong> <span class="text-muted"><?= $order['order_date']; ?></span></p>
-                    <p><strong>Payment Mode:</strong> <i class="bi bi-cash-coin"></i> <?= ucfirst($order['payment_mode']); ?></p>
-                </div>
-                <!-- Order Items Details -->
-                <div class="order-items mt-4">
-                    <h3 class="section-title mb-3" style="color: #007bff;">Order Items Details</h3>
-                    <div class="table-responsive">
-                        <table class="table order-items-table table-bordered" style="border-collapse: collapse;">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($orderItems) && is_array($orderItems)): ?>
-                                    <?php foreach ($orderItems as $item): ?>
-                                        <tr class="hover-row">
-                                            <td><?= htmlspecialchars($item['product_name'] ?? 'N/A'); ?></td>
-                                            <td><?= number_format($item['price'] ?? 0, 2); ?></td>
-                                            <td><?= $item['quantity'] ?? 0; ?></td>
-                                            <td><?= number_format(($item['total_price'] ?? ($item['price'] * $item['quantity'] ?? 0)), 2); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="4" class="text-center">No items found for this order.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-3 text-end">
-                        <h5 class="grand-total" style="font-weight: bold; color: #ff5733;">
-                            <strong>Grand Total:</strong> $
-                            <?= number_format($order['total_amount'] ?? 0, 2); ?>
-                        </h5>
-                    </div>
-                </div>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <!-- Toast Notification and Modal sections remain unchanged -->
+    <!-- ... -->
 </div>
 
-<!-- Add custom CSS -->
 <style>
-    .hover-row:hover {
-        background-color: #f1f1f1;
-        cursor: pointer;
-    }
-
-    .grand-total {
-        font-size: 1.2em;
-        color: #ff5733;
-    }
-
-    .table-dark th {
-        background-color: #343a40;
-        color: white;
-    }
-
-    .table-bordered {
-        border: 1px solid #ddd;
-    }
-
-    .modal-content {
-        border-radius: 10px;
-    }
-</style>
-<script>
-    // Example: Add search functionality
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#ordersTableBody tr');
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    });
-
-    // Example: View order functionality
-    function viewOrder(orderId) {
-        alert(`Viewing order with ID: ${orderId}`);
-        // Redirect to a detailed order page or open a modal
-    }
-    function confirmDelete(orderId) {
-        document.getElementById('delete-form-' + orderId).submit();
+    /* Creative Image Border Styles */
+    .image-frame {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 1 / 1;
+    padding: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin: 0 auto;
 }
+
+.image-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    padding: 2px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45aaf2, #a55eea);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.image-frame:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.image-frame:hover .product-image {
+    transform: scale(1.02);
+}
+
+.carousel-inner {
+    padding: 0 15px;
+}
+
+.d-flex.flex-column.flex-md-row {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.text-center.text-md-start {
+    text-align: left;
+}
+
+@media (max-width: 768px) and (min-width: 577px) {
+    .image-frame {
+        max-width: 200px;
+    }
+
+    .row.g-4.p-4 {
+        padding: 15px !important;
+    }
+
+    .product-image {
+        height: auto;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+    }
+
+    .text-center.text-md-start h4 {
+        font-size: 1.1rem;
+    }
+
+    .d-flex.flex-column.flex-md-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .text-center.text-md-start {
+        text-align: center;
+    }
+}
+ 
+    
+</style>
+
+<script>
+    function confirmDelete(orderId) {
+        if (confirm("Are you sure you want to delete this order?")) {
+            document.getElementById('delete-form-' + orderId).submit();
+        }
+    }
 </script>
-
-

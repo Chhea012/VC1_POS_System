@@ -61,12 +61,6 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="/topproductorder" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-star"></i>
-                <div data-i18n="topproductorder"></div>
-            </a>
-        </li>
-        <li class="menu-item">
             <a href="/orders" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-history"></i>
                 <div data-i18n="historyorders"></div>
@@ -100,6 +94,7 @@
         background-color: rgba(23, 68, 217, 0.79) !important;
         font-weight: bold;
         border-radius: 5px;
+        margin-right: 35px;
     }
 
     .flag-icon {
@@ -133,7 +128,7 @@
             orders: "Orders",
             topproductorder: "Top Products Ordered",
             historyorders: "History Orders",
-            user: "User",
+            user: "Users",
             weather: "Weather",
             calendar: "Calendar"
         },

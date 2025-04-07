@@ -19,7 +19,7 @@ if (!isset($_SESSION['user'])) {
     </div>
 </div>
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="mt-2">
+    <div class="">
         <div class="card shadow-sm p-5">
             <h2>Order Product using Barcode</h2>
             <div class="row mt-3">
@@ -39,7 +39,6 @@ if (!isset($_SESSION['user'])) {
                     <label class="form-label fw-bold">Quantity</label>
                     <input type="number" id="quantity" class="form-control" value="1" min="1">
                 </div>
-                <!-- You can keep the button in case you need manual control -->
                 <div class="col-md-2 d-flex align-items-end">
                     <button class="btn btn-primary w-100" onclick="addItem()">Add Item</button>
                 </div>
@@ -52,6 +51,7 @@ if (!isset($_SESSION['user'])) {
                 <thead class="table-dark">
                     <tr>
                         <th style="color: white;">#</th>
+                        <th style="color: white;">Image</th>
                         <th style="color: white;">Product Name</th>
                         <th style="color: white;">Price</th>
                         <th style="color: white;">Quantity</th>
@@ -61,7 +61,7 @@ if (!isset($_SESSION['user'])) {
                 </thead>
                 <tbody id="product-list">
                     <tr>
-                        <td colspan="6" class="text-muted">No Items added</td>
+                        <td colspan="7" class="text-muted">No Items added</td>
                     </tr>
                 </tbody>
             </table>
@@ -116,10 +116,12 @@ if (!isset($_SESSION['user'])) {
                 } else {
                     currentProduct = {
                         name: product.name,
-                        price: parseFloat(product.price)
+                        price: parseFloat(product.price),
+                        image: product.image ? `/views/products/${product.image}` : '/views/products/default.jpg',
+                        productId: product.product_id // Keep for backend use
                     };
                     document.getElementById('productNameInput').value = product.name;
-                    // Automatically add the item once product details are available:
+                    // Automatically add the item once product details are available
                     addItem();
                 }
             })
@@ -140,10 +142,16 @@ if (!isset($_SESSION['user'])) {
         }
 
         const quantity = parseInt(document.getElementById('quantity').value);
-        const discount = parseFloat(document.getElementById('discount').value);
+        const discount = parseFloat(document.getElementById('discount').value) || 0;
 
-        if (isNaN(quantity) || quantity < 1 || isNaN(discount) || discount < 0 || discount > 100) {
-            alert('Invalid quantity or discount');
+        if (isNaN(quantity) || quantity < 1) {
+            alert('Quantity must be at least 1');
+            document.getElementById('quantity').value = 1;
+            return;
+        }
+        if (isNaN(discount) || discount < 0 || discount > 100) {
+            alert('Discount must be between 0 and 100');
+            document.getElementById('discount').value = 0;
             return;
         }
 
@@ -160,6 +168,7 @@ if (!isset($_SESSION['user'])) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${idCounter++}</td>
+            <td><img src="${currentProduct.image}" class="card-img-top" style="width: 50px; height: 50px; object-fit: cover;" alt="${currentProduct.name}" onerror="this.src='/views/products/default.jpg'"></td>
             <td>${currentProduct.name}</td>
             <td>$${currentProduct.price.toFixed(2)} ${discount > 0 ? '(' + discount + '% off)' : ''}</td>
             <td><input type="number" value="${quantity}" min="1" class="form-control w-50 mx-auto" onchange="updateTotal(this)"></td>
@@ -168,11 +177,13 @@ if (!isset($_SESSION['user'])) {
         `;
         row.dataset.discount = discount;
         row.dataset.originalPrice = currentProduct.price;
+        row.dataset.productId = currentProduct.productId; // Store productId for backend use
+
         productList.appendChild(row);
 
         console.log("Product added:", currentProduct.name);
 
-        // Clear the product display and reset quantity/discount for next entry.
+        // Clear the product display and reset quantity/discount for next entry
         document.getElementById('productNameInput').value = '';
         document.getElementById('quantity').value = 1;
         document.getElementById('discount').value = 0;
@@ -200,7 +211,7 @@ if (!isset($_SESSION['user'])) {
         row.remove();
         const productList = document.getElementById('product-list');
         if (productList.children.length === 0) {
-            productList.innerHTML = '<tr><td colspan="6" class="text-muted">No Items added</td></tr>';
+            productList.innerHTML = '<tr><td colspan="7" class="text-muted">No Items added</td></tr>';
         }
     }
 
@@ -221,14 +232,16 @@ if (!isset($_SESSION['user'])) {
 
         // Collect order items from the table
         Array.from(productList.children).forEach(row => {
-            // Notice we use a key 'productName' to match what PHP expects
-            const productName = row.children[1].textContent;
+            const productName = row.children[2].textContent; // Adjusted for image column
             const originalPrice = parseFloat(row.dataset.originalPrice);
             const discount = parseFloat(row.dataset.discount);
             const quantity = parseInt(row.querySelector('input').value);
             const totalPrice = parseFloat(row.querySelector('.total-price').textContent.replace('$', ''));
+            const productId = row.dataset.productId; // Include productId for backend
+
             items.push({
                 productName,
+                productId, // Added for backend processing
                 quantity,
                 originalPrice,
                 discount,

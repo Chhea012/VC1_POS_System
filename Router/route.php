@@ -24,7 +24,6 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 require_once "Controllers/ExportInventoryController.php";
-require_once "Controllers/TopProductOrderController.php";
 
 
 // Create an instance of the Router class
@@ -130,8 +129,7 @@ $route->get('/ExportInventory/exportInventory', [ExportInventoryController::clas
 $route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
 
 
-// top product orders
-$route->get('/topproductorder', [TopProductOrderController::class, 'index']);
+
 
 
 
