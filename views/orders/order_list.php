@@ -216,15 +216,6 @@ if (!isset($_SESSION['user'])) {
         .image-frame {
             max-width: 200px;
         }
-<<<<<<< HEAD
-        
-        .carousel-inner {
-            padding: 0; 
-        }
-        
-=======
-
->>>>>>> a5fd521efbcbcba3d606f6883d0885c89d6ace85
         .row.g-4.p-4 {
             padding: 15px !important;
         }
@@ -251,8 +242,7 @@ if (!isset($_SESSION['user'])) {
             text-align: center;
         }
     }
-<<<<<<< HEAD
-}
+
 
 @media (max-width: 576px) {
     .form-label {
@@ -329,8 +319,6 @@ if (!isset($_SESSION['user'])) {
 
 
 
-=======
->>>>>>> e8d5df1bc0d86ef84f9b22e9f33bb66799bf09e3
 </style>
 
 <script>
