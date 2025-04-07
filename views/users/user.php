@@ -241,6 +241,59 @@ $roles = $roles ?? [];
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
+    .container-xxl {
+        padding: 1rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        border-color: #343a40;
+    }
+
+    .table tbody tr {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+    }
+
+    .dropdown-toggle {
+        padding: 0.5rem;
+    }
+
+    .dropdown-menu {
+        min-width: 120px;
+        font-size: 0.875rem;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+    }
+
     .modal-right .modal-dialog {
         position: fixed;
         right: 0;
@@ -259,9 +312,9 @@ $roles = $roles ?? [];
     .modal-content {
         height: 100%;
         border-radius: 0;
+        padding: 1rem;
     }
 
-    /* Image upload box layout */
     #image-upload-box, .border.rounded-2xl {
         display: flex;
         flex-direction: column;
@@ -277,26 +330,37 @@ $roles = $roles ?? [];
 
     #image-upload-box img, #edit_image_preview, #create_image_preview {
         max-width: 100%;
-        max-height: 150px;
+        max-height: 200px;
         object-fit: contain;
+        display: none;
     }
 
-    /* Responsive table for tablets and mobiles */
+    /* Responsive Design */
     @media (max-width: 1024px) {
         .table-responsive {
             overflow-x: auto;
         }
 
-        .table thead {
-            display: table-header-group;
+        .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
-        .table tbody tr {
-            display: table-row;
+        .dropdown-toggle {
+            padding: 0.6rem;
         }
 
-        .table td, .table th {
-            padding: 0.75rem;
+        #image-upload-box, .border.rounded-2xl {
+            padding: 0.8rem;
+            gap: 0.8rem;
+        }
+
+        #image-upload-box img, #edit_image_preview, #create_image_preview {
+            max-height: 120px;
+        }
+
+        .modal-right .modal-dialog {
+            max-width: 350px;
         }
     }
 
@@ -331,10 +395,10 @@ $roles = $roles ?? [];
             flex-shrink: 0;
         }
 
-        .dropdown-menu {
-            position: absolute;
-            right: 0;
-            left: auto;
+        .btn, .dropdown-toggle, .dropdown-item {
+            min-width: 80px;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
         }
 
         .modal-right .modal-dialog {
@@ -345,58 +409,109 @@ $roles = $roles ?? [];
         .modal-content {
             height: auto;
             border-radius: 0.5rem;
+            padding: 0.8rem;
         }
 
         #image-upload-box, .border.rounded-2xl {
-            padding: 0.75rem;
-        }
-
-        .btn-sm {
-            padding: 0.375rem 0.75rem;
-            font-size: 0.875rem;
-        }
-
-        .form-label {
-            font-size: 0.875rem;
-        }
-
-        .form-control, .form-select {
-            font-size: 0.875rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .btn {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .modal-title {
-            font-size: 1rem;
+            padding: 1rem;
+            min-height: 150px;
         }
 
         #image-upload-box i, #edit-upload-placeholder i {
-            font-size: 1.5rem;
+            font-size: 2rem;
         }
 
         #image-upload-box p, #edit-upload-placeholder p {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .form-label, .form-control, .form-select {
+            font-size: 0.875rem;
         }
 
         .alert {
+            padding: 0.6rem;
             font-size: 0.875rem;
         }
     }
 
-    /* Ensure touch targets are large enough */
-    .dropdown-toggle {
-        padding: 0.5rem;
+/* Add or modify within the existing <style> */
+@media (max-width: 480px) {
+    .table tbody tr {
+        margin-bottom: 0.8rem;
+        border-radius: 0.4rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        padding: 0.5rem; 
     }
 
-    .dropdown-item {
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
+    .table tbody td {
+        padding: 0.7rem;
+        flex-direction: column;
+        align-items: flex-start; 
     }
+
+    .table td::before {
+        min-width: 80px;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem; 
+        display: block; 
+    }
+
+    .table td img {
+        max-width: 50px;
+        max-height: 50px;
+        margin-bottom: 0.5rem; 
+    }
+
+    .badge {
+        display: block; 
+        margin-top: 0.2rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem; 
+    }
+
+    .btn, .dropdown-toggle, .dropdown-item {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        min-width: 60px;
+    }
+
+    .dropdown-menu {
+        min-width: 100px;
+        font-size: 0.75rem;
+    }
+
+    #image-upload-box, .border.rounded-2xl {
+        padding: 0.6rem;
+        min-height: 120px;
+        gap: 0.6rem;
+    }
+
+    #image-upload-box i, #edit-upload-placeholder i {
+        font-size: 1.5rem;
+    }
+
+    #image-upload-box p, #edit-upload-placeholder p {
+        font-size: 0.7rem;
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+    .alert {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    .table td[data-label="Email"] {
+            font-size: 0.80rem; 
+    }
+}
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

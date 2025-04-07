@@ -548,6 +548,11 @@ if (!isset($_SESSION['user'])) {
   .editable-input {
     width: 60px;
     text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
   }
 
   #notification-container {
@@ -555,6 +560,7 @@ if (!isset($_SESSION['user'])) {
     top: 20px;
     right: 20px;
     z-index: 1000;
+    max-width: 90%;
   }
 
   .notification {
@@ -564,5 +570,136 @@ if (!isset($_SESSION['user'])) {
     margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+  }
+
+  .container-xxl {
+    padding: 10px;
+  }
+
+  .chart-container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .chart-container.two {
+    background-color: #1a2a44;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  .table-container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .table-dark th {
+    background-color: #343a40;
+    color: white;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  #updateSalesBtn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+
+  #updateSalesBtn:hover {
+    background-color: #0056b3;
+  }
+
+  /* Media Queries for Responsiveness */
+  @media (max-width: 1024px) { /* Tablets */
+    .chart-container.two {
+      padding: 15px;
+    }
+
+    .table-container {
+      padding: 10px;
+    }
+
+    th, td {
+      padding: 8px;
+    }
+
+    #updateSalesBtn {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+
+  @media (max-width: 768px) { /* Mobile Phones */
+    .container-xxl {
+      padding: 5px;
+    }
+
+    .chart-container.two {
+      padding: 10px;
+    }
+
+    table {
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 6px;
+    }
+
+    .editable-input {
+      width: 50px;
+      padding: 4px;
+    }
+
+    #notification-container {
+      top: 10px;
+      right: 10px;
+    }
+
+    .notification {
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    #updateSalesBtn {
+      font-size: 12px;
+      padding: 6px;
+    }
   }
 </style>
