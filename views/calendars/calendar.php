@@ -376,8 +376,6 @@ window.addEventListener("resize", () => {
         font-size: 0.8rem; /* Smaller event text */
         padding: 5px; /* Padding around event text */
     }
-    #detailCategory #detailDescription {
-        display: none !important; /* Force hide with !important if necessary */
-    }
+
 }
 </style>
