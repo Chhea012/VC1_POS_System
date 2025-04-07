@@ -131,16 +131,9 @@ public function totalMoneyorder() {
 }
 
 public function orderDay() {
-    $query = "SELECT 
-        DAYNAME(order_date) AS order_day,
-        COUNT(*) AS order_count
-    FROM orders
-    WHERE order_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-    GROUP BY order_day
-    ORDER BY FIELD(order_day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
-
+    $query = "SELECT total_amount, order_date FROM orders WHERE status = 'Already'";
     $stmt = $this->db->query($query);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 

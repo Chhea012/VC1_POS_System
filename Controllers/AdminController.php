@@ -61,6 +61,20 @@ class AdminController extends BaseController {
 
         $orderData = $this->adminHome->orderDay();
 
+        // Prepare chart data by weekday
+        $daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        $dailySums = array_fill_keys($daysOfWeek, 0);
+    
+        foreach ($orderData as $order) {
+            $dayName = date('l', strtotime($order['order_date']));
+            if (isset($dailySums[$dayName])) {
+                $dailySums[$dayName] += floatval($order['total_amount']);
+            }
+        }
+    
+        // Send data to view
+        $jsOrderData = implode(',', $dailySums);
+
         // Get the order increase percentage
         $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
         $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
@@ -86,7 +100,8 @@ class AdminController extends BaseController {
             'categoriesOrderedToday' => $categoriesOrderedToday,
             'totalCost' => $totalCost,
             'totalMoneyorder' => $totalMoneyorder,
-            'orderData' => $orderData
+            'orderData' => $orderData,
+            'jsOrderData' => $jsOrderData
 
         ]);
     }

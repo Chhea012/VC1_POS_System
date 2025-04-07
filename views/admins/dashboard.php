@@ -429,87 +429,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ......Grapic orders ..........
     document.addEventListener("DOMContentLoaded", function () {
-        var orderData = [<?php echo implode(',', array_column($orderData, 'order_count')); ?>];
 
-        var defaultDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        
-        // Ensure data matches default days, filling missing ones with 0
-        var chartData = defaultDays.map((day, index) => orderData[index] ?? 0);
+    var orderData = [<?php echo $jsOrderData; ?>];
 
-        console.log("Processed Order Data:", chartData);
+    const incomeChartEl = document.querySelector("#incomeChart");
 
-        const incomeChartEl = document.querySelector("#incomeChart");
-
-        const incomeChartConfig = {
-            series: [{ data: chartData }],
-            chart: {
-                height: 215,
-                parentHeightOffset: 0,
-                parentWidthOffset: 0,
-                toolbar: { show: false },
-                type: "area"
-            },
-            dataLabels: { enabled: false },
-            stroke: {
-                width: 2,
-                curve: "smooth"
-            },
-            legend: { show: false },
-            markers: {
-                size: 6,
-                colors: "transparent",
-                strokeColors: "transparent",
-                strokeWidth: 4,
-                discrete: [
-                    {
-                        fillColor: "#FFF",
-                        seriesIndex: 0,
-                        dataPointIndex: 7,
-                        strokeColor: "#7367F0",
-                        strokeWidth: 2,
-                        size: 6,
-                        radius: 8
-                    }
-                ],
-                hover: { size: 7 }
-            },
-            colors: ["#7367F0"],
-            fill: {
-                type: "gradient",
-                gradient: {
-                    shade: "light",
-                    shadeIntensity: 0.6,
-                    opacityFrom: 0.5,
-                    opacityTo: 0.25,
-                    stops: [0, 95, 100]
-                }
-            },
-            grid: {
-                borderColor: "#ddd",
-                strokeDashArray: 3,
-                padding: { top: -20, bottom: -8, left: -10, right: 8 }
-            },
-            xaxis: {
-                categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-                axisBorder: { show: false },
-                axisTicks: { show: false },
-                labels: {
-                    show: true,
-                    style: { fontSize: "13px", colors: "#666" }
-                }
-            },
-            yaxis: {
-                labels: { show: false },
-                min: 0,
-                tickAmount: 5
+    const incomeChartConfig = {
+        series: [{ name: "Total Sales $", data: orderData }],
+        chart: {
+            height: 215,
+            type: "area",
+            toolbar: { show: false }
+        },
+        dataLabels: { enabled: false },
+        stroke: { width: 2, curve: "smooth" },
+        colors: ["#7367F0"],
+        fill: {
+            type: "gradient",
+            gradient: {
+                shade: "light",
+                shadeIntensity: 0.6,
+                opacityFrom: 0.5,
+                opacityTo: 0.25,
+                stops: [0, 95, 100]
             }
-        };
-
-        if (incomeChartEl !== null) {
-            const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
-            incomeChart.render();
+        },
+        grid: {
+            borderColor: "#ddd",
+            strokeDashArray: 3,
+            padding: { top: -20, bottom: -8, left: -10, right: 8 }
+        },
+        xaxis: {
+            categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+            labels: {
+                style: { fontSize: "13px", colors: "#666" }
+            }
+        },
+        yaxis: {
+            labels: { show: true },
+            min: 0,
+            tickAmount: 5
         }
-    });
+    };
+
+    if (incomeChartEl !== null) {
+        const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
+        incomeChart.render();
+    }
+});
 </script>
 
 <style>
