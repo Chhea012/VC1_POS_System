@@ -664,42 +664,38 @@ if (!isset($_SESSION['user'])) {
       padding: 8px;
     }
   }
-
-  @media (max-width: 768px) { /* Mobile Phones */
+  /* moblie phone */
+  @media (max-width: 768px) {
     .container-xxl {
-      padding: 5px;
+      padding: 3px; 
     }
 
-    .chart-container.two {
-      padding: 10px;
+    .chart-container.one {
+      flex-direction: column; 
+      align-items: center;
     }
 
+    .chart-container-1 {
+      width: 100%; 
+      margin-bottom: 10px; 
+    }
+
+    #weatherChart, #salesChart {
+      height: 200px !important; 
+      width: 100% !important; 
+      max-width: 100%; 
+    }
+
+    .table-container {
+      padding: 5px; 
+      margin-top: 10px; 
+    }
     table {
-      font-size: 12px;
+      font-size: 8px; 
     }
 
     th, td {
-      padding: 6px;
-    }
-
-    .editable-input {
-      width: 50px;
-      padding: 4px;
-    }
-
-    #notification-container {
-      top: 10px;
-      right: 10px;
-    }
-
-    .notification {
-      padding: 10px;
-      font-size: 12px;
-    }
-
-    #updateSalesBtn {
-      font-size: 12px;
-      padding: 6px;
+      padding: 4px; 
     }
   }
 </style>
