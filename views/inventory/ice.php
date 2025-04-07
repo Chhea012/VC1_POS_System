@@ -432,6 +432,52 @@ document.addEventListener("DOMContentLoaded", function () {
         .table tbody tr {
             margin-bottom: 8px;
         }
+        /* Only show first product in each slide */
+    .carousel-item .col-md-3:nth-child(n+2) {
+        display: none;
+    }
+
+    /* Make the single product full-width */
+    .carousel-item .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .drink-card {
+        height: auto !important;
+        padding-bottom: 1rem;
+    }
+
+    .drink-img-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .carousel-inner > .carousel-item {
+        padding: 1rem !important;
+    }
+
+    .card-body {
+        text-align: center !important;
+    }
+
+    .drink-btn {
+        width: 100%;
+    }
+
+    .carousel-indicators {
+        bottom: -25px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        top: auto;
+        bottom: -40px;
+    }
+
+    /* Optional: smaller image height */
+    .drink-img {
+        max-height: 150px;
+    }
     }
 </style>
 
