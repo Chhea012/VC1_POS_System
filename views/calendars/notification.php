@@ -91,10 +91,10 @@
                 if (!updatedEvent.isRead && updatedEvent.title.toLowerCase().includes("low stock")) {
                     const reorderQuantity = Math.max(10, updatedEvent.quantity * 2);
                     const message = `
-<b>🚨 Low Stock Alert!</b>
-"${updatedEvent.title}" is running low with only ${updatedEvent.quantity} units left.
-📦 <b>Action:</b> Order ${reorderQuantity} units soon to keep stock flowing!
-⏰ <b>Time:</b> ${new Date(updatedEvent.timestamp).toLocaleString()}
+                <b>🚨 Low Stock Alert!</b>
+                "${updatedEvent.title}" is running low with only ${updatedEvent.quantity} units left.
+                📦 <b>Action:</b> Order ${reorderQuantity} units soon to keep stock flowing!
+            ⏰ <b>Time:</b> ${new Date(updatedEvent.timestamp).toLocaleString()}
                     `;
                     const success = await sendTelegramMessage(message);
                     if (success) {

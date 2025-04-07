@@ -142,6 +142,14 @@ if (!isset($_SESSION['user'])) {
                 document.getElementById("editEventBtn").setAttribute("data-event-id", info.event.id);
                 document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
 
+                // Hide the "Edit Event" button if the category is "low stock"
+                if (info.event.extendedProps.description && info.event.extendedProps.description.toLowerCase().includes("low stock")) {
+                 document.getElementById("editEventBtn").style.display = "none";
+                } else {
+                 document.getElementById("editEventBtn").style.display = "inline-block";
+                }
+                
+
                 var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
                 modal.show();
             },

@@ -15,8 +15,9 @@ usort($products, function($a, $b) {
     return ($b['quantity'] ?? 0) <=> ($a['quantity'] ?? 0);
 });
 ?>
+
 <div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Popular Items Slideshow - Now shows only products with 15+ quantity -->
+    <!-- Popular Items Slideshow -->
     <?php 
     $popular_products = array_filter($products, function ($product) {
         return ($product['quantity'] ?? 0) >= 15;
@@ -62,7 +63,7 @@ usort($products, function($a, $b) {
                                                 <span class="mx-2">•</span>
                                                 <span>Rank #<?= $slideIndex * 4 + array_search($product, $slideProducts) + 1 ?></span>
                                             </p>
-                                            <a href="/inventory/viewfood/<?= $product['product_id'] ?? '' ?>"
+                                            <a href="/inventory/viewfood/<?= htmlspecialchars($product['product_id'] ?? '') ?>"
                                                class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
                                         </div>
                                     </div>
@@ -154,7 +155,7 @@ usort($products, function($a, $b) {
                     </thead>
                     <tbody>
                         <?php foreach ($products as $index => $product): ?>
-                            <tr>
+                            <tr data-product-id="<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                 <td class="text-center"><?= $index + 1 ?></td>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -183,21 +184,23 @@ usort($products, function($a, $b) {
                                 <td>$<?= number_format(($product['price'] ?? 0) * ($product['quantity'] ?? 0), 2) ?></td>
                                 <td>
                                     <div class="dropdown">
-                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                        <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="/inventory/viewfood/<?= $product['product_id'] ?? '' ?>">
+                                                <a class="dropdown-item" href="/inventory/viewfood/<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                                     <i class="bi bi-eye me-2"></i>View
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete(<?= $product['product_id'] ?? 0 ?>)">
+                                                <a class="dropdown-item text-danger delete-product" 
+                                                   href="javascript:void(0)" 
+                                                   data-product-id="<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
-                                                <form id="delete-form-<?= $product['product_id'] ?? '' ?>" 
-                                                      action="/food/delete/<?= $product['product_id'] ?? '' ?>" 
+                                                <form id="delete-form-<?= htmlspecialchars($product['product_id'] ?? '') ?>" 
+                                                      action="/food/delete/<?= htmlspecialchars($product['product_id'] ?? '') ?>" 
                                                       method="POST" 
                                                       style="display:none;">
                                                     <input type="hidden" name="_method" value="DELETE">
@@ -214,6 +217,30 @@ usort($products, function($a, $b) {
         </div>
     </div>
 
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Product deleted successfully!
+            </div>
+        </div>
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Failed to delete product. Please try again.
+            </div>
+        </div>
+    </div>
+
     <!-- Creative Low Stock Alert -->
     <?php
     $low_stock_items = array_filter($products, fn($p) => ($p['quantity'] ?? 0) < 5);
@@ -224,7 +251,7 @@ usort($products, function($a, $b) {
                 <div class="card-header bg-danger d-flex align-items-center p-3">
                     <i class="bi bi-exclamation-octagon fs-3 me-2 text-white animate__animated animate__pulse animate__infinite"></i>
                     <h5 class="mb-0 fw-bold text-white">Low Stock Warning!</h5>
-                    <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.parentElement.parentElement.parentElement.style.display='none';" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.closest('.low-stock-alert').style.display='none';" aria-label="Close"></button>
                 </div>
                 <div class="card-body p-3">
                     <p class="text-muted mb-3">The following items need attention:</p>
@@ -239,7 +266,7 @@ usort($products, function($a, $b) {
                     </ul>
                 </div>
                 <div class="card-footer bg-light text-center p-2">
-                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="this.parentElement.parentElement.parentElement.style.display='none';">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="this.closest('.low-stock-alert').style.display='none';">
                         Dismiss
                     </button>
                 </div>
@@ -249,39 +276,169 @@ usort($products, function($a, $b) {
 </div>
 
 <script>
-function confirmDelete(productId) {
-    if (productId && confirm('Are you sure you want to delete this product?')) {
-        document.getElementById(`delete-form-${productId}`).submit();
-    }
-}
-
-// Send low stock items to localStorage for notifications
 document.addEventListener("DOMContentLoaded", function () {
-    const lowStockItems = <?php echo json_encode($low_stock_items); ?>;
+    // Delete functionality
+    const deleteButtons = document.querySelectorAll('.delete-product');
     
-    if (Object.keys(lowStockItems).length > 0) {
-        // Prepare notifications for low stock
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            const form = document.getElementById(`delete-form-${productId}`);
+            const row = this.closest('tr');
+            
+            if (!form || !productId) {
+                console.error('Form or product ID not found');
+                return;
+            }
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+                
+                if (response.ok) {
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
+                        delay: 3000
+                    });
+                    successToast.show();
+                    
+                    row.style.transition = 'opacity 0.3s ease-out';
+                    row.style.opacity = '0';
+                    setTimeout(() => row.remove(), 300);
+                } else {
+                    throw new Error('Delete request failed');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                    delay: 3000
+                });
+                errorToast.show();
+            }
+        });
+    });
+
+    // Low stock notifications
+    const lowStockItems = <?php echo json_encode($low_stock_items, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+    
+    if (lowStockItems && Object.keys(lowStockItems).length > 0) {
         const notifications = Object.values(lowStockItems).map(item => ({
-            title: `Low Stock Alert: ${item.product_name}`,
-            start: new Date().toISOString().split('T')[0], // Today's date
+            title: `Low Stock Alert: ${item.product_name || 'Unknown'}`,
+            start: new Date().toISOString().split('T')[0],
             isRead: false,
             timestamp: new Date().toISOString(),
-            quantity: item.quantity,
-            product_id: item.product_id || '' // Include product_id for reference
+            quantity: item.quantity ?? 0,
+            product_id: item.product_id || ''
         }));
 
-        // Get existing events from localStorage
-        let existingEvents = JSON.parse(localStorage.getItem("events")) || [];
+        let existingEvents = JSON.parse(localStorage.getItem("events") || '[]');
         
-        // Add new low stock notifications if they don't already exist
         notifications.forEach(newEvent => {
             if (!existingEvents.some(event => event.title === newEvent.title)) {
                 existingEvents.push(newEvent);
             }
         });
 
-        // Save updated events to localStorage
         localStorage.setItem("events", JSON.stringify(existingEvents));
     }
 });
 </script>
+<style>
+    /* For tablet devices (max-width: 768px) */
+    @media (max-width: 768px) {
+        .row > div {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+  
+        .table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        
+        .table tbody tr td:last-child {
+            border-bottom: none;
+        }
+
+       
+        .table tbody tr td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: inline-block;
+            width: 40%;
+            margin-right: 10px;
+        }
+
+      
+        .table tbody tr td button {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .table-responsive {
+            padding: 10px;
+        }
+
+     
+        .form-label, .btn {
+            width: 100%;
+            font-size: 1rem;
+        }
+
+
+        .form-control, .form-select {
+            padding: 0.8rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .form-label {
+            font-size: 0.9rem; /* Smaller label font size for mobile */
+        }
+
+        /* Adjust table cell font size for better readability on mobile */
+        .table tbody tr td {
+            font-size: 14px; /* Smaller font size on mobile */
+        }
+
+        /* Increase button size and make them easier to tap */
+        .table tbody tr td button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        /* Adjust the padding and margins for better mobile layout */
+        .table tbody tr {
+            padding: 8px;
+        }
+
+        /* Add some margin to separate table rows on mobile */
+        .table tbody tr {
+            margin-bottom: 8px;
+        }
+    }
+</style>
+
+
