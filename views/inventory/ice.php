@@ -339,3 +339,100 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+<style>
+    /* For tablet devices (max-width: 768px) */
+    @media (max-width: 768px) {
+        .row > div {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+  
+        .table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        
+        .table tbody tr td:last-child {
+            border-bottom: none;
+        }
+
+       
+        .table tbody tr td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: inline-block;
+            width: 40%;
+            margin-right: 10px;
+        }
+
+      
+        .table tbody tr td button {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .table-responsive {
+            padding: 10px;
+        }
+
+     
+        .form-label, .btn {
+            width: 100%;
+            font-size: 1rem;
+        }
+
+
+        .form-control, .form-select {
+            padding: 0.8rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .form-label {
+            font-size: 0.9rem; /* Smaller label font size for mobile */
+        }
+
+        /* Adjust table cell font size for better readability on mobile */
+        .table tbody tr td {
+            font-size: 14px; /* Smaller font size on mobile */
+        }
+
+        /* Increase button size and make them easier to tap */
+        .table tbody tr td button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        /* Adjust the padding and margins for better mobile layout */
+        .table tbody tr {
+            padding: 8px;
+        }
+
+        /* Add some margin to separate table rows on mobile */
+        .table tbody tr {
+            margin-bottom: 8px;
+        }
+    }
+</style>
+
+
