@@ -32,8 +32,7 @@ $route = new Router();
 // GET routes
 $route->get("/", [LoginController::class, 'login']);
 
-$route->get("/register", [RegisterController::class, 'register']);
-$route->post("/register/store", [RegisterController::class, 'store']);
+
 
 
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
@@ -45,9 +44,8 @@ $route->get("/edit_profile", [ProfileController::class, 'index']);
 $route->get("/profile", [ProfileController::class, 'index']); // Profile page
 $route->post("/profile/update", [ProfileController::class, 'update']); // Profile update route
 
-$route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
-$route->get("/chart", [ChartController::class, 'index']);
+
 // category route
 $route->get("/category", [categoryController::class, 'index']);
 $route->post('/category/store', [categoryController::class, 'store']);
@@ -127,9 +125,6 @@ $route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
-
-$route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
-$route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
 
 
 
