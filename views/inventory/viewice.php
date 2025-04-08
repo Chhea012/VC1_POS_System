@@ -174,6 +174,14 @@ if (!isset($_SESSION['user'])) {
                 max-height: 200px;
             }
         }
+        .product-image img {
+        width: 85%;
+        height: 85%;
+        object-fit: contain;
+        /* changed from cover to contain */
+        padding: 0.5rem;
+        /* optional: adds spacing around the image */
+    }
     </style>
 
 <style>
