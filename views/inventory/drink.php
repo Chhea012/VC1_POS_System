@@ -12,10 +12,12 @@ require_once "Models/drinkModel.php";
 // Ensure $products is defined
 $products = $products ?? [];
 
-// Sort products by quantity in descending order to show top in-stock items first
+// Sort products by quantity in descending order
 usort($products, function($a, $b) {
     return ($b['quantity'] ?? 0) <=> ($a['quantity'] ?? 0);
 });
+
+
 ?>
 
 <div class="container-xxl flex-grow-1 py-4">
@@ -28,7 +30,7 @@ usort($products, function($a, $b) {
         <div id="drinkCarousel" class="carousel slide shadow-lg rounded-3 overflow-hidden" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <?php 
-                $totalSlides = ceil(count($carouselProducts) / 4);
+                $totalSlides = ceil(count($carouselProducts) / 4); // Keep 4 per slide for desktop
                 for ($i = 0; $i < $totalSlides; $i++): ?>
                     <button type="button" 
                             data-bs-target="#drinkCarousel" 
@@ -39,12 +41,12 @@ usort($products, function($a, $b) {
             </div>
             <div class="carousel-inner">
                 <?php 
-                $chunkedProducts = array_chunk($carouselProducts, 4);
+                $chunkedProducts = array_chunk($carouselProducts, 4); // Keep 4 per slide for desktop
                 foreach ($chunkedProducts as $slideIndex => $slideProducts): ?>
                     <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
                         <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
                             <?php foreach ($slideProducts as $product): ?>
-                                <div class="col-md-3">
+                                <div class="col-md-3 col-12 carousel-product">
                                     <div class="card drink-card h-100 shadow-sm border-0">
                                         <div class="drink-img-wrapper text-center position-relative">
                                             <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>" 
@@ -91,7 +93,7 @@ usort($products, function($a, $b) {
             <span class="text-secondary">Status</span>
         </h5>
         <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -103,7 +105,7 @@ usort($products, function($a, $b) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #28a745, #1d7a35);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -117,7 +119,7 @@ usort($products, function($a, $b) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -131,7 +133,7 @@ usort($products, function($a, $b) {
             </div>
         </div>
     </div>
-
+        
     <!-- Transactions Section -->
     <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
         <h5 class="mb-0">Drinks Inventory:</h5>
@@ -142,7 +144,7 @@ usort($products, function($a, $b) {
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col" style="width: 40px;" style="color: #000000;">#</th>
+                            <th scope="col" style="width: 40px; color: #000000;">#</th>
                             <th scope="col" style="color: #000000;">PRODUCT</th>
                             <th scope="col" style="color: #000000;">CATEGORY</th>
                             <th scope="col" style="color: #000000;">STOCK</th>
@@ -218,7 +220,7 @@ usort($products, function($a, $b) {
 
     <!-- Toast Notifications -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id=" successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
                 <i class="bi bi-check-circle-fill me-2"></i>
                 <strong class="me-auto">Success</strong>
@@ -339,6 +341,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         localStorage.setItem("events", JSON.stringify(existingEvents));
     }
+
+    // Adjust carousel for tablet view
+    function adjustCarousel() {
+        if (window.innerWidth <= 768) {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach((product, index) => {
+                    if (index > 0) product.style.display = 'none'; // Hide all but the first product
+                });
+            });
+        } else {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach(product => product.style.display = 'block'); // Show all products on desktop
+            });
+        }
+    }
+
+    // Run on load and resize
+    adjustCarousel();
+    window.addEventListener('resize', adjustCarousel);
 });
 </script>
 
@@ -364,7 +389,6 @@ document.addEventListener("DOMContentLoaded", function () {
             padding: 10px;
         }
 
-  
         .table tbody tr td {
             display: flex;
             justify-content: space-between;
@@ -373,12 +397,10 @@ document.addEventListener("DOMContentLoaded", function () {
             padding: 5px;
         }
 
-        
         .table tbody tr td:last-child {
             border-bottom: none;
         }
 
-       
         .table tbody tr td::before {
             content: attr(data-label);
             font-weight: bold;
@@ -387,7 +409,6 @@ document.addEventListener("DOMContentLoaded", function () {
             margin-right: 10px;
         }
 
-      
         .table tbody tr td button {
             width: auto;
             padding: 5px 10px;
@@ -398,17 +419,54 @@ document.addEventListener("DOMContentLoaded", function () {
             padding: 10px;
         }
 
-     
         .form-label, .btn {
             width: 100%;
             font-size: 1rem;
         }
 
-
         .form-control, .form-select {
             padding: 0.8rem;
         }
-    }
 
-    
+        /* Carousel adjustments for tablet */
+        .carousel-product {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+
+        .drink-card {
+            height: auto !important;
+            padding-bottom: 1rem;
+        }
+
+        .drink-img-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        .carousel-inner > .carousel-item {
+            padding: 1rem !important;
+        }
+
+        .card-body {
+            text-align: center !important;
+        }
+
+        .drink-btn {
+            width: 100%;
+        }
+
+        .carousel-indicators {
+            bottom: -25px;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            top: auto;
+            bottom: -40px;
+        }
+
+        .drink-img {
+            max-height: 150px;
+        }
+    }
 </style>

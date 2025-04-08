@@ -216,15 +216,6 @@ if (!isset($_SESSION['user'])) {
         .image-frame {
             max-width: 200px;
         }
-<<<<<<< HEAD
-        
-        .carousel-inner {
-            padding: 0; 
-        }
-        
-=======
-
->>>>>>> a5fd521efbcbcba3d606f6883d0885c89d6ace85
         .row.g-4.p-4 {
             padding: 15px !important;
         }
@@ -251,86 +242,117 @@ if (!isset($_SESSION['user'])) {
             text-align: center;
         }
     }
-<<<<<<< HEAD
-}
-
-@media (max-width: 576px) {
-    .form-label {
-        font-size: 1rem; /* Adjust label font size */
+    @media (max-width: 576px) {
+    table thead {
+        display: none;
     }
 
-    /* Make the select dropdown fit within its container on mobile */
- 
-    .col-md-6, .col-md-2, .col-md-12 {
-        flex: 1 1 100%; /* Ensure all columns take full width in mobile view */
-        margin-bottom: 0.5rem; /* Spacing between columns on mobile */
-    }
-
-    /* Ensure the button inside the col-2 is aligned */
-    .d-flex .btn {
-        width: 100%; /* Full width buttons on small screens */
-        padding: 1rem; /* Increased padding for better touch */
-    }
-
-    /* Adjust the quantity input for better visibility */
-    .col-md-2 input[type="number"] {
-        width: 100%; /* Make sure inputs fill the container */
-    }
-
-    /* Adjust the table layout on mobile */
-    .table {
+    table tbody tr {
         display: block;
-        width: 100%;
-        overflow-x: auto; /* Allow horizontal scrolling for table */
-        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #dee2e6;
     }
 
-    .table th, .table td {
+    table tbody tr td,
+    table tbody tr th {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    table tbody tr td::before,
+    table tbody tr th::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        font-weight: bold;
         text-align: left;
-        white-space: nowrap;
     }
 
-    /* Adjust each table row into a block layout on mobile */
+    .dropdown {
+        text-align: center;
+    }
+    /* Make the carousel items stack properly */
+    .carousel-item .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .d-flex.flex-column.flex-md-row {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .text-center.text-md-start {
+        text-align: center !important;
+    }
+
+    .image-frame {
+        max-width: 200px;
+        margin-bottom: 15px;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+    }
+
+    .row.g-4.p-4 {
+        padding: 1rem !important;
+    }
+
+    /* Hide 2nd product if present in same slide on mobile */
+    .carousel-item .col-md-6:nth-child(2) {
+        display: none;
+    }
+}
+@media (max-width: 576px) {
+    .table thead {
+        display: none;
+    }
+
     .table tbody tr {
         display: block;
-        width: 100%;
-        margin-bottom: 1rem; /* Spacing between rows */
-    }
-
-    .table tbody tr td {
-        display: block;
-        width: 100%; /* Make each cell take full width */
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
         padding: 0.5rem;
-        text-align: left;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    .table tbody tr td::before {
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .table tbody td::before {
         content: attr(data-label);
-        font-weight: bold;
-        display: inline-block;
-        width: 100%;
-        margin-bottom: 0.25rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #6c757d;
+        margin-right: 10px;
     }
 
-    /* Additional styling to make sure content fits well */
-    .col-md-2.col-12 {
-        flex: 1; /* Ensure product input and quantity span full width on mobile */
-    }
+    .table tbody img {
+        max-width: 60px;
+        height: auto;
 
-    /* Make sure the card has spacing */
-    .card {
-        margin-bottom: 1rem; /* Add margin between cards */
     }
 }
-
-
-
-
-
-
-
-=======
->>>>>>> e8d5df1bc0d86ef84f9b22e9f33bb66799bf09e3
+    
 </style>
 
 <script>
