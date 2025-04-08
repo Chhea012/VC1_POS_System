@@ -7,7 +7,90 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 ?>
+<style>
+   @media (max-width: 768px) {
+    .create-order-btn {
+        font-size: 11px;
+        padding: 5px 8px;
+        width: 100%;
+    }
 
+    .form-label {
+        font-size: 12px;
+    }
+
+    .form-control, .form-select {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table.table {
+        width: 100%;
+        table-layout: fixed;
+        font-size: 6px;
+    }
+
+    .table th, .table td {
+        font-size: 6.5px;
+        padding: 4px;
+        word-wrap: break-word;
+    }
+
+    .table td img {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: cover;
+    }
+
+    .btn {
+        font-size: 10px;
+        padding: 5px 8px;
+        width: 100%;
+    }
+
+    .btn-sm {
+        font-size: 9px;
+        padding: 4px 6px;
+    }
+
+    .card h2, .card h3, .card h4 {
+        font-size: 13px;
+    }
+
+    .container-xxl {
+        padding: 10px;
+    }
+
+    .row.mb-3 > div,
+    .row.mt-3 > div {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .col-md-2, .col-md-3, .col-md-6 {
+        width: 100% !important;
+    }
+
+    .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .w-50 {
+        width: 90% !important;
+    }
+
+    input[type="number"].form-control {
+        width: 100%;
+    }
+}
+
+
+</style>
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex gap-2">
         <a href="/orders/barcode" class="btn btn-primary">

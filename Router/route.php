@@ -5,11 +5,9 @@ require_once "Database/Database.php";
 require_once "Controllers/AdminController.php";
 require_once "Controllers/ProductController.php";
 require_once "Controllers/ProfileController.php";
-require_once "Controllers/SettingSecurityController.php";
 require_once "Controllers/ChartController.php";
 require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
-require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
 require_once "Controllers/CategoryController.php";
 require_once "Controllers/IceController.php";
@@ -23,7 +21,6 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
-require_once "Controllers/ExportInventoryController.php";
 
 
 // Create an instance of the Router class
@@ -32,8 +29,7 @@ $route = new Router();
 // GET routes
 $route->get("/", [LoginController::class, 'login']);
 
-$route->get("/register", [RegisterController::class, 'register']);
-$route->post("/register/store", [RegisterController::class, 'store']);
+
 
 
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
@@ -45,9 +41,8 @@ $route->get("/edit_profile", [ProfileController::class, 'index']);
 $route->get("/profile", [ProfileController::class, 'index']); // Profile page
 $route->post("/profile/update", [ProfileController::class, 'update']); // Profile update route
 
-$route->get("/setting_security", [SettingSecurityController::class, 'index']);
 $route->get("/weather", [WeatherController::class, 'index']);
-$route->get("/chart", [ChartController::class, 'index']);
+
 // category route
 $route->get("/category", [categoryController::class, 'index']);
 $route->post('/category/store', [categoryController::class, 'store']);
@@ -67,6 +62,9 @@ $route->post('/category/store', [categoryController::class, 'store']);
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
 $route->get("/products/updateQTY", [productController::class, 'updateQTY']);
+// Add this to your routes
+$route->get("/products/import", [productController::class, 'showImportForm']);
+$route->post("/products/import", [productController::class, 'import']);
 $route->post("/products/updateQTY", [productController::class, 'updateQTY']);
 $route->post("/products/store", [productController::class, 'store']);
 $route->get("/products/view/{product_id}", [productController::class, 'show']);
@@ -124,9 +122,6 @@ $route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
-
-$route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
-$route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
 
 
 
