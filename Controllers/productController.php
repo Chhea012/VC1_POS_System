@@ -243,128 +243,128 @@ class productController extends BaseController
     }
 
     public function import()
-{
-    if (isset($_FILES['excel_file']['tmp_name'])) {
-        try {
-            // Validate file type
-            $allowed_extensions = ['xlsx', 'xls'];
-            $file_extension = strtolower(pathinfo($_FILES['excel_file']['name'], PATHINFO_EXTENSION));
-            if (!in_array($file_extension, $allowed_extensions)) {
-                throw new Exception("Invalid file type. Please upload an Excel file (.xlsx or .xls).");
-            }
-
-            require_once 'vendor/autoload.php';
-            $file = $_FILES['excel_file']['tmp_name'];
-            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
-            $sheet = $spreadsheet->getActiveSheet();
-            $rows = $sheet->toArray();
-            array_shift($rows);
-
-            // Extract images
-            $drawings = $sheet->getDrawingCollection();
-            $images = [];
-            foreach ($drawings as $drawing) {
-                if ($drawing instanceof \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
-                    $coordinates = $drawing->getCoordinates();
-                    $row_number = (int)filter_var($coordinates, FILTER_SANITIZE_NUMBER_INT);
-                    $image_data = $drawing->getImageResource();
-                    ob_start();
-                    imagepng($image_data);
-                    $image_binary = ob_get_clean();
-                    $images[$row_number] = $image_binary;
-                    error_log("Image found for row $row_number: $coordinates");
+    {
+        if (isset($_FILES['excel_file']['tmp_name'])) {
+            try {
+                $allowed_extensions = ['xlsx', 'xls'];
+                $file_extension = strtolower(pathinfo($_FILES['excel_file']['name'], PATHINFO_EXTENSION));
+                if (!in_array($file_extension, $allowed_extensions)) {
+                    throw new Exception("Invalid file type. Please upload an Excel file (.xlsx or .xls).");
                 }
-            }
-
-            $skipped_rows = [];
-            $imported_count = 0;
-
-            foreach ($rows as $index => $row) {
-                $product_name = trim($row[0] ?? '');
-                $description = trim($row[1] ?? '');
-                $category_name = trim($row[2] ?? '');
-                $price = (float)($row[3] ?? 0); // Column D (2D)
-                $cost_product = (float)($row[4] ?? 0); // Column E (2E)
-                $quantity = intval(trim($row[5] ?? '0')); // Column F (2F)
-                $barcode = trim($row[7] ?? ''); // Column H (2H)
-
-                error_log("Processing row " . ($index + 2) . ": " . json_encode($row));
-                error_log("Quantity for product '$product_name': $quantity");
-                error_log("Cost product for product '$product_name': $cost_product");
-                error_log("Price for product '$product_name': $price");
-
-                $category_id = $this->productManager->getCategoryIdByName($category_name);
-                if (!$category_id) {
-                    if (substr($category_name, -1) !== 's') {
-                        $category_id = $this->productManager->getCategoryIdByName($category_name . 's');
+    
+                require_once 'vendor/autoload.php';
+                $file = $_FILES['excel_file']['tmp_name'];
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray();
+                array_shift($rows); // Remove header
+    
+                // Extract images mapped by row number
+                $drawings = $sheet->getDrawingCollection();
+                $images = [];
+                foreach ($drawings as $drawing) {
+                    $coordinates = $drawing->getCoordinates(); // e.g., G2
+                    preg_match('/([A-Z]+)([0-9]+)/', $coordinates, $matches);
+                    $column = $matches[1];
+                    $row_number = (int)$matches[2]; // Extract row
+    
+                    if ($drawing instanceof \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
+                        $image_data = $drawing->getImageResource();
+                        ob_start();
+                        imagepng($image_data);
+                        $image_binary = ob_get_clean();
+                        $images[$row_number] = $image_binary;
+                    } elseif ($drawing instanceof \PhpOffice\PhpSpreadsheet\Worksheet\Drawing) {
+                        $image_path = $drawing->getPath();
+                        $image_binary = file_get_contents($image_path);
+                        $images[$row_number] = $image_binary;
                     }
-                    if (!$category_id && substr($category_name, -1) === 's') {
-                        $category_id = $this->productManager->getCategoryIdByName(substr($category_name, 0, -1));
-                    }
+                }
+    
+                $skipped_rows = [];
+                $imported_count = 0;
+    
+                foreach ($rows as $index => $row) {
+                    $row_number = $index + 2; // Excel rows start at 2 (after header)
+    
+                    $product_name = trim($row[0] ?? '');
+                    $description = trim($row[1] ?? '');
+                    $category_name = trim($row[2] ?? '');
+                    $price = (float)($row[3] ?? 0);
+                    $cost_product = (float)($row[4] ?? 0);
+                    $quantity = intval($row[5] ?? 0);
+                    $barcode = trim($row[7] ?? '');
+    
+                    $category_id = $this->productManager->getCategoryIdByName($category_name);
                     if (!$category_id) {
-                        $skipped_rows[] = "Row " . ($index + 2) . ": Category '$category_name' not found";
-                        error_log("Skipped row " . ($index + 2) . ": Category '$category_name' not found");
-                        continue;
+                        // Try plural/singular variations
+                        if (substr($category_name, -1) !== 's') {
+                            $category_id = $this->productManager->getCategoryIdByName($category_name . 's');
+                        } else {
+                            $category_id = $this->productManager->getCategoryIdByName(rtrim($category_name, 's'));
+                        }
+    
+                        if (!$category_id) {
+                            $skipped_rows[] = "Row $row_number: Category '$category_name' not found";
+                            continue;
+                        }
+                    }
+    
+                    $db_image_path = "uploads/default.png";
+                    if (isset($images[$row_number])) {
+                        $target_dir = __DIR__ . "/../views/products/uploads/";
+                        if (!is_dir($target_dir)) {
+                            mkdir($target_dir, 0777, true);
+                        }
+    
+                        $filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . time() . '.png';
+                        $target_file = $target_dir . $filename;
+                        $db_image_path = "uploads/" . $filename;
+    
+                        if (!file_put_contents($target_file, $images[$row_number])) {
+                            $db_image_path = "uploads/default.png";
+                        }
+                    }
+    
+                    $result = $this->productManager->storeNewProduct(
+                        $product_name,
+                        $category_id,
+                        $barcode,
+                        $quantity,
+                        $description,
+                        $price,
+                        $cost_product,
+                        0,
+                        1,
+                        $db_image_path
+                    );
+    
+                    if ($result) {
+                        $imported_count++;
+                    } else {
+                        $skipped_rows[] = "Row $row_number: Failed to insert product '$product_name'";
                     }
                 }
-
-                $db_image_path = "uploads/default.png";
-                $row_number = $index + 2;
-                if (isset($images[$row_number])) {
-                    $target_dir = __DIR__ . "/../views/products/uploads/";
-                    if (!is_dir($target_dir)) {
-                        mkdir($target_dir, 0777, true);
-                    }
-                    $filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . time() . '.png';
-                    $target_file = $target_dir . $filename;
-                    $db_image_path = "uploads/" . $filename;
-                    if (!file_put_contents($target_file, $images[$row_number])) {
-                        error_log("Failed to save image for row $row_number: $target_file");
-                        $db_image_path = "uploads/default.png";
-                    }
-                } else {
-                    error_log("No image found for row $row_number");
+    
+                $message = "Imported $imported_count products successfully!";
+                if (!empty($skipped_rows)) {
+                    $message .= "<br>Skipped rows:<br>" . implode("<br>", $skipped_rows);
                 }
-
-                $result = $this->productManager->storeNewProduct(
-                    $product_name,
-                    $category_id,
-                    $barcode,
-                    $quantity,
-                    $description,
-                    $cost_product,
-                    $price,
-                    0,
-                    1,
-                    $db_image_path
-                );
-
-                if ($result) {
-                    $imported_count++;
-                    error_log("Successfully imported product '$product_name' at row " . ($index + 2));
-                } else {
-                    $skipped_rows[] = "Row " . ($index + 2) . ": Failed to insert product '$product_name'";
-                    error_log("Skipped row " . ($index + 2) . ": Failed to insert product '$product_name'");
-                }
+    
+                $_SESSION['success_message'] = $message;
+                header("Location: /products");
+                exit();
+            } catch (Exception $e) {
+                $_SESSION['error_message'] = "Error importing products: " . $e->getMessage();
+                error_log("Import Error: " . $e->getMessage());
+                header("Location: /products");
+                exit();
             }
-
-            $message = "Imported $imported_count products successfully!";
-            if (!empty($skipped_rows)) {
-                $message .= "<br>Skipped rows:<br>" . implode("<br>", $skipped_rows);
-            }
-            $_SESSION['success_message'] = $message;
-            header("Location: /products");
-            exit();
-        } catch (Exception $e) {
-            $_SESSION['error_message'] = "Error importing products: " . $e->getMessage();
-            error_log("Import Error: " . $e->getMessage());
+        } else {
+            $_SESSION['error_message'] = "No file uploaded.";
             header("Location: /products");
             exit();
         }
-    } else {
-        $_SESSION['error_message'] = "No file uploaded.";
-        header("Location: /products");
-        exit();
     }
-}
+    
 }
