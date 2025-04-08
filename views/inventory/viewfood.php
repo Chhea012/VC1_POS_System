@@ -216,6 +216,7 @@ if (!isset($_SESSION['user'])) {
     .card-text {
         color: #6c757d;
     }
+    
 </style>
 
 <Script>
