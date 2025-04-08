@@ -5,11 +5,9 @@ require_once "Database/Database.php";
 require_once "Controllers/AdminController.php";
 require_once "Controllers/ProductController.php";
 require_once "Controllers/ProfileController.php";
-require_once "Controllers/SettingSecurityController.php";
 require_once "Controllers/ChartController.php";
 require_once "Controllers/WeatherController.php";
 require_once "Controllers/LoginController.php";
-require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
 require_once "Controllers/CategoryController.php";
 require_once "Controllers/IceController.php";
@@ -23,7 +21,6 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
-require_once "Controllers/ExportInventoryController.php";
 
 
 // Create an instance of the Router class
