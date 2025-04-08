@@ -42,6 +42,12 @@ class AdminController extends BaseController {
 
         // Get the previous total money (if any)
         $previousTotalMoney = $this->adminHome->getPreviousTotalMoney()['total_money'] ?? 0;
+        $today = date('Y-m-d');
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+
+        $profitToday = $this->adminHome->getProfitByDate($today);
+        $profitYesterday = $this->adminHome->getProfitByDate($yesterday);
+
         
         // Calculate the sales increment: the difference between current and previous total
         $salesIncrement = $totalMoneyOrder - $previousTotalMoney;
@@ -110,7 +116,9 @@ $jsOrderDataLastWeek = implode(',', array_values($dailySumsLastWeek));
             'jsOrderDataThisWeek' => $jsOrderDataThisWeek,
             'jsOrderDataLastWeek' => $jsOrderDataLastWeek,
             'totalMoneyThisWeek' => $totalMoneyThisWeek,
-            'totalMoneyLastWeek' => $totalMoneyLastWeek
+            'totalMoneyLastWeek' => $totalMoneyLastWeek,
+            'profitToday' => $profitToday,
+            'profitYesterday' => $profitYesterday,
         ]);
     }
 }

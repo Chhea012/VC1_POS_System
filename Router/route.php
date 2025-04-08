@@ -67,6 +67,9 @@ $route->post('/category/store', [categoryController::class, 'store']);
 $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
 $route->get("/products/updateQTY", [productController::class, 'updateQTY']);
+// Add this to your routes
+$route->get("/products/import", [productController::class, 'showImportForm']);
+$route->post("/products/import", [productController::class, 'import']);
 $route->post("/products/updateQTY", [productController::class, 'updateQTY']);
 $route->post("/products/store", [productController::class, 'store']);
 $route->get("/products/view/{product_id}", [productController::class, 'show']);
