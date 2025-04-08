@@ -381,3 +381,276 @@ if (editModal) {
 }
     });
 </script>
+<style>
+    
+
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+        border-color: #343a40;
+    }
+
+    .table tbody tr {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        border-radius: 0.25rem;
+    }
+
+    .dropdown-toggle {
+        padding: 0.5rem;
+    }
+
+    .dropdown-menu {
+        min-width: 120px;
+        font-size: 0.875rem;
+        padding: 0.5rem 0;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+    }
+
+    .modal-right .modal-dialog {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100%;
+        margin: 0;
+        max-width: 400px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+    }
+
+    .modal-right.show .modal-dialog {
+        transform: translateX(0);
+    }
+
+    .modal-content {
+        height: 100%;
+        border-radius: 0;
+        padding: 1rem;
+    }
+
+    #image-upload-box, .border.rounded-2xl {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+        border: 2px dashed #6c757d;
+        cursor: pointer;
+        text-align: center;
+        background: #f8f9fa;
+    }
+
+    #image-upload-box img, #edit_image_preview, #create_image_preview {
+        max-width: 100%;
+        max-height: 200px;
+        object-fit: contain;
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-toggle {
+            padding: 0.6rem;
+        }
+
+        #image-upload-box, .border.rounded-2xl {
+            padding: 0.8rem;
+            gap: 0.8rem;
+        }
+
+        #image-upload-box img, #edit_image_preview, #create_image_preview {
+            max-height: 120px;
+        }
+
+        .modal-right .modal-dialog {
+            max-width: 350px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #495057;
+            margin-right: 0.5rem;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .btn, .dropdown-toggle, .dropdown-item {
+            min-width: 80px;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .modal-right .modal-dialog {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .modal-content {
+            height: auto;
+            border-radius: 0.5rem;
+            padding: 0.8rem;
+        }
+
+        #image-upload-box, .border.rounded-2xl {
+            padding: 1rem;
+            min-height: 150px;
+        }
+
+        #image-upload-box i, #edit-upload-placeholder i {
+            font-size: 2rem;
+        }
+
+        #image-upload-box p, #edit-upload-placeholder p {
+            font-size: 0.8rem;
+        }
+
+        .form-label, .form-control, .form-select {
+            font-size: 0.875rem;
+        }
+
+        .alert {
+            padding: 0.6rem;
+            font-size: 0.875rem;
+        }
+    }
+
+/* Add or modify within the existing <style> */
+@media (max-width: 480px) {
+    .table tbody tr {
+        margin-bottom: 0.8rem;
+        border-radius: 0.4rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        padding: 0.5rem; 
+    }
+
+    .table tbody td {
+        padding: 0.7rem;
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+
+    .table td::before {
+        min-width: 80px;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem; 
+        display: block; 
+    }
+
+    .table td img {
+        max-width: 50px;
+        max-height: 50px;
+        margin-bottom: 0.5rem; 
+    }
+
+    .badge {
+        display: block; 
+        margin-top: 0.2rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem; 
+    }
+
+    .btn, .dropdown-toggle, .dropdown-item {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        min-width: 60px;
+    }
+
+    .dropdown-menu {
+        min-width: 100px;
+        font-size: 0.75rem;
+    }
+
+    #image-upload-box, .border.rounded-2xl {
+        padding: 0.6rem;
+        min-height: 120px;
+        gap: 0.6rem;
+    }
+
+    #image-upload-box i, #edit-upload-placeholder i {
+        font-size: 1.5rem;
+    }
+
+    #image-upload-box p, #edit-upload-placeholder p {
+        font-size: 0.7rem;
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+    .alert {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+    .table td[data-label="Email"] {
+            font-size: 0.80rem; 
+    }
+}
+
+</style>
