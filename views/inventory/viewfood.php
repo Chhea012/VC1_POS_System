@@ -163,7 +163,7 @@ if (!isset($_SESSION['user'])) {
     }
 
 
-    @media (max-width: 768px) {
+    @media (max-width: 578px) {
         .product-card {
             flex-direction: column;
             gap: 1.5rem;
