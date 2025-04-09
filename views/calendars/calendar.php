@@ -368,14 +368,28 @@ window.addEventListener("resize", () => {
     }
 
     .fc-toolbar .fc-button {
-        margin-bottom: 5px; /* Space between buttons */
+        margin-bottom: 5px; 
     }
 
     /* Adjust calendar events */
     .fc-daygrid-event {
-        font-size: 0.8rem; /* Smaller event text */
-        padding: 5px; /* Padding around event text */
+        font-size: 0.8rem; 
+        padding: 5px; 
     }
 
+    .modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* or flex-start if you want them left-aligned */
+    gap: 0.3rem;
+    flex-wrap: nowrap; /* prevent wrapping */
 }
+
+.modal-footer button {
+    flex: 0.5; /* allow buttons to size equally */
+    min-width: 40%; /* makes sure they stay side-by-side on smaller screens */
+    padding: 5px 10px; /* reduce padding for smaller size */
+    font-size: 0.8rem; /* smaller font size */
+}
+
 </style>

@@ -382,9 +382,6 @@ if (editModal) {
     });
 </script>
 <style>
-    
-
-
     .table-responsive {
         overflow-x: auto;
     }
@@ -566,16 +563,17 @@ if (editModal) {
         }
 
         .form-label, .form-control, .form-select {
-            font-size: 0.875rem;
+            font-size: 1rem;
         }
 
         .alert {
             padding: 0.6rem;
             font-size: 0.875rem;
         }
+        .table td{
+        font-size: 0.8rem;
     }
-
-/* Add or modify within the existing <style> */
+}
 @media (max-width: 480px) {
     .table tbody tr {
         margin-bottom: 0.8rem;
@@ -651,6 +649,8 @@ if (editModal) {
     .table td[data-label="Email"] {
             font-size: 0.80rem; 
     }
+    .table td{
+        font-size: 0.8rem;
+    }
 }
-
 </style>
