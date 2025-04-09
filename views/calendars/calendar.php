@@ -391,5 +391,6 @@ window.addEventListener("resize", () => {
     padding: 5px 10px; /* reduce padding for smaller size */
     font-size: 0.8rem; /* smaller font size */
 }
+}
 
 </style>

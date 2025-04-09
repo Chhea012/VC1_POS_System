@@ -10,7 +10,7 @@ if (!isset($_SESSION['user'])) {
 <div class="m-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal"> Import Excel </button>
+        <h1 class="h4 text-secondary">Add a new product</h1>
         <div class="d-flex gap-2">
             <a href="/products" class="btn btn-outline-secondary" >Discard</a>
             
@@ -141,34 +141,7 @@ if (!isset($_SESSION['user'])) {
         </div>
     </form>
 </div>
-<!-- Modal: Import Products -->
-<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="importModalLabel">Import Products from Excel</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="/products/import" method="POST" enctype="multipart/form-data" id="importForm">
-          <div class="mb-3 text-center">
-            <!-- Hidden file input -->
-            <input type="file" name="excel_file" id="excel_file" class="d-none" accept=".xlsx,.xls" required>
-            <!-- Clickable icon to trigger file input -->
-            <div class="import-icon-container">
-              <i class="bi bi-file-earmark-arrow-up import-icon" id="importIcon"></i>
-              <p class="mt-2" id="fileName">Click the icon to select an Excel file</p>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" form="importForm" class="btn btn-primary" id="importButton">Import</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 <script>
     // Image Preview Handling
     document.getElementById("inputGroupFile04").addEventListener("change", function (event) {
@@ -215,49 +188,4 @@ if (!isset($_SESSION['user'])) {
             // Add custom validation if needed, otherwise let it submit
         });
     });
-</script>
-<!-- Custom CSS for Icon Styling -->
-<style>
-  .import-icon-container {
-    cursor: pointer;
-    padding: 20px;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    transition: border-color 0.3s ease;
-  }
-  .import-icon-container:hover {
-    border-color: #007bff;
-  }
-  .import-icon {
-    font-size: 3rem;
-    color: #007bff;
-  }
-  #fileName {
-    color: #6c757d;
-    font-size: 0.9rem;
-  }
-</style>
-
-<!-- JavaScript for Icon Click and File Selection -->
-<script>
-document.getElementById('importIcon').addEventListener('click', function () {
-  document.getElementById('excel_file').click();
-});
-
-document.getElementById('excel_file').addEventListener('change', function () {
-  const fileNameElement = document.getElementById('fileName');
-  if (this.files.length > 0) {
-    fileNameElement.textContent = this.files[0].name;
-  } else {
-    fileNameElement.textContent = 'Click the icon to select an Excel file';
-  }
-});
-
-// Reset form on modal close
-document.getElementById('importModal').addEventListener('hidden.bs.modal', function () {
-  const form = document.getElementById('importForm');
-  const fileNameElement = document.getElementById('fileName');
-  form.reset();
-  fileNameElement.textContent = 'Click the icon to select an Excel file';
-});
 </script>

@@ -170,6 +170,8 @@ class ProductManager
     
         return $product;
     }
+    
+
         //  delete product
         public function delete($product_id) {
             $sql = "DELETE FROM products WHERE product_id = :product_id";
@@ -207,12 +209,6 @@ public function totalStockproduct(){
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-    public function getCategoryIdByName($category_name)
-    {
-        $stmt = $this->db->prepare("SELECT category_id FROM categories WHERE category_name = ?");
-        $stmt->execute([$category_name]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? $row['category_id'] : null; // Return null if category not found
-    }
+
         
 }

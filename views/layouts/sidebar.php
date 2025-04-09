@@ -87,6 +87,32 @@
     </ul>
 </aside>
 
+<!-- Combined Styles -->
+<style>
+    .menu-item .menu-link.active {
+        color: #ffffff !important;
+        background-color: rgba(23, 68, 217, 0.79) !important;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-right: 35px;
+    }
+
+    .flag-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+
+    .menu-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .menu-icon {
+        margin-right: 10px;
+    }
+</style>
+
 <!-- Combined Script -->
 <script>
     // Consolidated translations for both sidebar and navbar

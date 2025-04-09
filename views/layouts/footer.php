@@ -1,5 +1,8 @@
 </div>
 <!-- / Content -->
+
+
+
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 <script src="/views/assets/modules/vendor/libs/jquery/jquery.js"></script>

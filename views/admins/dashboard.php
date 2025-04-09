@@ -53,7 +53,7 @@
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
                         <h1 class="card-title mb-2 text-primary">
-                        <?= $totalQuantityorder ?> $
+                        <?= $totalQuantityorder ?> 
                         </h1>
                         <?php if ($orderIncrease >= 0): ?>
                             <small class="text-success fs-6">
