@@ -210,7 +210,7 @@ class adminHome {
     
     public function getTotalMoneyByDate($date) {
         $query = "
-            SELECT SUM(oi.total_price) AS total_money
+            SELECT SUM(oi.price) AS total_money
             FROM order_items oi
             INNER JOIN orders o ON o.order_id = oi.order_id
             WHERE DATE(o.order_date) = :order_date
