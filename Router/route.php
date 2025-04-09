@@ -68,6 +68,8 @@ $route->get("/products", [productController::class, 'index']);
 $route->get("/products/create", [productController::class, 'create']);
 $route->get("/products/updateQTY", [productController::class, 'updateQTY']);
 $route->post("/products/updateQTY", [productController::class, 'updateQTY']);
+$route->get("/products/import", [productController::class, 'showImportForm']);
+$route->post("/products/import", [productController::class, 'import']);
 $route->post("/products/store", [productController::class, 'store']);
 $route->get("/products/view/{product_id}", [productController::class, 'show']);
 $route->get("/products/edit/{product_id}", [productController::class, 'edit']);
@@ -127,14 +129,4 @@ $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
 
 $route->get('/ExportInventory/exportInventory', [ExportInventoryController::class, 'index']);
 $route->post('/ExportInventory/Inventorypdf', [ExportInventoryController::class, 'exportInventoryPdf']);
-
-
-
-
-
-
-
-
-
-
 $route->route();
