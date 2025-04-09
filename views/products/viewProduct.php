@@ -164,6 +164,24 @@ if (!isset($_SESSION['user'])) {
         }
         
 
+        @media (max-width: 578px) {
+        .product-card {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-image {
+            max-height: 200px;
+        }
+    }    
+    .product-image img {
+        width: 85%;
+        height: 85%;
+        object-fit: contain;
+        /* changed from cover to contain */
+        padding: 0.5rem;
+        /* optional: adds spacing around the image */
+    }
         @media (max-width: 768px) {
             .product-card {
                 flex-direction: column;
