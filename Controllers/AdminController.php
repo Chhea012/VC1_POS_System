@@ -94,6 +94,15 @@ $jsOrderDataLastWeek = implode(',', array_values($dailySumsLastWeek));
         $totalCost = $this->adminHome->totalCost()['Cost_total'] ?? 0;
         $totalMoneyorder = $this->adminHome->totalMoneyorder()['Money_order'] ?? 0;
         
+    $dateType = $_GET['date'] ?? 'today';
+    $date = ($dateType === 'yesterday') 
+        ? date('Y-m-d', strtotime('-1 day')) 
+        : date('Y-m-d');
+
+    // You can use either or both:
+$totalQuantityorder = $this->adminHome->getOrderedQuantityByDate($date);
+$totalMoneyor = $this->adminHome->getTotalMoneyByDate($date);
+
         // Pass the data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
@@ -119,6 +128,8 @@ $jsOrderDataLastWeek = implode(',', array_values($dailySumsLastWeek));
             'totalMoneyLastWeek' => $totalMoneyLastWeek,
             'profitToday' => $profitToday,
             'profitYesterday' => $profitYesterday,
+            'totalQuantityorder' => $totalQuantityorder,
+            'totalMoneyor' => $totalMoneyor,
         ]);
     }
 }

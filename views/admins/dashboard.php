@@ -46,13 +46,14 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a href="/products" class="dropdown-item" >View more</a>
+                                <a class="dropdown-item" href="?date=today">Today</a>
+                                <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
                                 </div>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
                         <h1 class="card-title mb-2 text-primary">
-                            <?php echo htmlspecialchars($totalOrderedQuantity)?>
+                        <?= $totalQuantityorder ?> $
                         </h1>
                         <?php if ($orderIncrease >= 0): ?>
                             <small class="text-success fs-6">
@@ -121,14 +122,15 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="/products">View More</a>
-
+                                <a class="dropdown-item" href="?date=today">Today</a>
+                                <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
                                 </div>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
-                        <h1 class="card-title mb-2 text-primary">
-                        <?= htmlspecialchars($totalMoneyorder) ?>$</h1>
+                        <h1 class="card-title text-primary mb-0">
+        $<?= number_format($totalMoneyor, 2) ?>
+    </h1>
                         <?php if (isset($salesIncrement) >= 0): ?>
                         <?php endif; ?>
                     </div>

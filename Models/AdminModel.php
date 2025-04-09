@@ -196,5 +196,28 @@ class adminHome {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total_profit'] ?? 0;
     }
+    public function getOrderedQuantityByDate($date) {
+        $query = "
+            SELECT SUM(oi.quantity) AS total_quantity
+            FROM order_items oi
+            INNER JOIN orders o ON o.order_id = oi.order_id
+            WHERE DATE(o.order_date) = :order_date
+        ";
+        $stmt = $this->db->query($query, ['order_date' => $date]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_quantity'] ?? 0;
+    }
+    
+    public function getTotalMoneyByDate($date) {
+        $query = "
+            SELECT SUM(oi.total_price) AS total_money
+            FROM order_items oi
+            INNER JOIN orders o ON o.order_id = oi.order_id
+            WHERE DATE(o.order_date) = :order_date
+        ";
+        $stmt = $this->db->query($query, ['order_date' => $date]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_money'] ?? 0;
+    }
     
     }
