@@ -216,7 +216,6 @@ if (!isset($_SESSION['user'])) {
         .image-frame {
             max-width: 200px;
         }
-
         .row.g-4.p-4 {
             padding: 15px !important;
         }
@@ -243,6 +242,117 @@ if (!isset($_SESSION['user'])) {
             text-align: center;
         }
     }
+    @media (max-width: 576px) {
+    table thead {
+        display: none;
+    }
+
+    table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    table tbody tr td,
+    table tbody tr th {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    table tbody tr td::before,
+    table tbody tr th::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .dropdown {
+        text-align: center;
+    }
+    /* Make the carousel items stack properly */
+    .carousel-item .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .d-flex.flex-column.flex-md-row {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .text-center.text-md-start {
+        text-align: center !important;
+    }
+
+    .image-frame {
+        max-width: 200px;
+        margin-bottom: 15px;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+    }
+
+    .row.g-4.p-4 {
+        padding: 1rem !important;
+    }
+
+    /* Hide 2nd product if present in same slide on mobile */
+    .carousel-item .col-md-6:nth-child(2) {
+        display: none;
+    }
+}
+@media (max-width: 576px) {
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #6c757d;
+        margin-right: 10px;
+    }
+
+    .table tbody img {
+        max-width: 60px;
+        height: auto;
+
+    }
+}
+    
 </style>
 
 <script>

@@ -46,14 +46,14 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                <a class="dropdown-item" href="?date=today">Today</a>
+                                <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
                                 </div>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Product Sales 📈</span>
                         <h1 class="card-title mb-2 text-primary">
-                            <?php echo htmlspecialchars($totalOrderedQuantity)?>
+                        <?= $totalQuantityorder ?> $
                         </h1>
                         <?php if ($orderIncrease >= 0): ?>
                             <small class="text-success fs-6">
@@ -81,8 +81,8 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="/category">View More</a>
-                                </div>
+                                    <a class="dropdown-item" href="/products">View More</a>
+                                </div>  
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Total Stock 📦</span>
@@ -115,24 +115,54 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                         <div class="avatar flex-shrink-0">
-                        <i class='bx bx-credit-card-alt fs-2 text-warning'></i>
+                        <i class='bx bxs-credit-card fs-2 text-warning'></i>
+                            </div>
+                                <div class="dropdown">
+                                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="?date=today">Today</a>
+                                <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
+                        <h1 class="card-title text-primary mb-0">
+        $<?= number_format($totalMoneyor, 2) ?>
+    </h1>
+                        <?php if (isset($salesIncrement) >= 0): ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-4 order-1 mt-4">
+                <div class="card p-2 border-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="avatar flex-shrink-0">
+                                <i class='bx bx-credit-card-alt fs-2 text-warning'></i>
                             </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="?date=today">Today</a>
+                                    <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
                                 </div>
                             </div>
                         </div>
-                        <span class="fw-semibold d-block mb-1 fs-5">Income Money 💰</span>
+                        <span class="fw-semibold d-block mb-1 fs-5">Profit Money 💰</span>
                         <h1 class="card-title mb-2 text-primary">
-                        <?= htmlspecialchars($totalMoneyorder) ?>$</h1>
-                        <?php if (isset($salesIncrement) >= 0): ?>
-                        <?php endif; ?>
+                            $<?php 
+                                echo isset($_GET['date']) && $_GET['date'] === 'yesterday' 
+                                    ? number_format($profitYesterday, 2) 
+                                    : number_format($profitToday, 2); 
+                            ?>
+                        </h1>
+
                     </div>
                 </div>
             </div>
@@ -141,15 +171,14 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                         <div class="avatar flex-shrink-0">
-                        <i class='bx bx-money fs-2 text-warning'></i>
+                        <a href="/products"><i class='bx bx-money fs-2 text-warning'></i></a>
                         </div>
-                            <div class="dropdown">
+                        <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="/products">View More</a>
                                 </div>
                             </div>
                         </div>
@@ -168,11 +197,11 @@
                         </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded fs-5"></i>
+                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
+                                    <a class="dropdown-item" href="/products">View more</a>
+
                                 </div>
                             </div>
                         </div>
@@ -294,50 +323,57 @@
             </div>
             <!-- Grapic Sale -->
             <div class="col-md-6 col-lg-4 order-2 mb-4">
-                <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5>Graphic Sales</h5>
-           
+    <div class="card h-100">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5>Graphic Sales</h5>
+            <div class="dropdown">
+                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" id="today">This week</a>
+                    <a class="dropdown-item" id="tomorrow">Last week</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+                <div class="d-flex p-4 pt-3">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <img src="views/assets/modules/img/icons/unicons/wallet.png" alt="User" />
                     </div>
-                    <div class="card-body">
-                        <div class="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
-                            <div class="d-flex p-4 pt-3">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <img src="views/assets/modules/img/icons/unicons/wallet.png" alt="User" />
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block">Total Money Order</small>
-                                    <div class="d-flex align-items-center">
-                                        <h6 class="mb-0 me-1"><?= htmlspecialchars($totalMoneyorder) ?>$</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Income Chart -->
-                            <div id="incomeChart"></div>
-
-                            <div class="d-flex justify-content-center pt-4 gap-2">
-                                <div class="flex-shrink-0">
-                                    <!-- Expenses this week -->
-                                    <div id="expensesOfWeek"></div>
-                                </div>
-                                <div>
-                                    <p class="mb-n1 mt-1">Quantiy Order this week</p>
-                                </div>
-                            </div>
+                    <div>
+                        <small class="text-muted d-block">Total Money Order</small>
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0 me-1" id="totalMoneyDisplay"><?= htmlspecialchars($totalMoneyThisWeek) ?>$</h6>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Income Chart -->
+                <div id="incomeChart"></div>
+
+                <div class="d-flex justify-content-center pt-4 gap-2">
+                    <div class="flex-shrink-0">
+                        <div id="expensesOfWeek"></div>
+                    </div>
+                    <div>
+                        <p class="mb-n1 mt-1">Quantity Order this week</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+        </div>
+    </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-    var labels =<?php echo json_encode(array_column($categoriesOrderedToday, 'category_name')); ?>;
-    var series =<?php echo json_encode(array_map('intval', array_column($categoriesOrderedToday, 'total_orders'))); ?>;
+    // ----- Donut Chart -----
+    var labels = <?php echo json_encode(array_column($categoriesOrderedToday, 'category_name')); ?>;
+    var series = <?php echo json_encode(array_map('intval', array_column($categoriesOrderedToday, 'total_orders'))); ?>;
 
     var chartOrderStatistics = document.querySelector('#orderStatisticsChart');
     var orderChartConfig = {
@@ -348,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         labels: labels,
         series: series,
-              colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
+        colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
         stroke: {
             width: 3,
             colors: ['#fff']
@@ -384,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             show: true,
                             label: 'Total',
                             formatter: function () {
-                                return '<?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders'))?>';
+                                return '<?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders')) ?>';
                             }
                         }
                     }
@@ -397,23 +433,23 @@ document.addEventListener('DOMContentLoaded', function () {
         var statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
         statisticsChart.render();
     }
-});
 
-    document.getElementById('today').addEventListener('click', function() {
+    // ----- Date Filter Buttons -----
+    document.getElementById('today').addEventListener('click', function () {
         fetchTotalMoney('today');
     });
 
-    document.getElementById('tomorrow').addEventListener('click', function() {
+    document.getElementById('tomorrow').addEventListener('click', function () {
         fetchTotalMoney('tomorrow');
     });
 
     function fetchTotalMoney(date) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'path_to_your_controller_method', true); 
+        xhr.open('POST', 'fetch_money.php'); // Make sure this is the correct URL to handle the request
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        xhr.onload = function() {
-            if (xhr.status === 1000) {
+        xhr.onload = function () {
+            if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
                 if (data.error) {
                     alert(data.error);
@@ -426,21 +462,18 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send('date=' + date);
     }
 
-
-    // ......Grapic orders ..........
-    document.addEventListener("DOMContentLoaded", function () {
-
-    var orderData = [<?php echo $jsOrderData; ?>];
+    // ----- Weekly Income Chart -----
+    const thisWeekData = [<?php echo $jsOrderDataThisWeek; ?>];
+    const lastWeekData = [<?php echo $jsOrderDataLastWeek; ?>];
+    const totalMoneyThisWeek = <?php echo $totalMoneyThisWeek; ?>;
+    const totalMoneyLastWeek = <?php echo $totalMoneyLastWeek; ?>;
 
     const incomeChartEl = document.querySelector("#incomeChart");
+    const totalMoneyDisplay = document.querySelector("#totalMoneyDisplay");
 
     const incomeChartConfig = {
-        series: [{ name: "Total Sales $", data: orderData }],
-        chart: {
-            height: 215,
-            type: "area",
-            toolbar: { show: false }
-        },
+        series: [{ name: "Total Sales $", data: thisWeekData }],
+        chart: { height: 215, type: "area", toolbar: { show: false } },
         dataLabels: { enabled: false },
         stroke: { width: 2, curve: "smooth" },
         colors: ["#7367F0"],
@@ -461,23 +494,36 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         xaxis: {
             categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-            labels: {
-                style: { fontSize: "13px", colors: "#666" }
-            }
+            labels: { style: { fontSize: "13px", colors: "#666" } }
         },
-        yaxis: {
-            labels: { show: true },
-            min: 0,
-            tickAmount: 5
-        }
+        yaxis: { labels: { show: true }, min: 0, tickAmount: 5 }
     };
 
     if (incomeChartEl !== null) {
         const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
         incomeChart.render();
+
+        // Handle chart filter dropdowns (This week, Last week) only
+        document.querySelectorAll(".dropdown-item").forEach(item => {
+            const text = item.textContent.trim();
+            if (text === "This week" || text === "Last week") {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (text === "This week") {
+                        incomeChart.updateSeries([{ name: "Total Sales $", data: thisWeekData }]);
+                        totalMoneyDisplay.textContent = `${totalMoneyThisWeek}$`;
+                    } else if (text === "Last week") {
+                        incomeChart.updateSeries([{ name: "Total Sales $", data: lastWeekData }]);
+                        totalMoneyDisplay.textContent = `${totalMoneyLastWeek}$`;
+                    }
+                });
+            }
+        });
     }
 });
 </script>
+
 
 <style>
     

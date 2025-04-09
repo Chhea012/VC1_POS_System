@@ -45,7 +45,7 @@ usort($products, function($a, $b) {
                     <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
                         <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
                             <?php foreach ($slideProducts as $product): ?>
-                                <div class="col-md-3">
+                                <div class="col-md-3 col-12 carousel-product">
                                     <div class="card drink-card h-100 shadow-sm border-0">
                                         <div class="drink-img-wrapper text-center position-relative">
                                             <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>"
@@ -92,7 +92,7 @@ usort($products, function($a, $b) {
             <span class="text-secondary">Status</span>
         </h5>
         <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -104,7 +104,7 @@ usort($products, function($a, $b) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #28a745, #1d7a35);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -118,7 +118,7 @@ usort($products, function($a, $b) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-12">
                 <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #ffc107, #d39e00);">
                         <div class="position-absolute top-0 end-0 opacity-25">
@@ -343,5 +343,132 @@ document.addEventListener("DOMContentLoaded", function () {
 
         localStorage.setItem("events", JSON.stringify(existingEvents));
     }
+
+    // Adjust carousel for tablet view
+    function adjustCarousel() {
+        if (window.innerWidth <= 768) {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach((product, index) => {
+                    if (index > 0) product.style.display = 'none'; // Hide all but the first product
+                });
+            });
+        } else {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach(product => product.style.display = 'block'); // Show all products on desktop
+            });
+        }
+    }
+
+    // Run on load and resize
+    adjustCarousel();
+    window.addEventListener('resize', adjustCarousel);
 });
 </script>
+
+<style>
+    /* For tablet devices (max-width: 768px) */
+    @media (max-width: 768px) {
+        .row > div {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table thead {
+            display: none;
+        }
+
+        .table tbody tr {
+            display: block;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .table tbody tr td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .table tbody tr td:last-child {
+            border-bottom: none;
+        }
+
+        .table tbody tr td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: inline-block;
+            width: 40%;
+            margin-right: 10px;
+        }
+
+        .table tbody tr td button {
+            width: auto;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .table-responsive {
+            padding: 10px;
+        }
+
+        .form-label, .btn {
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.8rem;
+        }
+
+        /* Carousel adjustments for tablet */
+        .carousel-product {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+
+        .drink-card {
+            height: auto !important;
+            padding-bottom: 1rem;
+        }
+
+        .drink-img-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        .carousel-inner > .carousel-item {
+            padding: 1rem !important;
+        }
+
+        .card-body {
+            text-align: center !important;
+        }
+
+        .drink-btn {
+            width: 100%;
+        }
+
+        .carousel-indicators {
+            bottom: -25px;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            top: auto;
+            bottom: -40px;
+        }
+
+        .drink-img {
+            max-height: 150px;
+        }
+    }
+</style>

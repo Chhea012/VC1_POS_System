@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
     
 
     <h2 class="mb-3">Calendar</h2>
-    <div class="mb-3 d-flex justify-content-between">
+    <div class="mb-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" id="eventFilter" data-bs-toggle="dropdown" aria-expanded="false">
                 View All
@@ -26,6 +26,7 @@ if (!isset($_SESSION['user'])) {
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">+ Add Event</button>
     </div>
     <div id='calendar'></div>
+
 </div>
 
 <!-- Add Event Modal -->
@@ -142,6 +143,14 @@ if (!isset($_SESSION['user'])) {
                 document.getElementById("editEventBtn").setAttribute("data-event-id", info.event.id);
                 document.getElementById("deleteEventBtn").setAttribute("data-event-id", info.event.id);
 
+                // Hide the "Edit Event" button if the category is "low stock"
+                if (info.event.extendedProps.description && info.event.extendedProps.description.toLowerCase().includes("low stock")) {
+                 document.getElementById("editEventBtn").style.display = "none";
+                } else {
+                 document.getElementById("editEventBtn").style.display = "inline-block";
+                }
+                
+
                 var modal = new bootstrap.Modal(document.getElementById("eventDetailModal"));
                 modal.show();
             },
@@ -149,6 +158,20 @@ if (!isset($_SESSION['user'])) {
 
         calendar.render();
         updateNotificationBadge(); // Initial badge update
+
+        // Switch calendar view based on screen size
+if (window.innerWidth < 768) {
+    calendar.changeView("listWeek");
+}
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth < 768 && calendar.view.type !== "listWeek") {
+        calendar.changeView("listWeek");
+    } else if (window.innerWidth >= 768 && calendar.view.type !== "dayGridMonth") {
+        calendar.changeView("dayGridMonth");
+    }
+});
+
 
         
 
@@ -321,3 +344,53 @@ if (!isset($_SESSION['user'])) {
         }
     });
 </script>
+<style>
+/* Mobile-Specific Styles */
+@media (max-width: 576px) {
+    h2 {
+        font-size: 1.25rem; /* Smaller size for mobile */
+    }
+
+    .modal-content {
+        font-size: 0.9rem; /* Smaller font size for modals */
+    }
+
+    /* Dropdown Button Size */
+    .dropdown-toggle {
+        width: 100%; /* Full width on mobile */
+        margin-bottom: 10px; /* Spacing between buttons */
+    }
+
+    /* Calendar Header Items */
+    .fc .fc-toolbar {
+        flex-direction: column; /* Stack buttons on top of each other */
+        align-items: stretch; /* Stretch for full width */
+    }
+
+    .fc-toolbar .fc-button {
+        margin-bottom: 5px; 
+    }
+
+    /* Adjust calendar events */
+    .fc-daygrid-event {
+        font-size: 0.8rem; 
+        padding: 5px; 
+    }
+
+    .modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* or flex-start if you want them left-aligned */
+    gap: 0.3rem;
+    flex-wrap: nowrap; /* prevent wrapping */
+}
+
+.modal-footer button {
+    flex: 0.5; /* allow buttons to size equally */
+    min-width: 40%; /* makes sure they stay side-by-side on smaller screens */
+    padding: 5px 10px; /* reduce padding for smaller size */
+    font-size: 0.8rem; /* smaller font size */
+}
+}
+
+</style>

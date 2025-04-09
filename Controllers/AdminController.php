@@ -7,7 +7,7 @@ class AdminController extends BaseController {
     public function __construct() {
         $this->adminHome = new adminHome();
     }
-
+    
     public function index() {
         // Get Low stock products
         $lowStockProducts = $this->adminHome->getLowStockProducts();
@@ -42,6 +42,12 @@ class AdminController extends BaseController {
 
         // Get the previous total money (if any)
         $previousTotalMoney = $this->adminHome->getPreviousTotalMoney()['total_money'] ?? 0;
+        $today = date('Y-m-d');
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+
+        $profitToday = $this->adminHome->getProfitByDate($today);
+        $profitYesterday = $this->adminHome->getProfitByDate($yesterday);
+
         
         // Calculate the sales increment: the difference between current and previous total
         $salesIncrement = $totalMoneyOrder - $previousTotalMoney;
@@ -59,29 +65,44 @@ class AdminController extends BaseController {
             ];
         }
 
-        $orderData = $this->adminHome->orderDay();
+// This week data
+$orderDataThisWeek = $this->adminHome->orderDay();
+$daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+$dailySumsThisWeek = array_fill_keys($daysOfWeek, 0);
+$totalMoneyThisWeek = 0;
+foreach ($orderDataThisWeek as $order) {
+    $dayName = date('l', strtotime($order['order_date']));
+    $dailySumsThisWeek[$dayName] += floatval($order['total_amount']);
+    $totalMoneyThisWeek += floatval($order['total_amount']);
+}
+$jsOrderDataThisWeek = implode(',', array_values($dailySumsThisWeek));
 
-        // Prepare chart data by weekday
-        $daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        $dailySums = array_fill_keys($daysOfWeek, 0);
-    
-        foreach ($orderData as $order) {
-            $dayName = date('l', strtotime($order['order_date']));
-            if (isset($dailySums[$dayName])) {
-                $dailySums[$dayName] += floatval($order['total_amount']);
-            }
-        }
-    
-        // Send data to view
-        $jsOrderData = implode(',', $dailySums);
+// Last week data
+$orderDataLastWeek = $this->adminHome->orderDayLastWeek();
+$dailySumsLastWeek = array_fill_keys($daysOfWeek, 0);
+$totalMoneyLastWeek = 0;
+foreach ($orderDataLastWeek as $order) {
+    $dayName = date('l', strtotime($order['order_date']));
+    $dailySumsLastWeek[$dayName] += floatval($order['total_amount']);
+    $totalMoneyLastWeek += floatval($order['total_amount']);
+}
+$jsOrderDataLastWeek = implode(',', array_values($dailySumsLastWeek));
 
         // Get the order increase percentage
         $orderIncrease = $this->adminHome->getOrderIncreasePercentage();
-        $categoriesOrderedToday = $this->adminHome->getCategoriesOrderedToday();
         $totalOrders = $this->adminHome->getTotalOrders();
         $totalCost = $this->adminHome->totalCost()['Cost_total'] ?? 0;
         $totalMoneyorder = $this->adminHome->totalMoneyorder()['Money_order'] ?? 0;
         
+    $dateType = $_GET['date'] ?? 'today';
+    $date = ($dateType === 'yesterday') 
+        ? date('Y-m-d', strtotime('-1 day')) 
+        : date('Y-m-d');
+
+    // You can use either or both:
+$totalQuantityorder = $this->adminHome->getOrderedQuantityByDate($date);
+$totalMoneyor = $this->adminHome->getTotalMoneyByDate($date);
+
         // Pass the data to the view
         $this->view('admins/dashboard', [
             'lowStockProducts' => $lowStockProducts,
@@ -100,10 +121,15 @@ class AdminController extends BaseController {
             'categoriesOrderedToday' => $categoriesOrderedToday,
             'totalCost' => $totalCost,
             'totalMoneyorder' => $totalMoneyorder,
-            'orderData' => $orderData,
-            'jsOrderData' => $jsOrderData
-
+            'orderDataThisWeek' => $orderDataThisWeek,
+            'jsOrderDataThisWeek' => $jsOrderDataThisWeek,
+            'jsOrderDataLastWeek' => $jsOrderDataLastWeek,
+            'totalMoneyThisWeek' => $totalMoneyThisWeek,
+            'totalMoneyLastWeek' => $totalMoneyLastWeek,
+            'profitToday' => $profitToday,
+            'profitYesterday' => $profitYesterday,
+            'totalQuantityorder' => $totalQuantityorder,
+            'totalMoneyor' => $totalMoneyor,
         ]);
     }
 }
-
