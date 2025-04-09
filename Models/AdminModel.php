@@ -179,4 +179,22 @@ class adminHome {
         ";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
-}
+    public function getProfitByDate($date) {
+        $sql = "
+            SELECT 
+                SUM((oi.price - p.cost_product) * oi.quantity) AS total_profit
+            FROM 
+                order_items oi
+            INNER JOIN 
+                products p ON p.product_id = oi.product_id
+            INNER JOIN 
+                orders o ON o.order_id = oi.order_id
+            WHERE 
+                DATE(o.order_date) = :date
+        ";
+        $stmt = $this->db->query($sql, ['date' => $date]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_profit'] ?? 0;
+    }
+    
+    }

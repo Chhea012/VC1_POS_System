@@ -238,12 +238,152 @@ $roles = $roles ?? [];
     </div>
 </div>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
-<style>
-    .container-xxl {
-        padding: 1rem;
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Delete Modal Handler
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const userId = button.getAttribute('data-user-id');
+            const userName = button.getAttribute('data-user-name');
+            document.getElementById('deleteUserName').textContent = userName;
+            document.getElementById('confirmDeleteBtn').href = `/users/delete/${userId}`;
+        });
+
+        // Create Image Preview Handler
+        const imageUploadBox = document.getElementById('image-upload-box');
+        const imageInput = document.getElementById('create_profile_image');
+        const imagePreview = document.getElementById('create_image_preview');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+
+        imageUploadBox.addEventListener('click', () => imageInput.click());
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    uploadPlaceholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        imageInput.addEventListener('change', previewImage);
+
+imageUploadBox.addEventListener('click', () => imageInput.click());
+imageUploadBox.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    imageUploadBox.style.borderColor = '#0d6efd';
+});
+imageUploadBox.addEventListener('dragleave', () => {
+    imageUploadBox.style.borderColor = '#6c757d';
+});
+imageUploadBox.addEventListener('drop', (e) => {
+    e.preventDefault();
+    imageUploadBox.style.borderColor = '#6c757d';
+    if (e.dataTransfer.files.length) {
+        imageInput.files = e.dataTransfer.files;
+        previewImage({ target: imageInput });
     }
+});
+// Preview image function
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file && file.type.match('image.*')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            uploadPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+imageInput.addEventListener('change', previewImage);
+// Edit Modal Handler
+const editModal = document.getElementById('editUserModal');
+if (editModal) {
+    editModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const userId = button.getAttribute('data-user-id');
+        const userName = button.getAttribute('data-user-name');
+        const email = button.getAttribute('data-email');
+        const roleId = button.getAttribute('data-role-id');
+        const phoneNumber = button.getAttribute('data-phone-number');
+        const profileImage = button.getAttribute('data-profile-image');
+
+        // Set form values
+        document.getElementById('edit_user_id').value = userId;
+        document.getElementById('edit_user_name').value = userName;
+        document.getElementById('edit_email').value = email;
+        document.getElementById('edit_role_id').value = roleId;
+        document.getElementById('edit_phone_number').value = phoneNumber || '';
+
+        // Handle image preview
+        const editPreview = document.getElementById('edit_image_preview');
+        const editPlaceholder = document.getElementById('edit-upload-placeholder');
+        const editUploadBox = editPreview.closest('.border'); // Get the parent upload box
+
+        // Reset file input
+        document.getElementById('edit_profile_image').value = '';
+        
+        if (profileImage && profileImage !== 'null') {
+            editPreview.src = profileImage;
+            editPreview.style.display = 'block';
+            if (editPlaceholder) editPlaceholder.style.display = 'none';
+        } else {
+            editPreview.style.display = 'none';
+            if (editPlaceholder) editPlaceholder.style.display = 'block';
+        }
+
+        // Add click handler for edit modal's upload box
+        if (editUploadBox) {
+            editUploadBox.addEventListener('click', () => {
+                document.getElementById('edit_profile_image').click();
+            });
+        }
+    });
+
+    // Edit Image Preview Handler
+    document.getElementById('edit_profile_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('edit_image_preview');
+        const placeholder = document.getElementById('edit-upload-placeholder');
+        const file = e.target.files[0];
+        
+        if (file && file.type.match('image.*')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // If no file selected or invalid file type, check if there's an existing image
+            const button = document.querySelector('[data-bs-toggle="modal"][data-user-id="' + document.getElementById('edit_user_id').value + '"]');
+            const existingImage = button ? button.getAttribute('data-profile-image') : null;
+            
+            if (existingImage && existingImage !== 'null') {
+                preview.src = existingImage;
+                preview.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            } else {
+                preview.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'block';
+            }
+        }
+    });
+}
+    });
+</script>
+<style>
+    
+
 
     .table-responsive {
         overflow-x: auto;
@@ -512,145 +652,5 @@ $roles = $roles ?? [];
             font-size: 0.80rem; 
     }
 }
+
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Delete Modal Handler
-        const deleteModal = document.getElementById('deleteModal');
-        deleteModal.addEventListener('show.bs.modal', function(event) {
-            const button = event.relatedTarget;
-            const userId = button.getAttribute('data-user-id');
-            const userName = button.getAttribute('data-user-name');
-            document.getElementById('deleteUserName').textContent = userName;
-            document.getElementById('confirmDeleteBtn').href = `/users/delete/${userId}`;
-        });
-
-        // Create Image Preview Handler
-        const imageUploadBox = document.getElementById('image-upload-box');
-        const imageInput = document.getElementById('create_profile_image');
-        const imagePreview = document.getElementById('create_image_preview');
-        const uploadPlaceholder = document.getElementById('upload-placeholder');
-
-        imageUploadBox.addEventListener('click', () => imageInput.click());
-
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                    uploadPlaceholder.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        imageInput.addEventListener('change', previewImage);
-
-imageUploadBox.addEventListener('click', () => imageInput.click());
-imageUploadBox.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    imageUploadBox.style.borderColor = '#0d6efd';
-});
-imageUploadBox.addEventListener('dragleave', () => {
-    imageUploadBox.style.borderColor = '#6c757d';
-});
-imageUploadBox.addEventListener('drop', (e) => {
-    e.preventDefault();
-    imageUploadBox.style.borderColor = '#6c757d';
-    if (e.dataTransfer.files.length) {
-        imageInput.files = e.dataTransfer.files;
-        previewImage({ target: imageInput });
-    }
-});
-// Preview image function
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file && file.type.match('image.*')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-            uploadPlaceholder.style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-    }
-}
-imageInput.addEventListener('change', previewImage);
-// Edit Modal Handler
-const editModal = document.getElementById('editUserModal');
-if (editModal) {
-    editModal.addEventListener('show.bs.modal', function(event) {
-        const button = event.relatedTarget;
-        const userId = button.getAttribute('data-user-id');
-        const userName = button.getAttribute('data-user-name');
-        const email = button.getAttribute('data-email');
-        const roleId = button.getAttribute('data-role-id');
-        const phoneNumber = button.getAttribute('data-phone-number');
-        const profileImage = button.getAttribute('data-profile-image');
-
-        // Set form values
-        document.getElementById('edit_user_id').value = userId;
-        document.getElementById('edit_user_name').value = userName;
-        document.getElementById('edit_email').value = email;
-        document.getElementById('edit_role_id').value = roleId;
-        document.getElementById('edit_phone_number').value = phoneNumber || '';
-
-        // Handle image preview
-        const editPreview = document.getElementById('edit_image_preview');
-        const editPlaceholder = document.getElementById('edit-upload-placeholder');
-        const editUploadBox = editPreview.closest('.border'); // Get the parent upload box
-
-        // Reset file input
-        document.getElementById('edit_profile_image').value = '';
-        
-        if (profileImage && profileImage !== 'null') {
-            editPreview.src = profileImage;
-            editPreview.style.display = 'block';
-            if (editPlaceholder) editPlaceholder.style.display = 'none';
-        } else {
-            editPreview.style.display = 'none';
-            if (editPlaceholder) editPlaceholder.style.display = 'block';
-        }
-
-        // Add click handler for edit modal's upload box
-        if (editUploadBox) {
-            editUploadBox.addEventListener('click', () => {
-                document.getElementById('edit_profile_image').click();
-            });
-        }
-    });
-
-    // Edit Image Preview Handler
-    document.getElementById('edit_profile_image').addEventListener('change', function(e) {
-        const preview = document.getElementById('edit_image_preview');
-        const placeholder = document.getElementById('edit-upload-placeholder');
-        const file = e.target.files[0];
-        
-        if (file && file.type.match('image.*')) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                preview.src = event.target.result;
-                preview.style.display = 'block';
-                if (placeholder) placeholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            // If no file selected or invalid file type, check if there's an existing image
-            const button = document.querySelector('[data-bs-toggle="modal"][data-user-id="' + document.getElementById('edit_user_id').value + '"]');
-            const existingImage = button ? button.getAttribute('data-profile-image') : null;
-            
-            if (existingImage && existingImage !== 'null') {
-                preview.src = existingImage;
-                preview.style.display = 'block';
-                if (placeholder) placeholder.style.display = 'none';
-            } else {
-                preview.style.display = 'none';
-                if (placeholder) placeholder.style.display = 'block';
-            }
-        }
-    });
-}
-    });
-</script>

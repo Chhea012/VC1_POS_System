@@ -46,8 +46,7 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a href="/products" class="dropdown-item" >View more</a>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +80,8 @@
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="/category">View More</a>
-                                </div>
+                                    <a class="dropdown-item" href="/products">View More</a>
+                                </div>  
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1 fs-5">Total Stock 📦</span>
@@ -115,16 +114,15 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
                         <div class="avatar flex-shrink-0">
-                        <i class='bx bx-credit-card-alt fs-2 text-warning'></i>
-
+                        <i class='bx bxs-credit-card fs-2 text-warning'></i>
                             </div>
-                            <div class="dropdown">
+                                <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="/products">View More</a>
+
                                 </div>
                             </div>
                         </div>
@@ -136,20 +134,49 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 order-1">
-                <div class="card p-2 border-info">
+
+            <div class="col-lg-4 order-1 mt-4">
+                <div class="card p-2 border-primary">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start">
-                        <div class="avatar flex-shrink-0">
-                        <i class='bx bx-money fs-2 text-warning'></i>
-                        </div>
+                            <div class="avatar flex-shrink-0">
+                                <i class='bx bx-credit-card-alt fs-2 text-warning'></i>
+                            </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);">Tomorrow</a>
+                                    <a class="dropdown-item" href="?date=today">Today</a>
+                                    <a class="dropdown-item" href="?date=yesterday">Yesterday</a>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="fw-semibold d-block mb-1 fs-5">Profit Money 💰</span>
+                        <h1 class="card-title mb-2 text-primary">
+                            $<?php 
+                                echo isset($_GET['date']) && $_GET['date'] === 'yesterday' 
+                                    ? number_format($profitYesterday, 2) 
+                                    : number_format($profitToday, 2); 
+                            ?>
+                        </h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 order-1">
+                <div class="card p-2 border-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                        <div class="avatar flex-shrink-0">
+                        <a href="/products"><i class='bx bx-money fs-2 text-warning'></i></a>
+                        </div>
+                        <div class="dropdown">
+                                <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="/products">View More</a>
                                 </div>
                             </div>
                         </div>
@@ -168,11 +195,11 @@
                         </div>
                             <div class="dropdown">
                                 <button class="btn p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded fs-5"></i>
+                                    <i class="bx bx-dots-vertical-rounded fs-4"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="javascript:void(0);" id="today">Today</a>
-                                    <a class="dropdown-item" href="javascript:void(0);" id="tomorrow">Tomorrow</a>
+                                    <a class="dropdown-item" href="/products">View more</a>
+
                                 </div>
                             </div>
                         </div>
@@ -302,8 +329,8 @@
                     <i class="bx bx-dots-vertical-rounded fs-4"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="#">This week</a>
-                    <a class="dropdown-item" href="#">Last week</a>
+                    <a class="dropdown-item" id="today">This week</a>
+                    <a class="dropdown-item" id="tomorrow">Last week</a>
                 </div>
             </div>
         </div>
@@ -342,9 +369,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
-    var labels =<?php echo json_encode(array_column($categoriesOrderedToday, 'category_name')); ?>;
-    var series =<?php echo json_encode(array_map('intval', array_column($categoriesOrderedToday, 'total_orders'))); ?>;
+    // ----- Donut Chart -----
+    var labels = <?php echo json_encode(array_column($categoriesOrderedToday, 'category_name')); ?>;
+    var series = <?php echo json_encode(array_map('intval', array_column($categoriesOrderedToday, 'total_orders'))); ?>;
 
     var chartOrderStatistics = document.querySelector('#orderStatisticsChart');
     var orderChartConfig = {
@@ -355,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         labels: labels,
         series: series,
-              colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
+        colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
         stroke: {
             width: 3,
             colors: ['#fff']
@@ -391,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             show: true,
                             label: 'Total',
                             formatter: function () {
-                                return '<?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders'))?>';
+                                return '<?php echo array_sum(array_column($categoriesOrderedToday, 'total_orders')) ?>';
                             }
                         }
                     }
@@ -404,23 +431,23 @@ document.addEventListener('DOMContentLoaded', function () {
         var statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
         statisticsChart.render();
     }
-});
 
-    document.getElementById('today').addEventListener('click', function() {
+    // ----- Date Filter Buttons -----
+    document.getElementById('today').addEventListener('click', function () {
         fetchTotalMoney('today');
     });
 
-    document.getElementById('tomorrow').addEventListener('click', function() {
+    document.getElementById('tomorrow').addEventListener('click', function () {
         fetchTotalMoney('tomorrow');
     });
 
     function fetchTotalMoney(date) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'path_to_your_controller_method', true); 
+        xhr.open('POST', 'fetch_money.php'); // Make sure this is the correct URL to handle the request
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        xhr.onload = function() {
-            if (xhr.status === 1000) {
+        xhr.onload = function () {
+            if (xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
                 if (data.error) {
                     alert(data.error);
@@ -433,9 +460,7 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send('date=' + date);
     }
 
-
-    // ......Grapic orders ..........   
-    document.addEventListener("DOMContentLoaded", function () {
+    // ----- Weekly Income Chart -----
     const thisWeekData = [<?php echo $jsOrderDataThisWeek; ?>];
     const lastWeekData = [<?php echo $jsOrderDataLastWeek; ?>];
     const totalMoneyThisWeek = <?php echo $totalMoneyThisWeek; ?>;
@@ -450,24 +475,24 @@ document.addEventListener('DOMContentLoaded', function () {
         dataLabels: { enabled: false },
         stroke: { width: 2, curve: "smooth" },
         colors: ["#7367F0"],
-        fill: { 
-            type: "gradient", 
-            gradient: { 
-                shade: "light", 
-                shadeIntensity: 0.6, 
-                opacityFrom: 0.5, 
-                opacityTo: 0.25, 
-                stops: [0, 95, 100] 
-            } 
+        fill: {
+            type: "gradient",
+            gradient: {
+                shade: "light",
+                shadeIntensity: 0.6,
+                opacityFrom: 0.5,
+                opacityTo: 0.25,
+                stops: [0, 95, 100]
+            }
         },
-        grid: { 
-            borderColor: "#ddd", 
-            strokeDashArray: 3, 
-            padding: { top: -20, bottom: -8, left: -10, right: 8 } 
+        grid: {
+            borderColor: "#ddd",
+            strokeDashArray: 3,
+            padding: { top: -20, bottom: -8, left: -10, right: 8 }
         },
-        xaxis: { 
-            categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"], 
-            labels: { style: { fontSize: "13px", colors: "#666" } } 
+        xaxis: {
+            categories: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+            labels: { style: { fontSize: "13px", colors: "#666" } }
         },
         yaxis: { labels: { show: true }, min: 0, tickAmount: 5 }
     };
@@ -476,23 +501,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const incomeChart = new ApexCharts(incomeChartEl, incomeChartConfig);
         incomeChart.render();
 
+        // Handle chart filter dropdowns (This week, Last week) only
         document.querySelectorAll(".dropdown-item").forEach(item => {
-            item.addEventListener("click", function (e) {
-                e.preventDefault();
-                const period = this.textContent;
-                if (period === "This week") {
-                    incomeChart.updateSeries([{ name: "Total Sales $", data: thisWeekData }]);
-                    totalMoneyDisplay.textContent = `${totalMoneyThisWeek}$`;
-                } else if (period === "Last week") {
-                    incomeChart.updateSeries([{ name: "Total Sales $", data: lastWeekData }]);
-                    totalMoneyDisplay.textContent = `${totalMoneyLastWeek}$`;
-                }
-            });
+            const text = item.textContent.trim();
+            if (text === "This week" || text === "Last week") {
+                item.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (text === "This week") {
+                        incomeChart.updateSeries([{ name: "Total Sales $", data: thisWeekData }]);
+                        totalMoneyDisplay.textContent = `${totalMoneyThisWeek}$`;
+                    } else if (text === "Last week") {
+                        incomeChart.updateSeries([{ name: "Total Sales $", data: lastWeekData }]);
+                        totalMoneyDisplay.textContent = `${totalMoneyLastWeek}$`;
+                    }
+                });
+            }
         });
     }
 });
-
 </script>
+
 
 <style>
     

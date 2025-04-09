@@ -7,6 +7,70 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 ?>
+<style>
+    @media (max-width: 768px) {
+        .create-order-btn {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+
+        .form-label {
+            font-size: 10px;
+        }
+
+        .form-control, .form-select {
+            font-size: 10px;
+            padding: 5px;
+        }
+
+        table.table {
+            width: 100%;
+            table-layout: fixed; 
+            font-size: 5px;
+        }
+
+        .table th, .table td {
+            font-size: 7px;
+            padding: 5px;
+        }
+
+        .table td img {
+            width: 35px !important;
+            height: 35px !important;
+        }
+
+        .btn {
+            font-size: 10px;
+            padding: 6px 8px;
+        }
+
+        .card h2, .card h3, .card h4 {
+            font-size: 13px;
+        }
+
+        .w-50 {
+            width: 90% !important;
+        }
+
+        .container-xxl {
+            padding: 10px;
+        }
+
+        .row.mb-3 > div {
+            margin-bottom: 10px;
+        }
+
+        .d-flex.gap-2 {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+    }
+</style>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex gap-2">
         <a href="/orders/barcode" class="btn btn-outline-primary create-order-btn">
@@ -217,3 +281,4 @@ if (!isset($_SESSION['user'])) {
         }
     </script>
 </div>
+
