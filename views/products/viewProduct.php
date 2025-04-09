@@ -164,16 +164,54 @@ if (!isset($_SESSION['user'])) {
         }
         
 
-        @media (max-width: 768px) {
-            .product-card {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .product-image {
-                max-height: 200px;
-            }
+        @media (max-width: 578px) {
+        .product-card {
+            flex-direction: column;
+            gap: 1.5rem;
         }
+
+        .product-image {
+            max-height: 200px;
+        }
+    }    
+    .product-image img {
+        width: 85%;
+        height: 85%;
+        object-fit: contain;
+        /* changed from cover to contain */
+        padding: 0.5rem;
+        /* optional: adds spacing around the image */
+    }
+    @media (max-width: 768px) {
+    .product-card {
+        flex-direction: column;
+        gap: 1.5rem;
+        height: 100vh; /* Full screen on mobile */
+        overflow: hidden; /* Prevent full-page scroll */
+        display: flex;
+    }
+
+    .product-image {
+        flex: 0 0 auto;
+        max-height: 45vh; /* Allow image to take more vertical space */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        padding: 0.5rem;
+    }
+
+    .product-info {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+}
     </style>
 
 <style>
