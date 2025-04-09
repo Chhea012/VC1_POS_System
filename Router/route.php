@@ -22,15 +22,11 @@ require_once "Controllers/CreateOrderController.php";
 require_once "Controllers/NotificationController.php";
 require_once "Controllers/ExportExcelController.php";
 
-
 // Create an instance of the Router class
 $route = new Router();
 
 // GET routes
 $route->get("/", [LoginController::class, 'login']);
-
-
-
 
 $route->get("/forgotpassword", [ForgotPasswordController::class, 'forgotpassword']);
 $route->get("/dashboard", [AdminController::class, 'index']);
@@ -122,14 +118,5 @@ $route->post("/food/delete/{product_id}", [FoodController::class, 'delete']);
 $route->get("/ice", [IceController::class, 'index']);
 $route->get("/inventory/viewice/{product_id}", [IceController::class, 'show']);
 $route->post("/ice/delete/{product_id}", [IceController::class, 'delete']);
-
-
-
-
-
-
-
-
-
 
 $route->route();
