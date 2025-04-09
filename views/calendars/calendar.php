@@ -368,13 +368,13 @@ window.addEventListener("resize", () => {
     }
 
     .fc-toolbar .fc-button {
-        margin-bottom: 5px; /* Space between buttons */
+        margin-bottom: 5px; 
     }
 
     /* Adjust calendar events */
     .fc-daygrid-event {
-        font-size: 0.8rem; /* Smaller event text */
-        padding: 5px; /* Padding around event text */
+        font-size: 0.8rem; 
+        padding: 5px; 
     }
 
 }
