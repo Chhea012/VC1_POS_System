@@ -127,7 +127,7 @@
             category: "Category",
             orders: "Orders",
             topproductorder: "Top Products Ordered",
-            historyorders: "History Orders",
+            historyorders: " Orders History ",
             user: "Users",
             weather: "Weather",
             calendar: "Calendar"
