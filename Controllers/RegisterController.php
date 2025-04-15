@@ -1,5 +1,5 @@
 <?php
-require_once 'Models/RegisterModel.php';
+require_once 'Models/RegistersModel.php';
 
 class RegisterController extends BaseController {
     private $registerModel;

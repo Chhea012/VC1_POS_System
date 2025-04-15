@@ -8,7 +8,7 @@ if (!isset($_SESSION['user'])) {
     header("Location: /");
     exit();
 }
-require_once "Models/drinkModel.php";
+require_once "Models/DrinksModel.php";
 // Ensure $products is defined
 $products = $products ?? [];
 

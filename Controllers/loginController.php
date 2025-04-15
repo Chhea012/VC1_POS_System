@@ -4,7 +4,6 @@ class LoginController extends BaseController {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = $_POST['email'];
             $password = $_POST['password'];
-
             global $pdo; // Assuming Database.php sets $pdo globally
             $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
             $stmt->execute([$email]);

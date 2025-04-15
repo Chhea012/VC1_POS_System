@@ -8,7 +8,7 @@ if (!isset($_SESSION['user'])) {
 }
 ?>
 <?php
-require_once './Models/categoryModel.php';
+require_once './Models/CategorysModel.php';
 
 // Fetch existing categories from the database
 $existingCategories = array_map(function ($product) {

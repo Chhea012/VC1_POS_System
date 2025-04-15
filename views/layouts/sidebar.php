@@ -120,7 +120,7 @@
         en: {
             dashboard: "Dashboard",
             products: "Products",
-            inventory: "Inventory",
+            inventory: "Stock list",
             drink: "Drink",
             fastfood: "FastFood",
             freshice: "FreshIce",

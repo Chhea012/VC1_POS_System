@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Models/CategoryModel.php';
+require_once __DIR__ . '/../Models/CategorysModel.php';
 
 class categoryController extends BaseController
 {
@@ -95,5 +95,4 @@ public function delete($category_id)
     header("Location: /category");
     exit;
 }
-
 }
