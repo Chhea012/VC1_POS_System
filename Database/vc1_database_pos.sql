@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2025 at 03:38 AM
+-- Generation Time: Apr 16, 2025 at 03:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -90,7 +90,9 @@ CREATE TABLE `money_history` (
 --
 
 INSERT INTO `money_history` (`id`, `total_money`, `updated_at`) VALUES
-(948, 487.29, '2025-04-13 10:41:58');
+(948, 487.29, '2025-04-13 10:41:58'),
+(949, 738.11, '2025-04-16 01:30:04'),
+(950, 796.61, '2025-04-16 01:36:42');
 
 -- --------------------------------------------------------
 
@@ -119,6 +121,23 @@ CREATE TABLE `orders` (
   `order_reference` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `order_date`, `status`, `payment_mode`, `order_reference`) VALUES
+(125, 59, 5.63, '2025-04-14 01:53:45', 'Already ', 'Cash Payment', NULL),
+(126, 59, 4.50, '2025-04-14 01:57:17', 'Already ', 'Card Payment', NULL),
+(128, 59, 9.00, '2025-04-14 02:01:15', 'Already ', 'Cash Payment', NULL),
+(130, 59, 30.00, '2025-04-14 02:03:45', 'Already ', 'Cash Payment', NULL),
+(131, 59, 25.00, '2025-04-14 02:05:49', 'Already ', 'Cash Payment', NULL),
+(132, 59, 15.75, '2025-04-14 02:07:15', 'Already ', 'Card Payment', NULL),
+(133, 59, 12.00, '2025-04-14 02:13:35', 'Already ', 'Cash Payment', NULL),
+(134, 59, 1.26, '2025-04-15 01:23:12', 'Already ', 'Card Payment', NULL),
+(135, 59, 16.50, '2025-04-15 01:34:18', 'Already ', 'Cash Payment', NULL),
+(136, 59, 0.63, '2025-04-15 01:38:10', 'Already ', 'Cash Payment', NULL),
+(137, 59, 4.14, '2025-04-15 02:14:11', 'Already ', 'Cash Payment', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +152,27 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) NOT NULL,
   `total_price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `quantity`, `price`, `total_price`) VALUES
+(135, 125, 174, 1, 5.00, 0.00),
+(136, 125, 180, 1, 0.63, 0.00),
+(137, 126, 193, 3, 0.75, 0.00),
+(138, 126, 205, 3, 0.75, 0.00),
+(140, 128, 175, 3, 3.00, 0.00),
+(142, 130, 210, 20, 0.75, 0.00),
+(143, 130, 212, 20, 0.75, 0.00),
+(144, 131, 178, 5, 5.00, 0.00),
+(145, 132, 217, 21, 0.75, 0.00),
+(146, 133, 175, 4, 3.00, 0.00),
+(147, 134, 180, 2, 0.63, 0.00),
+(148, 135, 215, 22, 0.75, 0.00),
+(149, 136, 179, 1, 0.63, 0.00),
+(150, 137, 194, 3, 0.63, 0.00),
+(151, 137, 193, 3, 0.75, 0.00);
 
 --
 -- Triggers `order_items`
@@ -188,25 +228,25 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_id`, `supplier_id`, `price`, `cost_product`, `created_at`, `updated_at`, `image`, `barcode`, `in_stock`, `quantity`, `discounted_price`) VALUES
-(174, 'ភីសារសជាតិប៉េងបោះធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-10 08:30:23', '2025-04-10 08:30:23', 'uploads/3.jpg', '1234567891234', 0, 10, 0),
-(175, 'ភីសាស្លឹលខ្ទឹមតូច', 'I want to buy it into stock now.', 28, NULL, 3.00, 2.50, '2025-04-10 10:14:47', '2025-04-10 10:14:47', 'uploads/4.jpg', '1234567891235', 0, 10, 0),
-(176, 'ភីសាររសជាតិជូធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-10 10:16:52', '2025-04-10 10:16:52', 'uploads/5.jpg', '1234567891236', 1, 10, 0),
-(177, 'ភីសារហត់ដក់តូច', 'I want to buy it into stock now.', 28, NULL, 3.00, 2.50, '2025-04-12 11:20:08', '2025-04-12 11:20:08', 'uploads/images__4_.jpg', '1234567891238', 0, 5, 0),
-(178, 'ភីសារហត់ដក់ធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-10 10:24:45', '2025-04-10 10:24:45', 'uploads/images__3_.jpg', '1234567891237', 1, 10, 0),
-(179, 'ម៉ាម៉ាមីនូដលសាច់', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-10 10:27:14', '2025-04-10 10:27:14', 'uploads/mama.jpg', '1234567891239', 1, 7, 0),
-(180, 'ម៉ាម៉ាមីនូដលភ្លៅមាន់', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-13 06:38:58', '2025-04-13 06:38:58', 'uploads/mama-instant-cup-noodles-chicken-70g.jpg', '1234567891240', 1, 6, 0),
-(181, 'ម៉ាម៉ាមីនូដលបង្កង', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-10 10:32:11', '2025-04-10 10:32:11', 'uploads/mamanoodle.png', '1234567891241', 1, 10, 0),
-(182, 'ម៉ាម៉ាមីនូដលGreen Curry', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-10 10:34:58', '2025-04-10 10:34:58', 'uploads/Mama-Cup-Noodles-Green.jpg', '1234567891242', 1, 10, 0),
-(185, 'ទឹកកកឈូសក្រូច', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-10 10:41:49', '2025-04-10 10:41:49', 'uploads/tikice.jpg', '1234567891243', 0, 10, 0),
-(186, 'ទឹកកកឈូសស្ទបប័ររី', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-12 11:16:12', '2025-04-12 11:16:12', 'uploads/ice2.jpg', '1234567891244', 1, 20, 0),
+(174, 'ភីសារសជាតិប៉េងបោះធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-16 01:26:43', '2025-04-16 01:26:43', 'uploads/3.jpg', '1234567891234', 0, 25, 0),
+(175, 'ភីសាស្លឹលខ្ទឹមតូច', 'I want to buy it into stock now.', 28, NULL, 3.00, 2.50, '2025-04-14 02:13:35', '2025-04-14 02:13:35', 'uploads/4.jpg', '1234567891235', 0, 3, 0),
+(176, 'ភីសាររសជាតិជូធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-16 01:27:30', '2025-04-16 01:27:30', 'uploads/5.jpg', '1234567891236', 1, 25, 0),
+(177, 'ភីសារហត់ដក់តូច', 'I want to buy it into stock now.', 28, NULL, 3.00, 2.50, '2025-04-16 01:27:00', '2025-04-16 01:27:00', 'uploads/images__4_.jpg', '1234567891238', 0, 25, 0),
+(178, 'ភីសារហត់ដក់ធំ', 'I want to buy it into stock now.', 28, NULL, 5.00, 4.50, '2025-04-16 01:27:12', '2025-04-16 01:27:12', 'uploads/images__3_.jpg', '1234567891237', 1, 25, 0),
+(179, 'ម៉ាម៉ាមីនូដលសាច់', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-16 01:28:21', '2025-04-16 01:28:21', 'uploads/mama.jpg', '1234567891239', 1, 22, 0),
+(180, 'ម៉ាម៉ាមីនូដលភ្លៅមាន់', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-15 01:23:12', '2025-04-15 01:23:12', 'uploads/mama-instant-cup-noodles-chicken-70g.jpg', '1234567891240', 1, 3, 0),
+(181, 'ម៉ាម៉ាមីនូដលបង្កង', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-16 01:28:36', '2025-04-16 01:28:36', 'uploads/mamanoodle.png', '1234567891241', 1, 25, 0),
+(182, 'ម៉ាម៉ាមីនូដលGreen Curry', 'I want to buy it into stock now.', 30, NULL, 0.63, 0.50, '2025-04-16 01:28:03', '2025-04-16 01:28:03', 'uploads/Mama-Cup-Noodles-Green.jpg', '1234567891242', 1, 25, 0),
+(185, 'ទឹកកកឈូសក្រូច', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-16 01:32:46', '2025-04-16 01:32:46', 'uploads/tikice.jpg', '1234567891243', 0, 25, 0),
+(186, 'ទឹកកកឈូសស្ទបប័ររី', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-16 01:32:57', '2025-04-16 01:32:57', 'uploads/ice2.jpg', '1234567891244', 1, 24, 0),
 (187, 'ទឹកកកឈូសសីរ៉ូ', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-10 10:45:13', '2025-04-10 10:45:13', 'uploads/ice2.png', '1234567891245', 1, 9, 0),
-(188, 'ទឹកកកឈូសសណ្តែក', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-10 10:46:18', '2025-04-10 10:46:18', 'uploads/ice.jpg', '1234567891247', 1, 10, 0),
-(189, 'ទឹកកកឈូសប័រ', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-10 10:48:09', '2025-04-10 10:48:09', 'uploads/ice4.jpg', '1234567891248', 1, 8, 0),
-(190, 'ទឹកកកឈូសទឹកដោះគោ', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-10 10:49:38', '2025-04-10 10:49:38', 'uploads/photo_2025-03-24_00-44-28.jpg', '1234567891249', 1, 10, 0),
+(188, 'ទឹកកកឈូសសណ្តែក', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-16 01:33:08', '2025-04-16 01:33:08', 'uploads/ice.jpg', '1234567891247', 1, 25, 0),
+(189, 'ទឹកកកឈូសប័រ', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-16 01:32:34', '2025-04-16 01:32:34', 'uploads/ice4.jpg', '1234567891248', 1, 20, 0),
+(190, 'ទឹកកកឈូសទឹកដោះគោ', 'I want to buy it into stock now.', 31, NULL, 0.50, 0.40, '2025-04-14 02:01:37', '2025-04-14 02:01:37', 'uploads/photo_2025-03-24_00-44-28.jpg', '1234567891249', 1, 4, 0),
 (191, 'កូកាកូឡា', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-10 10:50:42', '2025-04-10 10:50:42', 'uploads/coca.jpeg', '1234567891250', 1, 10, 0),
 (192, 'ឆែមពានហ្គ្រីន', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-10 10:51:43', '2025-04-10 10:51:43', 'uploads/Champion-Green.png', '1234567891251', 1, 10, 0),
-(193, 'ឆែមពានអាយ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:22:18', '2025-04-11 07:22:18', 'uploads/Champion-Ice-New.png', '1234567891252', 1, 10, 0),
-(194, 'ហ្វាន់តាGreen', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-11 07:23:49', '2025-04-11 07:23:49', 'uploads/fanta.jpg', '1234567891253', 1, 10, 0),
+(193, 'ឆែមពានអាយ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-15 02:14:11', '2025-04-15 02:14:11', 'uploads/Champion-Ice-New.png', '1234567891252', 1, 4, 0),
+(194, 'ហ្វាន់តាGreen', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-15 02:14:11', '2025-04-15 02:14:11', 'uploads/fanta.jpg', '1234567891253', 1, 7, 0),
 (195, 'ហ្វាន់តាទំពាងបាយជូ', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-11 07:25:04', '2025-04-11 07:25:04', 'uploads/fanta-grape.jpeg', '1234567891254', 1, 10, 0),
 (196, 'ហ្វាន់តាក្រូច', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-11 07:26:05', '2025-04-11 07:26:05', 'uploads/Fanta-Orange-Soft-Drink.jpg', '1234567891255', 1, 10, 0),
 (197, 'អូអិឈិកទឹកឃ្មុំ', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-11 07:27:35', '2025-04-11 07:27:35', 'uploads/honey-.jpg', '1234567891256', 1, 10, 0),
@@ -217,19 +257,19 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `category_i
 (202, 'ស្ទិងលឿងដប', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:37:53', '2025-04-11 07:37:53', 'uploads/sting_yellow.jpg', '1234567891261', 1, 10, 0),
 (203, 'ស្ទិងក្រហមដប', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:38:56', '2025-04-11 07:38:56', 'uploads/sting_red.png', '1234567891262', 1, 10, 0),
 (204, 'ស្ទិងក្រហម', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:39:42', '2025-04-11 07:39:42', 'uploads/red-sting-energy.jpg', '1234567891263', 1, 10, 0),
-(205, 'ស្ទិងលឿង', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:40:34', '2025-04-11 07:40:34', 'uploads/sting2.jpg', '1234567891264', 1, 10, 0),
+(205, 'ស្ទិងលឿង', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-14 01:57:17', '2025-04-14 01:57:17', 'uploads/sting2.jpg', '1234567891264', 1, 7, 0),
 (206, 'ទឹកដោះគោ', 'I want to buy it into stock now.', 29, NULL, 0.50, 0.40, '2025-04-11 07:42:32', '2025-04-11 07:42:32', 'uploads/images__1_.jpg', '1234567891265', 0, 10, 0),
 (207, 'លេតតាសយ', 'I want to buy it into stock now.', 29, NULL, 0.63, 0.50, '2025-04-11 07:43:32', '2025-04-11 07:43:32', 'uploads/lactasoy.jpg', '1234567891266', 1, 10, 0),
 (208, 'ទឹកដោះគោ', 'I want to buy it into stock now.', 29, NULL, 0.50, 0.40, '2025-04-11 07:44:31', '2025-04-11 07:44:31', 'uploads/images.jpg', '1234567891267', 1, 10, 0),
 (209, 'តែក្រូចឆ្មារ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:45:30', '2025-04-11 07:45:30', 'uploads/tea4.jpg', '1234567891268', 1, 10, 0),
-(210, 'តែជ្រក់ខៀវ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-12 11:15:55', '2025-04-12 11:15:55', 'uploads/tea1.jpg', '1234567891269', 1, 20, 0),
+(210, 'តែជ្រក់ខៀវ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-16 01:33:49', '2025-04-16 01:33:49', 'uploads/tea1.jpg', '1234567891269', 1, 20, 0),
 (211, 'តែក្រហម', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:48:09', '2025-04-11 07:48:09', 'uploads/tea2.jpg', '1234567891270', 0, 10, 0),
-(212, 'ស្ទបប័ររីក្រឡុក', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-12 11:15:43', '2025-04-12 11:15:43', 'uploads/krolok5.jpg', '1234567891271', 0, 20, 0),
+(212, 'ស្ទបប័ររីក្រឡុក', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-14 02:04:12', '2025-04-14 02:04:12', 'uploads/krolok5.jpg', '1234567891271', 0, 7, 0),
 (213, 'ត្រាវក្រឡុក', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:50:50', '2025-04-11 07:50:50', 'uploads/krolok4.jpg', '1234567891272', 0, 10, 0),
 (214, 'តែក្រូចឆ្មារទឹកឃ្មុំ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:52:18', '2025-04-11 07:52:18', 'uploads/tea-green.jpg', '1234567891273', 1, 10, 0),
-(215, 'តែបៃតងទឹកដោះគោដូងក្រអូប', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:54:00', '2025-04-11 07:54:00', 'uploads/ber.jpg', '1234567891274', 1, 10, 0),
-(216, 'តែគុជត្រាវ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-11 07:55:00', '2025-04-11 07:55:00', 'uploads/krolok2.jpg', '1234567891275', 1, 10, 0),
-(217, 'គីវីសូដា', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-12 11:16:40', '2025-04-12 11:16:40', 'uploads/tea_bee.jpg', '1234567891276', 1, 20, 0),
+(215, 'តែបៃតងទឹកដោះគោដូងក្រអូប', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-16 01:33:27', '2025-04-16 01:33:27', 'uploads/ber.jpg', '1234567891274', 1, 22, 0),
+(216, 'តែគុជត្រាវ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-16 01:34:06', '2025-04-16 01:34:06', 'uploads/krolok2.jpg', '1234567891275', 1, 20, 0),
+(217, 'គីវីសូដា', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-16 01:26:23', '2025-04-16 01:26:23', 'uploads/tea_bee.jpg', '1234567891276', 0, 21, 0),
 (218, 'តែគុជត្រសក់ស្រូវ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-12 11:15:25', '2025-04-12 11:15:25', 'uploads/krolok1.jpg', '1234567891277', 1, 20, 0),
 (219, 'តែគុជទឹកដោះគោ', 'I want to buy it into stock now.', 29, NULL, 0.75, 0.63, '2025-04-12 11:15:35', '2025-04-12 11:15:35', 'uploads/krolok3.jpg', '1234567891278', 1, 20, 0);
 
@@ -270,7 +310,9 @@ CREATE TABLE `stock_history` (
 --
 
 INSERT INTO `stock_history` (`id`, `total`, `updated_at`) VALUES
-(541, 485, '2025-04-13 10:41:58');
+(541, 485, '2025-04-13 10:41:58'),
+(542, 527, '2025-04-16 01:30:04'),
+(543, 623, '2025-04-16 01:36:42');
 
 -- --------------------------------------------------------
 
@@ -309,7 +351,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_name`, `email`, `password`, `role_id`, `phone_number`, `profile_image`) VALUES
-(59, 'Chhea Chhouy', 'chhea.chhouy@student.passerellesnumeriques.org', '$2y$10$hKRBleqep5XEzW70kP1DXOutY8KVwJj4cmSIEbK7LnoQyEUACVYkm', 1, '0976313871', '/Views/assets/uploads/67e9dace21df2-67d9245315317-1.jpg');
+(59, 'Chhea Chhouy', 'chhea.chhouy@student.passerellesnumeriques.org', '$2y$10$hKRBleqep5XEzW70kP1DXOutY8KVwJj4cmSIEbK7LnoQyEUACVYkm', 1, '0976313871', '/Views/assets/uploads/67e9dace21df2-67d9245315317-1.jpg'),
+(60, 'Kin Doung', 'kin@gmail.com', '$2y$10$W9hKbwVZSVhOs9bCKKo1denBjynmq1/GoPLGzErFLC7kqw.IpuTiC', 3, '0976313871', '/Views/assets/uploads/67fdb81391ed2-kin.jpg');
 
 -- --------------------------------------------------------
 
@@ -458,7 +501,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `money_history`
 --
 ALTER TABLE `money_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=949;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=951;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -470,13 +513,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -488,7 +531,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -500,7 +543,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `stock_history`
 --
 ALTER TABLE `stock_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=542;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=544;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -512,7 +555,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `weather`
