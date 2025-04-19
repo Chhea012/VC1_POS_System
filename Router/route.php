@@ -8,7 +8,7 @@ require_once "Controllers/ProfileController.php";
 require_once "Controllers/SettingSecurityController.php";
 require_once "Controllers/ChartController.php";
 require_once "Controllers/WeatherController.php";
-require_once "Controllers/LoginController.php";
+require_once "Controllers/LoginsController.php";
 require_once "Controllers/RegisterController.php";
 require_once "Controllers/ForgotPasswordController.php";
 require_once "Controllers/CategorysController.php";
