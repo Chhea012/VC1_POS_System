@@ -18,8 +18,8 @@ class UserController extends BaseController {
             return;
         }
         $users = $this->user->getUsers();
-        $roles = $this->user->getRoles(); // Fetch roles for the create modal
-        $this->view('users/user', ['users' => $users, 'roles' => $roles]); // Pass both users and roles
+        $roles = $this->user->getRoles();
+        $this->view('users/user', ['users' => $users, 'roles' => $roles]);
     }
 
     public function create() {
@@ -30,18 +30,34 @@ class UserController extends BaseController {
             $this->redirect('/');
             return;
         }
+        if (!$this->user->isAdmin($_SESSION['user']['user_id'])) {
+            $_SESSION['error'] = "Only admins can create users.";
+            $this->redirect('/users');
+            return;
+        }
         $roles = $this->user->getRoles();
         $this->view('users/create', ['roles' => $roles]);
     }
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/users/create');
+            $this->redirect('/users');
             return;
         }
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+
+        if (!isset($_SESSION['user'])) {
+            $this->redirect('/');
+            return;
+        }
+
+        if (!$this->user->isAdmin($_SESSION['user']['user_id'])) {
+            $_SESSION['error'] = "Only admins can create users.";
+            $this->redirect('/users');
+            return;
         }
 
         if (empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['role_id'])) {
@@ -51,7 +67,7 @@ class UserController extends BaseController {
         }
 
         $role_id = (int)$_POST['role_id'];
-        if ($role_id === 1 && $this->user->hasAdmin()) { // Prevent multiple admins
+        if ($role_id === 1 && $this->user->hasAdmin()) {
             $_SESSION['error'] = "An admin user already exists. Only one admin is allowed.";
             $this->redirect('/users');
             return;
@@ -111,6 +127,11 @@ class UserController extends BaseController {
             $this->redirect('/');
             return;
         }
+        if (!$this->user->isAdmin($_SESSION['user']['user_id'])) {
+            $_SESSION['error'] = "Only admins can edit users.";
+            $this->redirect('/users');
+            return;
+        }
         $user = $this->user->getUserById($user_id);
         if (!$user) {
             $_SESSION['error'] = "User not found.";
@@ -129,6 +150,17 @@ class UserController extends BaseController {
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+
+        if (!isset($_SESSION['user'])) {
+            $this->redirect('/');
+            return;
+        }
+
+        if (!$this->user->isAdmin($_SESSION['user']['user_id'])) {
+            $_SESSION['error'] = "Only admins can update users.";
+            $this->redirect('/users');
+            return;
         }
 
         $user_id = (int)$_POST['user_id'];
@@ -205,6 +237,17 @@ class UserController extends BaseController {
             session_start();
         }
 
+        if (!isset($_SESSION['user'])) {
+            $this->redirect('/');
+            return;
+        }
+
+        if (!$this->user->isAdmin($_SESSION['user']['user_id'])) {
+            $_SESSION['error'] = "Only admins can delete users.";
+            $this->redirect('/users');
+            return;
+        }
+
         $user = $this->user->getUserById($user_id);
         if (!$user) {
             $_SESSION['error'] = "User not found.";
@@ -212,7 +255,7 @@ class UserController extends BaseController {
             return;
         }
 
-        if ($user['role_id'] === 1) { // Prevent admin deletion
+        if ($user['role_id'] === 1) {
             $_SESSION['error'] = "Admin accounts cannot be deleted.";
             $this->redirect('/users');
             return;

@@ -101,14 +101,7 @@
                         style="position: absolute; top: -5px; right: -5px; background: red; color: white; padding: 5px; border-radius: 50%; display: none;">
                     </span>
                 </a>
-
-
-                <li class="nav-item lh-1 me-3 p4">
-                    <!-- <i class="bx bx-moon" id="darkModeToggle"></i> -->
-                </li>
-
-
-
+                
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">

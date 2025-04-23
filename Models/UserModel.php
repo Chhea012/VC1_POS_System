@@ -23,6 +23,13 @@ class UserModel {
         return $stmt->fetchColumn() > 0;
     }
 
+    public function isAdmin($user_id) {
+        $sql = "SELECT role_id FROM users WHERE user_id = :user_id";
+        $stmt = $this->db->query($sql, ['user_id' => $user_id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user && $user['role_id'] == 1;
+    }
+
     public function createUser($data) {
         $sql = "INSERT INTO users (user_name, email, password, role_id, profile_image, phone_number) 
                 VALUES (:user_name, :email, :password, :role_id, :profile_image, :phone_number)";
@@ -94,8 +101,8 @@ class UserModel {
         $sql .= " WHERE user_id = :user_id";
 
         try {
-            $pdo = $this->db->getConnection(); // Get PDO instance
-            $stmt = $pdo->prepare($sql);       // Use PDO directly
+            $pdo = $this->db->getConnection();
+            $stmt = $pdo->prepare($sql);
             return $stmt->execute($params);
         } catch (PDOException $e) {
             error_log("SQL Error (update): " . $e->getMessage());
@@ -113,7 +120,6 @@ class UserModel {
             throw $e;
         }
     }
-
 
     public function getUserByEmail($email) {
         $sql = "SELECT * FROM users WHERE email = :email";
