@@ -67,9 +67,21 @@ if (!isset($_SESSION['user'])) {
         </div>
     <?php endif; ?>
 
-    <!-- Orders Table -->
+    <!-- Orders Table with Filter -->
     <div class="card">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Order List</h5>
+                <div class="filter-container">
+                    <label for="orderFilter" class="me-2 fw-bold">Show:</label>
+                    <select id="orderFilter" class="form-select w-auto d-inline-block">
+                        <option value="5">5 Orders</option>
+                        <option value="10">10 Orders</option>
+                        <option value="20">20 Orders</option>
+                        <option value="all" selected>All Orders</option>
+                    </select>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
@@ -85,16 +97,16 @@ if (!isset($_SESSION['user'])) {
                     <tbody id="ordersTableBody">
                         <?php foreach ($orders as $index => $order): ?>
                             <tr data-order-id="<?php echo $order['order_id']; ?>">
-                                <th scope="row"><?php echo $index + 1; ?></th>
-                                <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
-                                <td><?php echo date('H:i:s A', strtotime($order['order_date'])); ?></td>
-                                <td class="fw-bold text-primary">$<?php echo htmlspecialchars($order['total_amount']); ?></td>
-                                <td>
+                                <th scope="row" data-label="S.No"><?php echo $index + 1; ?></th>
+                                <td data-label="Order Date"><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
+                                <td data-label="Order Time"><?php echo date('H:i:s A', strtotime($order['order_date'])); ?></td>
+                                <td data-label="Order Price" class="fw-bold text-primary">$<?php echo htmlspecialchars($order['total_amount']); ?></td>
+                                <td data-label="Payment Status">
                                     <span class="badge <?php echo $order['payment_mode'] === 'paid' ? 'bg-success' : 'bg-warning'; ?>">
                                         <?php echo htmlspecialchars($order['payment_mode']); ?>
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="Action">
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-link text-dark" type="button" data-bs-toggle="dropdown">
                                             <i class="bi bi-three-dots-vertical"></i>
@@ -212,6 +224,24 @@ if (!isset($_SESSION['user'])) {
         text-align: left;
     }
 
+    .filter-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-select {
+        border-color: #6c757d;
+        background-color: #fff;
+        color: #343a40;
+        font-weight: 500;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    }
+
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+
     @media (max-width: 768px) and (min-width: 577px) {
         .image-frame {
             max-width: 200px;
@@ -241,146 +271,158 @@ if (!isset($_SESSION['user'])) {
         .text-center.text-md-start {
             text-align: center;
         }
+
+        .filter-container {
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .form-select {
+            width: 100%;
+            max-width: 200px;
+        }
     }
+
     @media (max-width: 576px) {
-    table thead {
-        display: none;
-    }
+        table thead {
+            display: none;
+        }
 
-    table tbody tr {
-        display: block;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid #dee2e6;
-    }
+        table tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
 
-    table tbody tr td,
-    table tbody tr th {
-        display: block;
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-    }
+        table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            position: relative;
+            border: none;
+            border-bottom: 1px solid #eee;
+        }
 
-    table tbody tr td::before,
-    table tbody tr th::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 1rem;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        font-weight: bold;
-        text-align: left;
-    }
+        table tbody td:last-child {
+            border-bottom: none;
+        }
 
-    .dropdown {
-        text-align: center;
-    }
-    /* Make the carousel items stack properly */
-    .carousel-item .col-md-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
+        table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-right: 10px;
+        }
 
-    .d-flex.flex-column.flex-md-row {
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center !important;
-    }
+        .dropdown {
+            text-align: center;
+        }
 
-    .text-center.text-md-start {
-        text-align: center !important;
-    }
+        .carousel-item .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
 
-    .image-frame {
-        max-width: 200px;
-        margin-bottom: 15px;
-    }
+        .d-flex.flex-column.flex-md-row {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
 
-    .badge {
-        font-size: 0.85rem;
-    }
+        .text-center.text-md-start {
+            text-align: center !important;
+        }
 
-    .row.g-4.p-4 {
-        padding: 1rem !important;
-    }
+        .image-frame {
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
 
-    /* Hide 2nd product if present in same slide on mobile */
-    .carousel-item .col-md-6:nth-child(2) {
-        display: none;
-    }
-}
-@media (max-width: 576px) {
-    .table thead {
-        display: none;
-    }
+        .badge {
+            font-size: 0.85rem;
+        }
 
-    .table tbody tr {
-        display: block;
-        margin-bottom: 1rem;
-        border: 1px solid #dee2e6;
-        border-radius: 0.5rem;
-        padding: 0.5rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
+        .row.g-4.p-4 {
+            padding: 1rem !important;
+        }
 
-    .table tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        position: relative;
-        border: none;
-        border-bottom: 1px solid #eee;
-    }
+        .carousel-item .col-md-6:nth-child(2) {
+            display: none;
+        }
 
-    .table tbody td:last-child {
-        border-bottom: none;
-    }
+        .filter-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-    .table tbody td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        text-transform: uppercase;
-        color: #6c757d;
-        margin-right: 10px;
+        .form-select {
+            width: 100%;
+            max-width: 100%;
+        }
     }
-
-    .table tbody img {
-        max-width: 60px;
-        height: auto;
-
-    }
-}
-    
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-order');
-        
+        const orderFilter = document.getElementById('orderFilter');
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        const rows = ordersTableBody.querySelectorAll('tr');
+
+        // Filter orders based on select value
+        function filterOrders(limit) {
+            rows.forEach((row, index) => {
+                if (limit === 'all' || index < limit) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize filter
+        filterOrders(orderFilter.value);
+
+        // Handle filter change
+        orderFilter.addEventListener('change', function() {
+            filterOrders(this.value);
+        });
+
+        // Handle delete order
         deleteButtons.forEach(button => {
             button.addEventListener('click', async function(e) {
                 e.preventDefault();
                 const orderId = this.getAttribute('data-order-id');
                 const form = document.getElementById(`delete-form-${orderId}`);
                 const row = this.closest('tr');
-                
+
                 try {
                     const response = await fetch(form.action, {
                         method: 'POST',
                         body: new FormData(form)
                     });
-                    
+
                     if (response.ok) {
                         const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
                             delay: 3000
                         });
                         successToast.show();
-                        
+
                         row.style.transition = 'opacity 0.3s';
                         row.style.opacity = '0';
                         setTimeout(() => row.remove(), 300);
+
+                        // Reindex S.No after deletion
+                        const visibleRows = ordersTableBody.querySelectorAll('tr:not([style*="display: none"])');
+                        visibleRows.forEach((row, index) => {
+                            row.querySelector('th').textContent = index + 1;
+                        });
                     } else {
                         throw new Error('Delete failed');
                     }

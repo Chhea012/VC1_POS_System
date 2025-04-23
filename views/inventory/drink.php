@@ -132,9 +132,18 @@ usort($products, function($a, $b) {
         </div>
     </div>
 
-    <!-- Transactions Section -->
+    <!-- Transactions Section with Filter -->
     <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
         <h5 class="mb-0">Drinks Inventory:</h5>
+        <div class="filter-container">
+            <label for="productFilter" class="me-2 fw-bold">Show:</label>
+            <select id="productFilter" class="form-select w-auto d-inline-block">
+                <option value="5">5 Products</option>
+                <option value="10">10 Products</option>
+                <option value="20">20 Products</option>
+                <option value="all" selected>All Products</option>
+            </select>
+        </div>
     </div>
     <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -142,7 +151,7 @@ usort($products, function($a, $b) {
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col" style="width: 40px;" style="color: #000000;">#</th>
+                            <th scope="col" style="width: 40px; color: #000000;">#</th>
                             <th scope="col" style="color: #000000;">PRODUCT</th>
                             <th scope="col" style="color: #000000;">CATEGORY</th>
                             <th scope="col" style="color: #000000;">STOCK</th>
@@ -152,7 +161,7 @@ usort($products, function($a, $b) {
                             <th scope="col" style="color: #000000;">ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productsTableBody">
                         <?php foreach ($products as $index => $product): ?>
                             <tr data-product-id="<?= $product['product_id'] ?? '' ?>">
                                 <td class="text-center"><?= $index + 1 ?></td>
@@ -278,11 +287,85 @@ usort($products, function($a, $b) {
     <?php endif; ?>
 </div>
 
+<style>
+    .filter-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-select {
+        border-color: #6c757d;
+        background-color: #fff;
+        color: #343a40;
+        font-weight: 500;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    }
+
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+
+    @media (max-width: 768px) {
+        .filter-container {
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .form-select {
+            width: 100%;
+            max-width: 200px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .filter-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form-select {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     // Delete functionality
     const deleteButtons = document.querySelectorAll('.delete-product');
-    
+    const productFilter = document.getElementById('productFilter');
+    const productsTableBody = document.getElementById('productsTableBody');
+    const rows = productsTableBody.querySelectorAll('tr');
+
+    // Filter products based on select value
+    function filterProducts(limit) {
+        rows.forEach((row, index) => {
+            if (limit === 'all' || index < limit) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Update S.No for visible rows
+        const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
+        visibleRows.forEach((row, index) => {
+            row.querySelector('td.text-center').textContent = index + 1;
+        });
+    }
+
+    // Initialize filter
+    filterProducts(productFilter.value);
+
+    // Handle filter change
+    productFilter.addEventListener('change', function() {
+        filterProducts(this.value);
+    });
+
+    // Handle delete product
     deleteButtons.forEach(button => {
         button.addEventListener('click', async function(e) {
             e.preventDefault();
@@ -305,6 +388,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     row.style.transition = 'opacity 0.3s';
                     row.style.opacity = '0';
                     setTimeout(() => row.remove(), 300);
+
+                    // Reindex S.No after deletion
+                    const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
+                    visibleRows.forEach((row, index) => {
+                        row.querySelector('td.text-center').textContent = index + 1;
+                    });
                 } else {
                     throw new Error('Delete failed');
                 }

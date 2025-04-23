@@ -3,9 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head>
     <style>
         .container-p-y {
             padding-top: 1.5rem;
@@ -146,5 +143,3 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </div>
-</body>
-</html>

@@ -93,7 +93,7 @@ usort($products, function($a, $b) {
         </h5>
         <div class="row g-4 justify-content-center align-items-center px-4 pb-4">
             <div class="col-md-4 col-12">
-                <div class="card h bruising-0 shadow-lg overflow-hidden position-relative rounded-3">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden position-relative rounded-3">
                     <div class="p-4 text-center text-white" style="background: linear-gradient(135deg, #007bff, #0056b3);">
                         <div class="position-absolute top-0 end-0 opacity-25">
                             <i class="bi bi-boxes" style="font-size: 4rem;"></i>
@@ -133,27 +133,36 @@ usort($products, function($a, $b) {
         </div>
     </div>
 
-    <!-- Transactions Section -->
-    <div class="d-flex justify-content-between mb-3 align-items-center">
-        <h5 class="mt-3 mb-0">Ice Inventory:</h5>
+    <!-- Ice Transactions Section with Filter -->
+    <div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+        <h5 class="mb-0">Ice Inventory:</h5>
+        <div class="filter-container">
+            <label for="productFilter" class="me-2 fw-bold">Show:</label>
+            <select id="productFilter" class="form-select w-auto d-inline-block">
+                <option value="5">5 Products</option>
+                <option value="10">10 Products</option>
+                <option value="20">20 Products</option>
+                <option value="all" selected>All Products</option>
+            </select>
+        </div>
     </div>
-    <div class="card mb-4 shadow-sm">
+    <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th width="40px" style="color: #000000;">#</th>
-                            <th style="color: #000000;">PRODUCT</th>
-                            <th style="color: #000000;">CATEGORY</th>
-                            <th style="color: #000000;">STOCK</th>
-                            <th style="color: #000000;">PRICE</th>
-                            <th style="color: #000000;">QTY</th>
-                            <th style="color: #000000;">AMOUNT</th>
-                            <th style="color: #000000;">ACTION</th>
+                            <th scope="col" style="width: 40px; color: #000000;">#</th>
+                            <th scope="col" style="color: #000000;">PRODUCT</th>
+                            <th scope="col" style="color: #000000;">CATEGORY</th>
+                            <th scope="col" style="color: #000000;">STOCK</th>
+                            <th scope="col" style="color: #000000;">PRICE</th>
+                            <th scope="col" style="color: #000000;">QTY</th>
+                            <th scope="col" style="color: #000000;">AMOUNT</th>
+                            <th scope="col" style="color: #000000;">ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productsTableBody">
                         <?php foreach ($products as $index => $product): ?>
                             <tr data-product-id="<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                 <td class="text-center"><?= $index + 1 ?></td>
@@ -275,107 +284,41 @@ usort($products, function($a, $b) {
     <?php endif; ?>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Delete functionality
-    const deleteButtons = document.querySelectorAll('.delete-product');
-    
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async function(e) {
-            e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-            const form = document.getElementById(`delete-form-${productId}`);
-            const row = this.closest('tr');
-            
-            if (!form || !productId) {
-                console.error('Form or product ID not found');
-                return;
-            }
-
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form)
-                });
-                
-                if (response.ok) {
-                    const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
-                        delay: 3000
-                    });
-                    successToast.show();
-                    
-                    row.style.transition = 'opacity 0.3s ease-out';
-                    row.style.opacity = '0';
-                    setTimeout(() => row.remove(), 300);
-                } else {
-                    throw new Error('Delete request failed');
-                }
-            } catch (error) {
-                console.error('Delete error:', error);
-                const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
-                    delay: 3000
-                });
-                errorToast.show();
-            }
-        });
-    });
-
-    // Low stock notifications
-    const lowStockItems = <?php echo json_encode($low_stock_items, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-    
-    if (lowStockItems && Object.keys(lowStockItems).length > 0) {
-        const notifications = Object.values(lowStockItems).map(item => ({
-            title: `Low Stock Alert: ${item.product_name || 'Unknown'}`,
-            start: new Date().toISOString().split('T')[0],
-            isRead: false,
-            timestamp: new Date().toISOString(),
-            quantity: item.quantity ?? 0,
-            product_id: item.product_id || ''
-        }));
-
-        let existingEvents = JSON.parse(localStorage.getItem("events") || '[]');
-        
-        notifications.forEach(newEvent => {
-            if (!existingEvents.some(event => event.title === newEvent.title)) {
-                existingEvents.push(newEvent);
-            }
-        });
-
-        localStorage.setItem("events", JSON.stringify(existingEvents));
-    }
-
-    // Adjust carousel for tablet view
-    function adjustCarousel() {
-        if (window.innerWidth <= 768) {
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            carouselItems.forEach(item => {
-                const products = item.querySelectorAll('.carousel-product');
-                products.forEach((product, index) => {
-                    if (index > 0) product.style.display = 'none'; // Hide all but the first product
-                });
-            });
-        } else {
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            carouselItems.forEach(item => {
-                const products = item.querySelectorAll('.carousel-product');
-                products.forEach(product => product.style.display = 'block'); // Show all products on desktop
-            });
-        }
-    }
-
-    // Run on load and resize
-    adjustCarousel();
-    window.addEventListener('resize', adjustCarousel);
-});
-</script>
-
 <style>
-    /* For tablet devices (max-width: 768px) */
+    .filter-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-select {
+        border-color: #6c757d;
+        background-color: #fff;
+        color: #343a40;
+        font-weight: 500;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    }
+
+    .form-select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+    }
+
     @media (max-width: 768px) {
+        .filter-container {
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .form-select {
+            width: 100%;
+            max-width: 200px;
+        }
+
         .row > div {
             width: 100% !important;
             margin-bottom: 10px;
         }
+
         .table-responsive {
             overflow-x: auto;
         }
@@ -471,4 +414,146 @@ document.addEventListener("DOMContentLoaded", function () {
             max-height: 150px;
         }
     }
+
+    @media (max-width: 576px) {
+        .filter-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .form-select {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Delete functionality
+    const deleteButtons = document.querySelectorAll('.delete-product');
+    const productFilter = document.getElementById('productFilter');
+    const productsTableBody = document.getElementById('productsTableBody');
+    const rows = productsTableBody.querySelectorAll('tr');
+
+    // Filter products based on select value
+    function filterProducts(limit) {
+        rows.forEach((row, index) => {
+            if (limit === 'all' || index < limit) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Update S.No for visible rows
+        const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
+        visibleRows.forEach((row, index) => {
+            row.querySelector('td.text-center').textContent = index + 1;
+        });
+    }
+
+    // Initialize filter
+    filterProducts(productFilter.value);
+
+    // Handle filter change
+    productFilter.addEventListener('change', function() {
+        filterProducts(this.value);
+    });
+
+    // Handle delete product
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+            const form = document.getElementById(`delete-form-${productId}`);
+            const row = this.closest('tr');
+            
+            if (!form || !productId) {
+                console.error('Form or product ID not found');
+                return;
+            }
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form)
+                });
+                
+                if (response.ok) {
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
+                        delay: 3000
+                    });
+                    successToast.show();
+                    
+                    row.style.transition = 'opacity 0.3s ease-out';
+                    row.style.opacity = '0';
+                    setTimeout(() => row.remove(), 300);
+
+                    // Reindex S.No after deletion
+                    const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
+                    visibleRows.forEach((row, index) => {
+                        row.querySelector('td.text-center').textContent = index + 1;
+                    });
+                } else {
+                    throw new Error('Delete request failed');
+                }
+            } catch (error) {
+                console.error('Delete error:', error);
+                const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                    delay: 3000
+                });
+                errorToast.show();
+            }
+        });
+    });
+
+    // Low stock notifications
+    const lowStockItems = <?php echo json_encode($low_stock_items, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+    
+    if (lowStockItems && Object.keys(lowStockItems).length > 0) {
+        const notifications = Object.values(lowStockItems).map(item => ({
+            title: `Low Stock Alert: ${item.product_name || 'Unknown'}`,
+            start: new Date().toISOString().split('T')[0],
+            isRead: false,
+            timestamp: new Date().toISOString(),
+            quantity: item.quantity ?? 0,
+            product_id: item.product_id || ''
+        }));
+
+        let existingEvents = JSON.parse(localStorage.getItem("events") || '[]');
+        
+        notifications.forEach(newEvent => {
+            if (!existingEvents.some(event => event.title === newEvent.title)) {
+                existingEvents.push(newEvent);
+            }
+        });
+
+        localStorage.setItem("events", JSON.stringify(existingEvents));
+    }
+
+    // Adjust carousel for tablet view
+    function adjustCarousel() {
+        if (window.innerWidth <= 768) {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach((product, index) => {
+                    if (index > 0) product.style.display = 'none'; // Hide all but the first product
+                });
+            });
+        } else {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            carouselItems.forEach(item => {
+                const products = item.querySelectorAll('.carousel-product');
+                products.forEach(product => product.style.display = 'block'); // Show all products on desktop
+            });
+        }
+    }
+
+    // Run on load and resize
+    adjustCarousel();
+    window.addEventListener('resize', adjustCarousel);
+});
+</script>
