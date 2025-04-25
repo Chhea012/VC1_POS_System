@@ -44,14 +44,14 @@ usort($products, function($a, $b) {
                     <div class="carousel-item <?= $slideIndex === 0 ? 'active' : '' ?>">
                         <div class="row g-4 justify-content-center align-items-center m-0 p-4" style="min-height: 450px; background: linear-gradient(135deg, #f0eded 0%, #f0f0f0 100%);">
                             <?php foreach ($slideProducts as $product): ?>
-                                <div class="col-md-3">
+                                <div class="col-md-3 carousel-product">
                                     <div class="card drink-card h-100 shadow-sm border-0">
                                         <div class="drink-img-wrapper text-center position-relative">
                                             <img src="<?= htmlspecialchars('views/products/' . ($product['image'] ?? 'default.jpg')) ?>" 
                                                  class="drink-img img-fluid" 
                                                  style="max-height: 200px; object-fit: cover;"
                                                  alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
-                                            <span class="stock-badge position-absolute top-0 end-0 m-2 bg-success text-white px-2 py-1 rounded">
+                                            <span class="stock-badge position-absolute top-0 end-0 bg-success text-white px-2 py-1 rounded">
                                                 <?= $product['quantity'] ?? 0 ?> in stock
                                             </span>
                                         </div>
@@ -62,7 +62,7 @@ usort($products, function($a, $b) {
                                                 <span class="mx-2">•</span>
                                                 <span>Rank #<?= $slideIndex * 4 + array_search($product, $slideProducts) + 1 ?></span>
                                             </p>
-                                            <a href="/inventory/viewdrink/<?= $product['product_id'] ?? '' ?>" 
+                                            <a href="/inventory/viewdrink/<?= htmlspecialchars($product['product_id'] ?? '') ?>" 
                                                class="btn btn-outline-primary btn-sm rounded-pill drink-btn">View Details</a>
                                         </div>
                                     </div>
@@ -163,7 +163,7 @@ usort($products, function($a, $b) {
                     </thead>
                     <tbody id="productsTableBody">
                         <?php foreach ($products as $index => $product): ?>
-                            <tr data-product-id="<?= $product['product_id'] ?? '' ?>">
+                            <tr data-product-id="<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                 <td class="text-center"><?= $index + 1 ?></td>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -197,18 +197,18 @@ usort($products, function($a, $b) {
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item" href="/inventory/viewdrink/<?= $product['product_id'] ?? '' ?>">
+                                                <a class="dropdown-item" href="/inventory/viewdrink/<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                                     <i class="bi bi-eye me-2"></i>View
                                                 </a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item text-danger delete-product" 
                                                    href="javascript:void(0);" 
-                                                   data-product-id="<?= $product['product_id'] ?? '' ?>">
+                                                   data-product-id="<?= htmlspecialchars($product['product_id'] ?? '') ?>">
                                                     <i class="bi bi-trash me-2"></i>Delete
                                                 </a>
-                                                <form id="delete-form-<?= $product['product_id'] ?? '' ?>" 
-                                                      action="/drink/delete/<?= $product['product_id'] ?? '' ?>" 
+                                                <form id="delete-form-<?= htmlspecialchars($product['product_id'] ?? '') ?>" 
+                                                      action="/drink/delete/<?= htmlspecialchars($product['product_id'] ?? '') ?>" 
                                                       method="POST" 
                                                       style="display:none;">
                                                     <input type="hidden" name="_method" value="DELETE">
@@ -286,139 +286,205 @@ usort($products, function($a, $b) {
         </div>
     <?php endif; ?>
 </div>
-
-<style>
-    .filter-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .form-select {
-        border-color: #6c757d;
-        background-color: #fff;
-        color: #343a40;
-        font-weight: 500;
-        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-    }
-
-    .form-select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-    }
-
-    @media (max-width: 768px) {
-        .filter-container {
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .form-select {
-            width: 100%;
-            max-width: 200px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .filter-container {
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .form-select {
-            width: 100%;
-            max-width: 100%;
-        }
-    }
-</style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // Delete functionality
+    // DOM elements
     const deleteButtons = document.querySelectorAll('.delete-product');
     const productFilter = document.getElementById('productFilter');
     const productsTableBody = document.getElementById('productsTableBody');
-    const rows = productsTableBody.querySelectorAll('tr');
+    const rows = productsTableBody?.querySelectorAll('tr') || [];
+    const carouselElement = document.getElementById('drinkCarousel');
 
-    // Filter products based on select value
-    function filterProducts(limit) {
-        rows.forEach((row, index) => {
-            if (limit === 'all' || index < limit) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
+    // Valid filter options
+    const validFilters = ['5', '10', '20', 'all'];
 
-        // Update S.No for visible rows
-        const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
-        visibleRows.forEach((row, index) => {
-            row.querySelector('td.text-center').textContent = index + 1;
-        });
+    /**
+     * Initialize Bootstrap Carousel
+     */
+    function initializeCarousel() {
+        if (!carouselElement) {
+            // console.warn('Carousel element not found');
+            return;
+        }
+        try {
+            const carousel = new bootstrap.Carousel(carouselElement, {
+                interval: 5000,
+                ride: 'carousel',
+                pause: 'hover',
+                wrap: true
+            });
+            // Verify badge visibility
+            // console.log('Stock badges:', carouselElement.querySelectorAll('.stock-badge').length);
+        } catch (error) {
+            console.error('Carousel initialization failed:', error);
+        }
     }
 
-    // Initialize filter
-    filterProducts(productFilter.value);
+    /**
+     * Filter products and update S.No
+     * @param {string} limit - Number of products to show or 'all'
+     */
+    function filterProducts(limit) {
+        try {
+            const displayLimit = limit === 'all' ? rows.length : parseInt(limit);
+            rows.forEach((row, index) => {
+                row.style.display = index < displayLimit ? '' : 'none';
+            });
+            // Update S.No for visible rows
+            const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
+            visibleRows.forEach((row, index) => {
+                row.querySelector('td.text-center').textContent = index + 1;
+            });
+        } catch (error) {
+            console.error('Filter products failed:', error);
+        }
+    }
 
-    // Handle filter change
-    productFilter.addEventListener('change', function() {
-        filterProducts(this.value);
-    });
+    /**
+     * Load saved filter from localStorage
+     */
+    function loadSavedFilter() {
+        try {
+            const savedFilter = localStorage.getItem('productFilter');
+            if (savedFilter && validFilters.includes(savedFilter)) {
+                productFilter.value = savedFilter;
+                filterProducts(savedFilter);
+            } else {
+                productFilter.value = 'all';
+                localStorage.setItem('productFilter', 'all');
+                filterProducts('all');
+            }
+        } catch (error) {
+            console.error('Load saved filter failed:', error);
+            productFilter.value = 'all';
+            filterProducts('all');
+        }
+    }
 
-    // Handle delete product
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async function(e) {
-            e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-            const form = document.getElementById(`delete-form-${productId}`);
-            const row = this.closest('tr');
+    /**
+     * Save filter to localStorage and apply it
+     * @param {string} limit - Filter value
+     */
+    function saveAndApplyFilter(limit) {
+        try {
+            if (validFilters.includes(limit)) {
+                localStorage.setItem('productFilter', limit);
+                filterProducts(limit);
+            } else {
+                localStorage.setItem('productFilter', 'all');
+                productFilter.value = 'all';
+                filterProducts('all');
+            }
+        } catch (error) {
+            console.error('Save filter failed:', error);
+        }
+    }
+
+    /**
+     * Handle delete product
+     * @param {HTMLElement} button - Delete button element
+     */
+    async function handleDeleteProduct(button) {
+        const productId = button.getAttribute('data-product-id');
+        const form = document.getElementById(`delete-form-${productId}`);
+        const row = button.closest('tr');
+        
+        if (!form || !productId) {
+            console.error('Form or product ID not found');
+            return;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            });
             
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form)
+            if (response.ok) {
+                const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
+                    delay: 3000
                 });
+                successToast.show();
                 
-                if (response.ok) {
-                    const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
-                        delay: 3000
-                    });
-                    successToast.show();
-                    
-                    row.style.transition = 'opacity 0.3s';
-                    row.style.opacity = '0';
-                    setTimeout(() => row.remove(), 300);
-
+                row.style.transition = 'opacity 0.3s ease-out';
+                row.style.opacity = '0';
+                setTimeout(() => {
+                    row.remove();
                     // Reindex S.No after deletion
                     const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
                     visibleRows.forEach((row, index) => {
                         row.querySelector('td.text-center').textContent = index + 1;
                     });
-                } else {
-                    throw new Error('Delete failed');
-                }
-            } catch (error) {
-                const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
-                    delay: 3000
-                });
-                errorToast.show();
+                }, 300);
+            } else {
+                throw new Error('Delete request failed');
             }
+        } catch (error) {
+            console.error('Delete error:', error);
+            const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                delay: 3000
+            });
+            errorToast.show();
+        }
+    }
+
+    /**
+     * Adjust carousel for tablet view
+     */
+    function adjustCarousel() {
+        try {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            if (window.innerWidth <= 768) {
+                carouselItems.forEach(item => {
+                    const products = item.querySelectorAll('.carousel-product');
+                    products.forEach((product, index) => {
+                        product.style.display = index > 1 ? 'none' : 'block'; // Show first two products
+                    });
+                });
+            } else {
+                carouselItems.forEach(item => {
+                    const products = item.querySelectorAll('.carousel-product');
+                    products.forEach(product => product.style.display = 'block'); // Show all products
+                });
+            }
+        } catch (error) {
+            console.error('Adjust carousel failed:', error);
+        }
+    }
+
+    // Initialize
+    initializeCarousel();
+    loadSavedFilter();
+    adjustCarousel();
+
+    // Event listeners
+    if (productFilter) {
+        productFilter.addEventListener('change', () => saveAndApplyFilter(productFilter.value));
+    }
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await handleDeleteProduct(button);
         });
     });
 
+    window.addEventListener('resize', adjustCarousel);
+
     // Low stock notifications
-    const lowStockItems = <?php echo json_encode($low_stock_items); ?>;
+    const lowStockItems = <?php echo json_encode($low_stock_items, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     
-    if (Object.keys(lowStockItems).length > 0) {
+    if (lowStockItems && Object.keys(lowStockItems).length > 0) {
         const notifications = Object.values(lowStockItems).map(item => ({
-            title: `Low Stock Alert: ${item.product_name}`,
+            title: `Low Stock Alert: ${item.product_name || 'Unknown'}`,
             start: new Date().toISOString().split('T')[0],
             isRead: false,
             timestamp: new Date().toISOString(),
-            quantity: item.quantity
+            quantity: item.quantity ?? 0,
+            product_id: item.product_id || ''
         }));
 
-        let existingEvents = JSON.parse(localStorage.getItem("events")) || [];
+        let existingEvents = JSON.parse(localStorage.getItem("events") || '[]');
         
         notifications.forEach(newEvent => {
             if (!existingEvents.some(event => event.title === newEvent.title)) {

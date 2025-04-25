@@ -215,7 +215,7 @@
         function markAsRead(index) {
             let events = JSON.parse(localStorage.getItem("events")) || [];
             events[index].isRead = !events[index].isRead; // Toggle read/unread
-            localStorage.setItem("events", JSON.stringify(events));
+            localStorage.setItem("evzents", JSON.stringify(events));
             loadNotifications();
             updateNotificationBadge(); // Update badge after marking as read/unread
         }

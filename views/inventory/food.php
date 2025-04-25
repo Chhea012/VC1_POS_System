@@ -52,7 +52,7 @@ usort($products, function($a, $b) {
                                                  class="drink-img img-fluid"
                                                  style="max-height: 200px; object-fit: cover;"
                                                  alt="<?= htmlspecialchars($product['product_name'] ?? 'Product') ?>">
-                                            <span class="stock-badge position-absolute top-0 end-0 m-2 bg-success text-white px-2 py-1 rounded">
+                                            <span class="stock-badge position-absolute top-0 end-0 bg-success text-white px-2 py-1 rounded">
                                                 <?= $product['quantity'] ?? 0 ?> in stock
                                             </span>
                                         </div>
@@ -275,8 +275,7 @@ usort($products, function($a, $b) {
                     </ul>
                 </div>
                 <div class="card-footer bg-light text-center p-2">
-                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick=" February 12, 2025
-this.closest('.low-stock-alert').style.display='none';">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="this.closest('.low-stock-alert').style.display='none';">
                         Dismiss
                     </button>
                 </div>
@@ -284,231 +283,190 @@ this.closest('.low-stock-alert').style.display='none';">
         </div>
     <?php endif; ?>
 </div>
-
-<style>
-    .filter-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .form-select {
-        border-color: #6c757d;
-        background-color: #fff;
-        color: #343a40;
-        font-weight: 500;
-        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-    }
-
-    .form-select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-    }
-
-    @media (max-width: 768px) {
-        .filter-container {
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .form-select {
-            width: 100%;
-            max-width: 200px;
-        }
-
-        .row > div {
-            width: 100% !important;
-            margin-bottom: 10px;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        .table thead {
-            display: none;
-        }
-
-        .table tbody tr {
-            display: block;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
-
-        .table tbody tr td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding: 5px;
-        }
-
-        .table tbody tr td:last-child {
-            border-bottom: none;
-        }
-
-        .table tbody tr td::before {
-            content: attr(data-label);
-            font-weight: bold;
-            display: inline-block;
-            width: 40%;
-            margin-right: 10px;
-        }
-
-        .table tbody tr td button {
-            width: auto;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-
-        .table-responsive {
-            padding: 10px;
-        }
-
-        .form-label, .btn {
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        .form-control, .form-select {
-            padding: 0.8rem;
-        }
-
-        /* Carousel adjustments for tablet */
-        .carousel-product {
-            flex: 0 0 100% !important;
-            max-width: 100% !important;
-        }
-
-        .drink-card {
-            height: auto !important;
-            padding-bottom: 1rem;
-        }
-
-        .drink-img-wrapper {
-            margin-bottom: 1rem;
-        }
-
-        .carousel-inner > .carousel-item {
-            padding: 1rem !important;
-        }
-
-        .card-body {
-            text-align: center !important;
-        }
-
-        .drink-btn {
-            width: 100%;
-        }
-
-        .carousel-indicators {
-            bottom: -25px;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            top: auto;
-            bottom: -40px;
-        }
-
-        .drink-img {
-            max-height: 150px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .filter-container {
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .form-select {
-            width: 100%;
-            max-width: 100%;
-        }
-    }
-</style>
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // Delete functionality
+    // DOM elements
     const deleteButtons = document.querySelectorAll('.delete-product');
     const productFilter = document.getElementById('productFilter');
     const productsTableBody = document.getElementById('productsTableBody');
-    const rows = productsTableBody.querySelectorAll('tr');
+    const rows = productsTableBody?.querySelectorAll('tr') || [];
+    const carouselElement = document.getElementById('popularCarousel');
 
-    // Filter products based on select value
-    function filterProducts(limit) {
-        rows.forEach((row, index) => {
-            if (limit === 'all' || index < limit) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
+    // Valid filter options
+    const validFilters = ['5', '10', '20', 'all'];
 
-        // Update S.No for visible rows
-        const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
-        visibleRows.forEach((row, index) => {
-            row.querySelector('td.text-center').textContent = index + 1;
-        });
+    /**
+     * Initialize Bootstrap Carousel
+     */
+    function initializeCarousel() {
+        if (!carouselElement) {
+            // console.warn('Carousel element not found');
+            return;
+        }
+        try {
+            const carousel = new bootstrap.Carousel(carouselElement, {
+                interval: 5000,
+                ride: 'carousel',
+                pause: 'hover',
+                wrap: true
+            });
+            // Verify badge visibility
+            // console.log('Stock badges:', carouselElement.querySelectorAll('.stock-badge').length);
+        } catch (error) {
+            console.error('Carousel initialization failed:', error);
+        }
     }
 
-    // Initialize filter
-    filterProducts(productFilter.value);
+    /**
+     * Filter products and update S.No
+     * @param {string} limit - Number of products to show or 'all'
+     */
+    function filterProducts(limit) {
+        try {
+            const displayLimit = limit === 'all' ? rows.length : parseInt(limit);
+            rows.forEach((row, index) => {
+                row.style.display = index < displayLimit ? '' : 'none';
+            });
+            // Update S.No for visible rows
+            const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
+            visibleRows.forEach((row, index) => {
+                row.querySelector('td.text-center').textContent = index + 1;
+            });
+        } catch (error) {
+            console.error('Filter products failed:', error);
+        }
+    }
 
-    // Handle filter change
-    productFilter.addEventListener('change', function() {
-        filterProducts(this.value);
-    });
-
-    // Handle delete product
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async function(e) {
-            e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-            const form = document.getElementById(`delete-form-${productId}`);
-            const row = this.closest('tr');
-            
-            if (!form || !productId) {
-                console.error('Form or product ID not found');
-                return;
+    /**
+     * Load saved filter from localStorage
+     */
+    function loadSavedFilter() {
+        try {
+            const savedFilter = localStorage.getItem('productFilter');
+            if (savedFilter && validFilters.includes(savedFilter)) {
+                productFilter.value = savedFilter;
+                filterProducts(savedFilter);
+            } else {
+                productFilter.value = 'all';
+                localStorage.setItem('productFilter', 'all');
+                filterProducts('all');
             }
+        } catch (error) {
+            console.error('Load saved filter failed:', error);
+            productFilter.value = 'all';
+            filterProducts('all');
+        }
+    }
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form)
+    /**
+     * Save filter to localStorage and apply it
+     * @param {string} limit - Filter value
+     */
+    function saveAndApplyFilter(limit) {
+        try {
+            if (validFilters.includes(limit)) {
+                localStorage.setItem('productFilter', limit);
+                filterProducts(limit);
+            } else {
+                localStorage.setItem('productFilter', 'all');
+                productFilter.value = 'all';
+                filterProducts('all');
+            }
+        } catch (error) {
+            console.error('Save filter failed:', error);
+        }
+    }
+
+    /**
+     * Handle delete product
+     * @param {HTMLElement} button - Delete button element
+     */
+    async function handleDeleteProduct(button) {
+        const productId = button.getAttribute('data-product-id');
+        const form = document.getElementById(`delete-form-${productId}`);
+        const row = button.closest('tr');
+        
+        if (!form || !productId) {
+            console.error('Form or product ID not found');
+            return;
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            
+            if (response.ok) {
+                const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
+                    delay: 3000
                 });
+                successToast.show();
                 
-                if (response.ok) {
-                    const successToast = new bootstrap.Toast(document.getElementById('successToast'), {
-                        delay: 3000
-                    });
-                    successToast.show();
-                    
-                    row.style.transition = 'opacity 0.3s ease-out';
-                    row.style.opacity = '0';
-                    setTimeout(() => row.remove(), 300);
-
+                row.style.transition = 'opacity 0.3s ease-out';
+                row.style.opacity = '0';
+                setTimeout(() => {
+                    row.remove();
                     // Reindex S.No after deletion
                     const visibleRows = productsTableBody.querySelectorAll('tr:not([style*="display: none"])');
                     visibleRows.forEach((row, index) => {
                         row.querySelector('td.text-center').textContent = index + 1;
                     });
-                } else {
-                    throw new Error('Delete request failed');
-                }
-            } catch (error) {
-                console.error('Delete error:', error);
-                const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
-                    delay: 3000
-                });
-                errorToast.show();
+                }, 300);
+            } else {
+                throw new Error('Delete request failed');
             }
+        } catch (error) {
+            console.error('Delete error:', error);
+            const errorToast = new bootstrap.Toast(document.getElementById('errorToast'), {
+                delay: 3000
+            });
+            errorToast.show();
+        }
+    }
+
+    /**
+     * Adjust carousel for tablet view
+     */
+    function adjustCarousel() {
+        try {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            if (window.innerWidth <= 768) {
+                carouselItems.forEach(item => {
+                    const products = item.querySelectorAll('.carousel-product');
+                    products.forEach((product, index) => {
+                        product.style.display = index > 1 ? 'none' : 'block'; // Show first two products
+                    });
+                });
+            } else {
+                carouselItems.forEach(item => {
+                    const products = item.querySelectorAll('.carousel-product');
+                    products.forEach(product => product.style.display = 'block'); // Show all products
+                });
+            }
+        } catch (error) {
+            console.error('Adjust carousel failed:', error);
+        }
+    }
+
+    // Initialize
+    initializeCarousel();
+    loadSavedFilter();
+    adjustCarousel();
+
+    // Event listeners
+    if (productFilter) {
+        productFilter.addEventListener('change', () => saveAndApplyFilter(productFilter.value));
+    }
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await handleDeleteProduct(button);
         });
     });
+
+    window.addEventListener('resize', adjustCarousel);
 
     // Low stock notifications
     const lowStockItems = <?php echo json_encode($low_stock_items, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
@@ -533,28 +491,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
         localStorage.setItem("events", JSON.stringify(existingEvents));
     }
-
-    // Adjust carousel for tablet view
-    function adjustCarousel() {
-        if (window.innerWidth <= 768) {
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            carouselItems.forEach(item => {
-                const products = item.querySelectorAll('.carousel-product');
-                products.forEach((product, index) => {
-                    if (index > 0) product.style.display = 'none'; // Hide all but the first product
-                });
-            });
-        } else {
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            carouselItems.forEach(item => {
-                const products = item.querySelectorAll('.carousel-product');
-                products.forEach(product => product.style.display = 'block'); // Show all products on desktop
-            });
-        }
-    }
-
-    // Run on load and resize
-    adjustCarousel();
-    window.addEventListener('resize', adjustCarousel);
 });
 </script>

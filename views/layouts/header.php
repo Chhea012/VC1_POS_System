@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="/views/assets/modules/vendor/css/theme-default.css" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="/views/assets/modules/css/demo.css" />
     <link rel="stylesheet" href="/views/assets/modules/css/weather.css" />
+    <link rel="stylesheet" href="/views/assets/modules/css/ice.css" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="/views/assets/modules/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />

@@ -32,19 +32,6 @@ if (!isset($_SESSION['user'])) {
                     <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img src="<?= htmlspecialchars($user['profile_image'] ?? '/assets/uploads/default-profile.png') ?>" 
                              alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
-                        <!-- <div class="button-wrapper">
-                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                <span class="d-none d-sm-block">Upload new photo</span>
-                                <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" name="profileImage" class="account-file-input" hidden 
-                                       accept="image/png, image/jpeg, image/gif" onchange="displayImage(this)">
-                            </label>
-                            <button type="button" class="btn btn-outline-secondary account-image-reset mb-4" onclick="resetImage()">
-                                <i class="bx bx-reset d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Reset</span>
-                            </button>
-                            <p class="text-muted mb-0">Allowed JPG, PNG, or GIF. Max size of 2MB</p>
-                        </div> -->
                     </div>
                 </div>
                 <hr class="my-0">
