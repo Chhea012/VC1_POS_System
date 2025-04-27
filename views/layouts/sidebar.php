@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!-- Sidebar -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
@@ -78,12 +84,14 @@
                 <div data-i18n="weather"></div>
             </a>
         </li>
+        <?php if (isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] == 1): ?>
         <li class="menu-item">
             <a href="/calendar" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="calendar"></div>
             </a>
         </li>
+        <?php endif; ?>
     </ul>
 </aside>
 
@@ -195,5 +203,12 @@
                 badge.style.display = "none";
             }
         }
+    }
+
+    // Language change function
+    function changeLanguage(lang) {
+        applyTranslations(lang);
+        updateFontFamily(lang);
+        localStorage.setItem('selectedLanguage', lang);
     }
 </script>

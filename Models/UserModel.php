@@ -17,6 +17,16 @@ class UserModel {
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // New method to fetch only the logged-in user's data
+    public function getCurrentUser($user_id) {
+        $sql = "SELECT u.*, r.role_name 
+                FROM users u 
+                LEFT JOIN roles r ON u.role_id = r.role_id 
+                WHERE u.user_id = :user_id";
+        $stmt = $this->db->query($sql, ['user_id' => $user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function hasAdmin() {
         $sql = "SELECT COUNT(*) FROM users WHERE role_id = :role_id";
         $stmt = $this->db->query($sql, ['role_id' => 1]);
@@ -127,3 +137,4 @@ class UserModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+?>

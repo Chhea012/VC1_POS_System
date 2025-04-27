@@ -12,8 +12,8 @@ if (!isset($_SESSION['user'])) {
 $users = $users ?? [];
 $roles = $roles ?? [];
 
-// Check if the current user is an admin (role_id = 1)
-$isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] == 1;
+// Use isAdmin from controller
+$isAdmin = $isAdmin ?? false;
 ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -97,7 +97,7 @@ $isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] =
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="<?= $isAdmin ? 6 : 5 ?>" class="text-center text-muted">No users found</td>
+                        <td colspan="<?= $isAdmin ? 6 : 5 ?>" class="text-center text-muted">No user data available</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -143,11 +143,11 @@ $isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] =
                         <form action="/users/store" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="create_user_name" class="form-label">User Name</label>
-                                <input type="text" class="form-control" id="create_user_name" name="user_name" value="<?= htmlspecialchars($_POST['user_name'] ?? '') ?>" required>
+                                <input type="text" class="form-control" id="create_user_name" name="user_name" value="<?= htmlspecialchars($_SESSION['form_data']['user_name'] ?? '') ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="create_email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="create_email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                                <input type="email" class="form-control" id="create_email" name="email" value="<?= htmlspecialchars($_SESSION['form_data']['email'] ?? '') ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="create_password" class="form-label">Password</label>
@@ -158,7 +158,7 @@ $isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] =
                                 <select class="form-select" id="create_role_id" name="role_id" required>
                                     <option value="">Select a role</option>
                                     <?php foreach ($roles as $role): ?>
-                                        <option value="<?= htmlspecialchars($role['role_id']) ?>" <?= (isset($_POST['role_id']) && $_POST['role_id'] == $role['role_id']) ? 'selected' : '' ?>>
+                                        <option value="<?= htmlspecialchars($role['role_id']) ?>" <?= (isset($_SESSION['form_data']['role_id']) && $_SESSION['form_data']['role_id'] == $role['role_id']) ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($role['role_name']) ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -166,7 +166,7 @@ $isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] =
                             </div>
                             <div class="mb-3">
                                 <label for="create_phone_number" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="create_phone_number" name="phone_number" value="<?= htmlspecialchars($_POST['phone_number'] ?? '') ?>">
+                                <input type="text" class="form-control" id="create_phone_number" name="phone_number" value="<?= htmlspecialchars($_SESSION['form_data']['phone_number'] ?? '') ?>">
                             </div>
                             <div class="mb-3">
                                 <label for="create_profile_image" class="form-label">Profile Image</label>
@@ -188,6 +188,7 @@ $isAdmin = isset($_SESSION['user']['role_id']) && $_SESSION['user']['role_id'] =
                 </div>
             </div>
         </div>
+        <?php unset($_SESSION['form_data']); ?>
     <?php endif; ?>
 
     <!-- Edit User Sidebar Modal (Only for admins) -->
@@ -377,12 +378,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         preview.style.display = 'block';
                         if (placeholder) placeholder.style.display = 'none';
                     } else {
-                        preview.style.display = 'none';
-                        if (placeholder) placeholder.style.display = 'block';
+                        preview.src = '/Views/assets/uploads/default-profile.png';
+                        preview.style.display = 'block';
+                        if (placeholder) placeholder.style.display = 'none';
                     }
                 }
             });
         }
+    <?php endif; ?>
+
+    // Client-side form validation for create user form (admin only)
+    <?php if ($isAdmin): ?>
+        document.querySelector('form[action="/users/store"]')?.addEventListener('submit', function(e) {
+            const email = document.getElementById('create_email')?.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                alert('Please enter a valid email address.');
+            }
+        });
     <?php endif; ?>
 });
 </script>

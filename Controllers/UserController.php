@@ -17,9 +17,25 @@ class UserController extends BaseController {
             $this->redirect('/');
             return;
         }
-        $users = $this->user->getUsers();
+
+        // Check if the user is an admin
+        $isAdmin = $this->user->isAdmin($_SESSION['user']['user_id']);
         $roles = $this->user->getRoles();
-        $this->view('users/user', ['users' => $users, 'roles' => $roles]);
+
+        if ($isAdmin) {
+            // Admins see all users
+            $users = $this->user->getUsers();
+        } else {
+            // Non-admins (User, Staff) see only their own data
+            $user = $this->user->getCurrentUser($_SESSION['user']['user_id']);
+            $users = $user ? [$user] : []; // Wrap in array for view compatibility
+        }
+
+        $this->view('users/user', [
+            'users' => $users,
+            'roles' => $roles,
+            'isAdmin' => $isAdmin
+        ]);
     }
 
     public function create() {
@@ -300,6 +316,8 @@ class UserController extends BaseController {
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
+            // Regenerate session ID to prevent session fixation
+            session_regenerate_id(true);
             $_SESSION['user'] = $user;
             $this->redirect('/dashboard');
         } else {
@@ -320,3 +338,4 @@ class UserController extends BaseController {
         $this->redirect('/');
     }
 }
+?>
