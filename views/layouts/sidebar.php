@@ -123,7 +123,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <!-- Combined Script -->
 <script>
-    // Consolidated translations for both sidebar and navbar
     const translations = {
         en: {
             dashboard: "Dashboard",
@@ -135,7 +134,7 @@ if (session_status() === PHP_SESSION_NONE) {
             category: "Category",
             orders: "Orders",
             topproductorder: "Top Products Ordered",
-            historyorders: " Orders History ",
+            historyorders: "Orders History",
             user: "Users",
             weather: "Weather",
             calendar: "Calendar"
@@ -157,7 +156,6 @@ if (session_status() === PHP_SESSION_NONE) {
         }
     };
 
-    // Apply translations to all elements with data-i18n attribute
     function applyTranslations(lang) {
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
@@ -167,48 +165,30 @@ if (session_status() === PHP_SESSION_NONE) {
         });
     }
 
-    // Update font family based on language
     function updateFontFamily(lang) {
-        document.documentElement.style.fontFamily = lang === 'km' ?
-            "'Noto Sans Khmer', sans-serif" :
-            "'Public Sans', sans-serif";
+        document.documentElement.style.fontFamily = lang === 'km'
+            ? "'Noto Sans Khmer', sans-serif"
+            : "'Public Sans', sans-serif";
     }
 
-    // Initialize on page load
+    function changeLanguage(lang) {
+        localStorage.setItem('selectedLanguage', lang);
+        applyTranslations(lang);
+        updateFontFamily(lang);
+        updateLanguageDropdown(lang); // Refresh dropdown display too
+    }
+
+    // On page load, initialize language and active sidebar
     document.addEventListener("DOMContentLoaded", function() {
         const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
         changeLanguage(selectedLanguage);
 
-        // Set active menu item
+        // Highlight active menu item
         const currentUrl = window.location.pathname;
         document.querySelectorAll(".menu-item a").forEach(item => {
             if (item.getAttribute("href") === currentUrl) {
                 item.classList.add("active");
             }
         });
-
-        updateNotificationBadge();
     });
-
-    // Notification badge update
-    function updateNotificationBadge() {
-        let events = JSON.parse(localStorage.getItem("events")) || [];
-        let unreadCount = events.filter(event => !event.isRead).length;
-        let badge = document.getElementById("notification-count");
-        if (badge) {
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount;
-                badge.style.display = "inline-block";
-            } else {
-                badge.style.display = "none";
-            }
-        }
-    }
-
-    // Language change function
-    function changeLanguage(lang) {
-        applyTranslations(lang);
-        updateFontFamily(lang);
-        localStorage.setItem('selectedLanguage', lang);
-    }
 </script>

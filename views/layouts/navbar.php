@@ -25,32 +25,18 @@
                     }
                 </style>
 
+                <!-- Navbar HTML -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <!-- This will be updated dynamically -->
+                        <!-- Language selected will be inserted here -->
                     </a>
-
-                    <!-- Dropdown menu (only one language option at a time) -->
                     <ul class="dropdown-menu" id="languageDropdownMenu" aria-labelledby="languageDropdown">
-                        <!-- This will be updated dynamically -->
+                        <!-- Language options inserted here -->
                     </ul>
                 </li>
 
+                <!-- Navbar Script -->
                 <script>
-                    //Change language and update UI
-                    function changeLanguage(lang) {
-                        localStorage.setItem('selectedLanguage', lang);
-                        applyTranslations(lang);
-                        updateLanguageDropdown(lang);
-                        updateFontFamily(lang);
-                    }
-
-                    // // Update language dropdown display
-                    document.addEventListener("DOMContentLoaded", function() {
-                        const selectedLanguage = localStorage.getItem('selectedLanguage') || 'en';
-                        updateLanguageDropdown(selectedLanguage);
-                    });
-
                     function updateLanguageDropdown(lang) {
                         const languageDropdown = document.getElementById('languageDropdown');
                         const dropdownMenu = document.getElementById('languageDropdownMenu');
@@ -70,29 +56,26 @@
                                 oppositeName: "អង់គ្លេស",
                                 oppositeFlag: "/views/assets/modules/img/country/english.png"
                             }
-
                         };
-                        // Function to switch language
-                        function changeLanguage(lang) {
-                            document.documentElement.lang = lang;
-                            updateLanguageDropdown(lang);
-                            // You can also save the selected language in local storage or a cookie if needed
-                        }
 
-                        // Update the dropdown button
+                        // Update the button (current language)
                         languageDropdown.innerHTML = `
             <img src="${languages[lang].flag}" alt="${languages[lang].name}" class="flag-icon"> ${languages[lang].name}
         `;
 
-                        // Show only the opposite language in the dropdown menu
+                        // Update dropdown menu (show opposite language)
                         dropdownMenu.innerHTML = `
-            <li><a class="dropdown-item" href="#" onclick="changeLanguage('${languages[lang].oppositeLang}')">
+            <li><a class="dropdown-item" href="#" id="change-language-btn">
                 <img src="${languages[lang].oppositeFlag}" alt="${languages[lang].oppositeName}" class="flag-icon"> ${languages[lang].oppositeName}
             </a></li>
         `;
+
+                        // Add event listener to the new language option
+                        document.getElementById('change-language-btn').addEventListener('click', function() {
+                            changeLanguage(languages[lang].oppositeLang);
+                        });
                     }
                 </script>
-
 
                 <!-- Notification Bell -->
                 <a class="nav-link" href="/notification" id="notificationDropdown" role="button" aria-expanded="false" style="position: relative;">
@@ -101,7 +84,7 @@
                         style="position: absolute; top: -5px; right: -5px; background: red; color: white; padding: 5px; border-radius: 50%; display: none;">
                     </span>
                 </a>
-                
+
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
