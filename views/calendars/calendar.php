@@ -17,12 +17,12 @@ if (!isset($_SESSION['user'])) {
             <button class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#manageCategoriesOffcanvas" onclick="toggleCollapse('addCategoryCollapse')">
                 <i class="bi bi-tags me-1"></i> Manage Categories
             </button>
-            <!-- <div class="dropdown">
+            <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" id="eventFilter" data-selected="all" type="button" data-bs-toggle="dropdown">All</button>
                 <ul class="dropdown-menu" id="categoryFilterMenu">
                     <li><a class="dropdown-item" data-filter="all">All</a></li>
                 </ul>
-            </div> -->
+            </div>
         </div>
         <span id="notification-count" class="badge bg-danger" style="display: none;"></span>
     </div>
