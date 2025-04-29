@@ -80,7 +80,7 @@ if (!isset($_SESSION['user'])) {
     </div>
     <!-- Action Buttons -->
     <div class="d-flex justify-content-end gap-3 mt-4">
-        <a href="javascript:history.back()" class="btn btn-outline-secondary">CANCEL</a>
+        <!-- <a href="javascript:history.back()" class="btn btn-outline-secondary">CANCEL</a> -->
         <button type="button" id="print-btn" class="btn btn-primary">
             <i class="bi bi-printer-fill me-2"></i> Print Receipt
         </button>

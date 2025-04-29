@@ -89,20 +89,20 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="/views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="/views/assets/uploads/680fa48b72c61-makounsing.jpg" alt class="w-30 h-40 rounded-circle" />
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="/edit_profile">
                                 <div class="d-flex">
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar avatar-online">
-                                            <img src="/views/assets/modules/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                            <img src="/views/assets/uploads/680fa48b72c61-makounsing.jpg" alt class="w-30 h-40 rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <span class="fw-semibold d-block">Chhea</span>
+                                        <span class="fw-semibold d-block">Mak Oun Sing</span>
                                         <small class="text-muted">Admin</small>
                                     </div>
                                 </div>

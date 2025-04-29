@@ -54,7 +54,8 @@ $route->post('/category/store', [categoryController::class, 'store']);
 $route->get('/category/edit/{category_id}', [categoryController::class, 'edit']);
 $route->post('/category/update/{category_id}', [categoryController::class, 'update']);
 $route->post('/category/delete/{category_id}', [categoryController::class, 'delete']);
-// $route->get("/food", [FoodController::class, 'index']);
+$route->post('/category/import', [categoryController::class, 'import']);
+$route->get('/category/export', [categoryController::class, 'export']);
 
 $route->post('/checkBarcode', [ProductController::class, 'checkBarcode']);
 $route->get("/drink", [DrinkController::class, 'index']);

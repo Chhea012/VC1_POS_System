@@ -16,107 +16,102 @@ $existingCategories = array_map(function ($product) {
 }, $products);
 ?>
 <div class="container-xxl flex-grow-1 container-p-y">
-
-    <div class="card">
-        <!-- Filters -->
-        <div class="mb-5">
-            <div class="">
-                <h5 class="mb-4 fw-bold">Filter by Category</h5>
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <div class="input-group">
+    <div class="card shadow-sm">
+        <!-- Filters and Actions -->
+        <div class="card-header border-0 py-3">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                        <div class="input-group input-group-sm flex-grow-1 flex-md-grow-0" style="max-width: 220px; margin-right: 10px;">
                             <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Search Category" id="productSearch" onkeyup="searchProduct()">
+                            <input type="text" class="form-control" placeholder="Search Category" id="productSearch" onkeyup="searchProduct()" aria-label="Search categories">
                         </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary w-100 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
+                        <div class="dropdown flex-md-grow-0" style="margin-right: 10px;">
+                            <button class="btn btn-outline-secondary btn-sm w-100 w-md-auto d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 120px; height: 32px;">
                                 <span id="selectedStock">Stock</span>
-                                <i class="bi bi-chevron-down"></i>
+                                <i class="bi bi-chevron-down ms-2"></i>
                             </button>
-                            <ul class="dropdown-menu w-100">
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#" onclick="filterStock('')"><i class="bi bi-filter me-2"></i>All</a></li>
                                 <li><a class="dropdown-item" href="#" onclick="filterStock('Low Stock')"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Low Stock</a></li>
                                 <li><a class="dropdown-item" href="#" onclick="filterStock('High Stock')"><i class="bi bi-check-circle me-2 text-success"></i>High Stock</a></li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#categoryModal">
-                            <i class="bi bi-plus-lg me-1"></i> Add Category
-                        </button>
+                        <div class="d-flex gap-2 ms-md-auto">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#categoryModal" data-bs-toggle="tooltip" title="Add a new category">
+                                <i class="bi bi-plus-lg"></i> Create
+                            </button>
+                            <a href="/category/export" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="Export categories to Excel">
+                                <i class="bi bi-upload"></i> Export
+                            </a>
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#importCategoryModal" data-bs-toggle="tooltip" title="Import categories from Excel">
+                                <i class="bi bi-download"></i> Import
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Category Table -->
-        <div class="mt-3">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr class="fw-semibold">
-                                <th width="40px" style="color: #000000;">#</th>
-                                <th style="color: #000000;">CATEGORY</th>
-                                <th style="color: #000000;">STOCK</th>
-                                <th style="color: #000000;">QTY</th>
-                                <th style="color: #000000;">TOTAL-PRICE</th>
-                                <th style="color: #000000;">ACTION</th>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr class="fw-semibold">
+                            <th width="40px" style="color: #000000;">#</th>
+                            <th style="color: #000000;">CATEGORY</th>
+                            <th style="color: #000000;">STOCK</th>
+                            <th style="color: #000000;">QTY</th>
+                            <th style="color: #000000;">TOTAL-PRICE</th>
+                            <th style="color: #000000;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoryTable">
+                        <?php foreach ($products as $product): ?>
+                            <?php
+                            $stock_product = isset($product['total_quantity']) && $product['total_quantity'] < 5 ? 'Low Stock' : 'High Stock';
+                            ?>
+                            <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
+                                <td class="text-center row-number"></td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
+                                        <?php echo htmlspecialchars($product['category_name']) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge <?php echo $stock_product === 'Low Stock' ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' ?> px-3 py-2">
+                                        <i class="bi <?php echo $stock_product === 'Low Stock' ? 'bi-exclamation-circle' : 'bi-check-circle' ?> me-1"></i>
+                                        <?php echo $stock_product ?>
+                                    </span>
+                                </td>
+                                <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
+                                <td>$<?php echo number_format($product['Price_Total'], 2) ?></td>
+                                <td>
+                                    <div class="dropdown">
+                                        <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="<?php echo $product['category_id']; ?>" data-category-name="<?php echo htmlspecialchars($product['category_name']); ?>">
+                                                    <i class="bi bi-pencil me-2"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['category_id'] ?>)">
+                                                    <i class="bi bi-trash me-2"></i>Delete
+                                                </a>
+                                                <form id="delete-form-<?php echo $product['category_id'] ?>" action="/category/delete/<?php echo $product['category_id'] ?>" method="POST" style="display:none;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody id="categoryTable">
-                            <?php foreach ($products as $product): ?>
-                                <?php
-                                $stock_product = isset($product['total_quantity']) && $product['total_quantity'] < 5 ? 'Low Stock' : 'High Stock';
-                                ?>
-
-
-                                <tr data-category="<?php echo htmlspecialchars($product['category_name']) ?>" data-stock="<?php echo $stock_product ?>">
-                                    <td class="text-center row-number"></td>
-                                    <td>
-                                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
-                                            <?php echo htmlspecialchars($product['category_name']) ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge <?php echo $stock_product === 'Low Stock' ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' ?> px-3 py-2">
-                                            <i class="bi <?php echo $stock_product === 'Low Stock' ? 'bi-exclamation-circle' : 'bi-check-circle' ?> me-1"></i>
-                                            <?php echo $stock_product ?>
-                                        </span>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($product['total_quantity']) ?></td>
-                                    <td>$<?php echo number_format($product['Price_Total'], 2) ?></td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <i class="bi bi-three-dots-vertical" data-bs-toggle="dropdown"></i>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="<?php echo $product['category_id']; ?>" data-category-name="<?php echo htmlspecialchars($product['category_name']); ?>">
-                                                        <i class="bi bi-pencil me-2"></i> Edit
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="confirmDelete(<?php echo $product['category_id'] ?>)">
-                                                        <i class="bi bi-trash me-2"></i>Delete
-                                                    </a>
-                                                    <form id="delete-form-<?php echo $product['category_id'] ?>" action="/category/delete/<?php echo $product['category_id'] ?>" method="POST" style="display:none;">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-
     </div>
     <!-- Modal for adding a new category -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -147,6 +142,32 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
     </div>
+    <!-- Modal for importing categories -->
+    <div class="modal fade" id="importCategoryModal" tabindex="-1" aria-labelledby="importCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog">
+            <div class="modal-content shadow-lg rounded-4 border-0">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="importCategoryModalLabel">
+                        <i class="bi bi-download"></i> Import Categories
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form action="/category/import" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="category_file" class="form-label fw-semibold">Upload Excel File</label>
+                            <input type="file" class="form-control form-control-lg rounded-3" id="category_file" name="category_file" accept=".xlsx, .xls" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-download"></i> Import Categories
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal for editing a category -->
     <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog">
@@ -158,7 +179,7 @@ $existingCategories = array_map(function ($product) {
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form action="/category/update/<?php echo $product['category_id']; ?>" method="POST" id="editCategoryForm">
+                    <form action="" method="POST" id="editCategoryForm">
                         <input type="hidden" id="edit_category_id" name="category_id">
                         <div class="mb-3">
                             <label for="edit_category_name" class="form-label fw-semibold">Category Name</label>
@@ -187,7 +208,7 @@ $existingCategories = array_map(function ($product) {
             </div>
         </div>
     </div>
-    <!-- message alert edit and delete -->
+    <!-- Message alert for edit, delete, import, and export -->
     <?php if (isset($_SESSION['success_message']) || isset($_SESSION['error_message'])): ?>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -195,19 +216,21 @@ $existingCategories = array_map(function ($product) {
                 var toastText = document.getElementById("toastText");
 
                 <?php if (isset($_SESSION['success_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['success_message']; ?>";
+                    toastText.innerHTML = "<?php echo htmlspecialchars($_SESSION['success_message']); ?>";
                     toastElement.classList.add("bg-success");
+                    toastElement.classList.remove("bg-danger");
                     <?php unset($_SESSION['success_message']); ?>
                 <?php endif; ?>
 
                 <?php if (isset($_SESSION['error_message'])): ?>
-                    toastText.innerHTML = "<?php echo $_SESSION['error_message']; ?>";
+                    toastText.innerHTML = "<?php echo htmlspecialchars($_SESSION['error_message']); ?>";
                     toastElement.classList.add("bg-danger");
+                    toastElement.classList.remove("bg-success");
                     <?php unset($_SESSION['error_message']); ?>
                 <?php endif; ?>
 
                 var toast = new bootstrap.Toast(toastElement, {
-                    delay: 1000 // Set delay to 1000ms (1 second)
+                    delay: 3000
                 });
                 toast.show();
             });
@@ -215,18 +238,22 @@ $existingCategories = array_map(function ($product) {
     <?php endif; ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
             // Modal and form variables
             const editCategoryModal = document.getElementById('editCategoryModal');
             const editCategoryForm = document.getElementById('editCategoryForm');
             const editCategoryNameInput = document.getElementById('edit_category_name');
             const editCategoryNameError = document.getElementById('editCategoryNameError');
-            const existingCategories = <?php echo json_encode($existingCategories); ?>; // Use PHP to pass existing categories
+            const existingCategories = <?php echo json_encode($existingCategories); ?>;
 
             // Function to reset the form
             function resetEditForm() {
                 editCategoryNameInput.classList.remove('is-invalid');
                 editCategoryNameError.style.display = 'none';
-                editCategoryNameInput.value = ''; // Clear the input field
+                editCategoryNameInput.value = '';
             }
 
             // Reset the form when the modal is closed
@@ -234,34 +261,31 @@ $existingCategories = array_map(function ($product) {
                 resetEditForm();
             });
 
-            // Reset the form when the modal is opened
+            // Populate the form when the modal is opened
             editCategoryModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget; // Button that triggered the modal
+                const button = event.relatedTarget;
                 const categoryId = button.getAttribute('data-category-id');
                 const categoryName = button.getAttribute('data-category-name');
 
-                // Populate the form with the existing category data
+                // Dynamically set the form action
+                editCategoryForm.action = `/category/update/${categoryId}`;
                 document.getElementById('edit_category_id').value = categoryId;
                 editCategoryNameInput.value = categoryName;
             });
 
             // Form submit handler
             editCategoryForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent form submission
-
                 const categoryName = editCategoryNameInput.value.trim().toUpperCase();
+                const originalCategoryName = editCategoryModal.querySelector('a[data-bs-toggle="modal"]')?.getAttribute('data-category-name')?.toUpperCase() || '';
 
-                // Check if category name already exists
-                if (existingCategories.includes(categoryName)) {
-                    // Show validation error inside the input field
+                // Allow the original name to be submitted without triggering the duplicate error
+                if (categoryName !== originalCategoryName && existingCategories.includes(categoryName)) {
+                    event.preventDefault();
                     editCategoryNameInput.classList.add('is-invalid');
                     editCategoryNameError.style.display = 'block';
                 } else {
-                    // Hide validation error if it was shown earlier
                     editCategoryNameInput.classList.remove('is-invalid');
                     editCategoryNameError.style.display = 'none';
-                    // Proceed with form submission
-                    editCategoryForm.submit();
                 }
             });
 
@@ -275,78 +299,29 @@ $existingCategories = array_map(function ($product) {
         function confirmDelete(categoryId) {
             document.getElementById('delete-form-' + categoryId).submit();
         }
-    </script>
 
+        function searchProduct() {
+            const input = document.getElementById('productSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#categoryTable tr');
+            rows.forEach(row => {
+                const category = row.getAttribute('data-category').toLowerCase();
+                row.style.display = category.includes(input) ? '' : 'none';
+            });
+        }
+
+        function filterStock(status) {
+            const rows = document.querySelectorAll('#categoryTable tr');
+            document.getElementById('selectedStock').textContent = status || 'Stock';
+            rows.forEach(row => {
+                const stock = row.getAttribute('data-stock');
+                row.style.display = status === '' || stock === status ? '' : 'none';
+            });
+        }
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll('.row-number').forEach((cell, index) => {
-                cell.textContent = index + 1; // Adds numbering starting from 1
+                cell.textContent = index + 1;
             });
         });
     </script>
-    <style>
-        .plus-btn {
-            width: 18px;
-            height: 18px;
-            background: #696cff;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            box-shadow:
-                0 3px 5px rgba(0, 0, 0, 0.2),
-                0 0 10px rgba(108, 99, 255, 0.4),
-                inset 0 1px 2px rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease-in-out;
-            position: relative;
-        }
-
-        .plus-btn:hover {
-            background: linear-gradient(135deg, #5a54e0, #4038c9);
-            box-shadow:
-                0 5px 10px rgba(0, 0, 0, 0.3),
-                0 0 15px rgba(108, 99, 255, 0.6);
-            transform: scale(1.15) rotate(5deg);
-        }
-    </style>
-    <style>
-        @media (max-width: 768px) {
-            .row>div {
-                width: 100% !important;
-                margin-bottom: 10px;
-            }
-
-            .table-responsive {
-                overflow-x: auto;
-            }
-
-            .table thead {
-                display: none;
-            }
-
-            .table tbody tr {
-                display: block;
-                margin-bottom: 10px;
-                border: 1px solid #ddd;
-                padding: 10px;
-            }
-
-            .table tbody tr td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid #ddd;
-                padding: 5px;
-            }
-
-            .table tbody tr td:last-child {
-                border-bottom: none;
-            }
-        }
-    </style>

@@ -76,8 +76,6 @@ if (session_status() === PHP_SESSION_NONE) {
     }
 }
     </style>
-</head>
-<body>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="modal-content">
             <div class="modal-header">
@@ -143,3 +141,4 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </div>
+    
