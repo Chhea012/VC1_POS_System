@@ -144,7 +144,7 @@ if (session_status() === PHP_SESSION_NONE) {
             products: "ផលិតផល",
             inventory: "ស្តុកទំនិញ",
             drink: "ភេសជ្ជៈ",
-            fastfood: "អាហាររហ័ស",
+            fastfood: "អាហារ",
             freshice: "ទឹកកកស្រស់",
             category: "ប្រភេទ",
             orders: "ការបញ្ជាទិញ",

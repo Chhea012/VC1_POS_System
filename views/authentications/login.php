@@ -96,9 +96,9 @@
               <div class="mb-3">
                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
               </div>
-              <a href="/forgotpassword">
+              <!-- <a href="/forgotpassword">
                 <small>Forgot Password?</small>
-              </a>
+              </a> -->
             </form>
           </div>
         </div>
